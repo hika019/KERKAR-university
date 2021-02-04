@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 private val TAG = "firedb"
-private var firedb = FirebaseFirestore.getInstance()
+var firedb = FirebaseFirestore.getInstance()
 
 fun login_cheack(): Boolean {
     val cheack_user = Firebase.auth.currentUser
@@ -206,6 +206,10 @@ class firedb_message(val context: Context){
 
 class firedb_timetable(val context: Context){
     private val TAG = "firedb_timetable"
+
+    fun show_timetable_item(week_to_day: String, period: Int){
+
+    }
 
 
 }
