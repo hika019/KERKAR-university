@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppThem" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="title">ケルカル</item>
+        <item name="colorPrimary">@android:color/holo_green_light</item>
+        <item name="colorPrimaryDark">@android:color/holo_green_dark</item>
+        <item name="actionMenuTextColor">@android:color/white</item>
+        <item name="colorAccent">#0000FF</item>
+
+        <item name="colorButtonNormal">@color/dark_gray</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+    </style>
+
+
+</resources>

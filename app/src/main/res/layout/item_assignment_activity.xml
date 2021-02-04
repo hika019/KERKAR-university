@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:gravity="center"
+    android:layout_margin="8dp"
+    android:paddingStart="8dp">
+
+
+    <TextView
+        android:id="@+id/assignment_activity_info_day_textview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="12/24"
+        android:textSize="@dimen/item_textsize"
+        tools:layout_editor_absoluteX="36dp"
+        tools:layout_editor_absoluteY="11dp" />
+
+    <TextView
+        android:id="@+id/assignment_activity_info_title_textview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="創造理工学実験"
+        android:textSize="@dimen/item_textsize"
+        tools:layout_editor_absoluteX="116dp"
+        tools:layout_editor_absoluteY="13dp" />
+
+    <TextView
+        android:id="@+id/assignment_activity_info_details_textview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="小レポート"
+        android:textSize="@dimen/item_textsize"
+        tools:layout_editor_absoluteX="274dp"
+        tools:layout_editor_absoluteY="13dp" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
