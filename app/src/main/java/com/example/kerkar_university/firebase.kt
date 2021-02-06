@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_timetable.view.*
 import java.text.SimpleDateFormat
@@ -145,7 +146,7 @@ class firedb_register_login(val context: Context){
 
 
                     }
-                    Log.d("hoge", "semester: ${semester}")
+                    Log.d(TAG, "semester: ${semester}")
                     nowsemester = semester.max().toString()
 
                     val time = SimpleDateFormat("yyyy/MM/dd HH:mm").format(Date())
@@ -201,6 +202,36 @@ class firedb_register_login(val context: Context){
 class firedb_timetable(val context: Context){
     private val TAG = "firedb_timetable"
 
+    fun semester(week: String, period: Int){
+        firedb.collection("user")
+                .document(get_uid())
+                .get()
+                .addOnSuccessListener {
+                    val semester_id = it.getString("semester")
+
+                    if (semester_id != null) {
+                        firedb.collection("semester")
+                                .document(semester_id)
+                                .get()
+                                .addOnSuccessListener {
+                                    val semester = it.getString("title")
+
+                                    if (semester != null) {
+                                        timetable_dialog(context).add_timetable(week, period, semester_id, semester)
+                                    }
+
+
+                                }
+                                .addOnFailureListener {
+                                    Log.d(TAG, "firedb_timetable.semester2 -> failure")
+                                }
+                    }
+                }
+                .addOnFailureListener {
+                    Log.d(TAG, "firedb_timetable.semester1 -> failure")
+                }
+    }
+
     fun get_course_data(week_to_day: String, period: Int){
         var str: String? = null
 
@@ -251,6 +282,49 @@ class firedb_timetable(val context: Context){
                         Log.e(TAG, "get_course_data -> failure")
                     }
         }
+    }
+
+    fun create_university_timetable(data: Map<String, Any>){
+
+        val course_data = mutableMapOf(
+                "week_to_day" to data["week_to_day"] as String,
+                "course" to data["course"] as String,
+                "lecturer" to data["lecturer"] as List<String>,
+                "room" to data["room"] as String
+        )
+
+        firedb.collection("user")
+                .document(get_uid())
+                .get()
+                .addOnSuccessListener {
+
+                    val university_id = it.getString("university_id")
+                    Log.d(TAG, "create_university_timetable: get universiyt_id -> success")
+
+                    val doc = firedb.collection("university")
+                            .document(university_id!!)
+                            .collection("semester")
+                            .document(data["semester_id"] as String)
+                            .collection(data["week_to_day"] as String)
+                            .document()
+
+                    course_data.put("course_id", doc.id)
+
+                    doc.set(course_data, SetOptions.merge())
+                            .addOnSuccessListener {
+                                Log.d(TAG, "create_university_timetable: set data -> success")
+
+                            }
+                            .addOnFailureListener{
+                                Log.d(TAG, "create_university_timetable: set data -> failure")
+                            }
+
+                }
+                .addOnFailureListener{
+                    Log.e(TAG, "create_university_timetable: get universiyt_id -> failure")
+                }
+
+
     }
 
 

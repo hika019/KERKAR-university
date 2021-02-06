@@ -121,7 +121,7 @@ class timetable_dialog(val context: Context){
                     //登録画面
 //                    val add_timetable = add_timetable(context, week, time)
 //                    add_timetable.search_timetable_dialog_rapper()
-                    add_timetable(week, time)
+                    firedb_timetable(context).semester(week, time)
                 }
                 .setNegativeButton("戻る"){ dialog, which ->
 
@@ -148,8 +148,9 @@ class timetable_dialog(val context: Context){
 
     }
 
-    fun add_timetable(week: String, period: Int){
+    fun add_timetable(week: String, period: Int, semester_id: String, semester: String){
         val dialog_layout = LayoutInflater.from(context).inflate(R.layout.dialog_add_class_editer, null)
+        dialog_layout.semester_textView.text = semester
 
         val dialog = AlertDialog.Builder(context)
                 .setTitle("授業登録")
@@ -182,12 +183,14 @@ class timetable_dialog(val context: Context){
                                 val teacher_list = str_to_array(teacher_name)
 
                                 val data = hashMapOf(
+                                        "semester_id" to semester_id,
                                         "week_to_day" to week_symbol + period,
                                         "course" to lecture_name,
                                         "lecturer" to teacher_list,
                                         "room" to class_name
                                 )
                                 //登録へ
+                                firedb_timetable(context).create_university_timetable(data)
 
 
 
