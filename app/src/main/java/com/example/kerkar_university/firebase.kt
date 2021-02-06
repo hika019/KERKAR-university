@@ -53,6 +53,10 @@ class firedb_semester(val context: Context, val view: View){
                 .document(uid)
                 .update("semester", semester)
                 .addOnSuccessListener {
+                    firedb.collection("user")
+                            .document(uid)
+                            .collection("semester")
+                            .document(semester)
                     Log.d(TAG, "change_user_semester -> success")
                     get_semester_title()
                 }
@@ -193,22 +197,60 @@ class firedb_register_login(val context: Context){
 
 }
 
-class firedb_message(val context: Context){
-    private val TAG = "firedb_message"
-
-    fun get_message(){
-        firedb.collection("message")
-                .addSnapshotListener { value, error ->
-
-                }
-    }
-}
 
 class firedb_timetable(val context: Context){
     private val TAG = "firedb_timetable"
 
-    fun show_timetable_item(week_to_day: String, period: Int){
+    fun get_course_data(week_to_day: String, period: Int){
+        var str: String? = null
 
+        if(login_cheack()){
+            val uid = get_uid()
+            firedb.collection("user")
+                    .document(uid)
+                    .get()
+                    .addOnSuccessListener {
+
+                        val semester = it.getString("semester")
+
+                        if (semester != null) {
+                            firedb.collection("user")
+                                    .document(uid)
+                                    .collection("semester")
+                                    .document(semester)
+                                    .get()
+                                    .addOnSuccessListener {
+                                        Log.d(TAG, "get_course_data${week_to_day + period} -> success")
+                                        val raw_data = it.get(week_to_day+period)
+
+                                        if (raw_data != null){
+                                            val map_data = raw_data as Map<String, Any>
+                                            str = "教科: ${map_data["course"]}\n" +
+                                                    "教室: ${map_data["room"]}\n"
+
+                                            val teacher = map_data["lecturer"] as List<String>
+                                            if(teacher.size > 1){
+                                                str += "講師: ${teacher[0]} ...他"
+                                            }else{
+                                                str += "講師: ${teacher[0]}"
+                                            }
+                                        }else{
+                                            str = "授業が登録されていません"
+                                        }
+
+                                    }
+                                    .addOnFailureListener {}
+                        }
+
+
+
+
+
+                    }
+                    .addOnFailureListener {
+                        Log.e(TAG, "get_course_data -> failure")
+                    }
+        }
     }
 
 
