@@ -202,7 +202,7 @@ class firedb_register_login(val context: Context){
 class firedb_timetable(val context: Context){
     private val TAG = "firedb_timetable"
 
-    fun semester(week: String, period: Int){
+    fun add_timetable_semester(week: String, period: Int){
         firedb.collection("user")
                 .document(get_uid())
                 .get()
@@ -230,6 +230,10 @@ class firedb_timetable(val context: Context){
                 .addOnFailureListener {
                     Log.d(TAG, "firedb_timetable.semester1 -> failure")
                 }
+    }
+
+    fun create_user_timetable(){
+
     }
 
     fun get_course_data(week_to_day: String, period: Int){
@@ -308,11 +312,13 @@ class firedb_timetable(val context: Context){
                             .collection(data["week_to_day"] as String)
                             .document()
 
-                    course_data.put("course_id", doc.id)
+                    course_data["course_id"] = doc.id
 
                     doc.set(course_data, SetOptions.merge())
                             .addOnSuccessListener {
                                 Log.d(TAG, "create_university_timetable: set data -> success")
+
+                                add_user_timetable(data["semester_id"] as String, data["week_to_day"] as String, doc.id)
 
                             }
                             .addOnFailureListener{
@@ -323,8 +329,71 @@ class firedb_timetable(val context: Context){
                 .addOnFailureListener{
                     Log.e(TAG, "create_university_timetable: get universiyt_id -> failure")
                 }
+    }
+
+    fun add_user_timetable(semester_id: String, week_to_day: String, classId: String){
+        val uid = get_uid()
+
+        firedb.collection("user")
+                .document(uid)
+                .get()
+                .addOnSuccessListener {
+                    Log.d(TAG, "add_user_timetable: get university_id -> Success")
+                    val universiyt_id = it.getString("university_id")
 
 
+                    firedb.collection("university")
+                            .document(universiyt_id!!)
+                            .collection("semester")
+                            .document(semester_id)
+                            .collection(week_to_day)
+                            .document(classId)
+                            .get()
+                            .addOnSuccessListener {
+                                Log.d(TAG, "add_user_timetable: get university_id -> success")
+
+                                //コピーとる
+                                val time = it.getString("week_to_day")
+                                val course = it.getString("course")
+                                val id = it.getString("course_id")
+                                val lecturer = it.get("lecturer")
+                                val room = it.getString("room")
+
+
+                                val in_data = hashMapOf(
+                                        "week_to_day" to time,
+                                        "course_id" to id,
+                                        "lecturer" to lecturer,
+                                        "course" to course,
+                                        "room" to room
+                                )
+
+                                val data = hashMapOf(
+                                        time.toString() to in_data
+                                )
+
+                                firedb.collection("user")
+                                        .document(uid)
+                                        .collection("semester")
+                                        .document(semester_id)
+                                        .set(data, SetOptions.merge())
+                                        .addOnSuccessListener {
+                                            Log.d(TAG, "add course to user: ${id} -> success")
+                                        }
+                                        .addOnFailureListener{
+                                            Log.d(TAG, "add course to user: ${id} -> failure")
+                                        }
+
+                            }
+                            .addOnFailureListener {
+                                Log.d(TAG, "add_user_timetable: get university_id -> failure")
+                            }
+
+
+                }
+                .addOnFailureListener {
+                    Log.d(TAG, "add_user_timetable: get university_id -> Failure")
+                }
     }
 
 

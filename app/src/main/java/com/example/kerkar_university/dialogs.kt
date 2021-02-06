@@ -30,7 +30,11 @@ fun select_semester_dialog(view: View, context: Context, semester_list: Array<St
                 semester_id = semester_id_list[which]
             }
             .setPositiveButton("OK"){ dialog, which ->
-                if(semester_id != null)firedb_semester(context, view).change_user_semester(semester_id)
+                if(semester_id != ""){
+                    firedb_semester(context, view).change_user_semester(semester_id)
+                }else{
+                    false
+                }
             }
     dialog.show()
 }
@@ -121,7 +125,7 @@ class timetable_dialog(val context: Context){
                     //登録画面
 //                    val add_timetable = add_timetable(context, week, time)
 //                    add_timetable.search_timetable_dialog_rapper()
-                    firedb_timetable(context).semester(week, time)
+                    firedb_timetable(context).add_timetable_semester(week, time)
                 }
                 .setNegativeButton("戻る"){ dialog, which ->
 
