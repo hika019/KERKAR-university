@@ -61,7 +61,7 @@ fun course_data_map_to_str(data: Map<String, Any>): String {
     val teacher = map_data["lecturer"] as List<String>
     var teacher_str = ""
 
-    if(teacher.size > 1){
+    if(teacher.size != 1){
         teacher_str = "${teacher[0]} ...他"
     }else{
         teacher_str = "${teacher[0]}"

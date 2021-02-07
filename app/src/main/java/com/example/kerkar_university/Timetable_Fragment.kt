@@ -39,7 +39,7 @@ class Timetable_Fragment(): Fragment() {
         val week_to_day_symbol_list = listOf("sun", "mon", "tue", "wed", "thu", "fri", "sat")
         val period_list:List<Int> = List(5){it +1}
 
-        var timetable_data_map: MutableMap<String, String>? = mutableMapOf()
+
 
         if(login_cheack() == true){
             val uid = get_uid()
@@ -66,10 +66,12 @@ class Timetable_Fragment(): Fragment() {
                                     }
                                     Log.d(TAG, "get_course_symbol -> success")
 
+                                    var timetable_data_map: MutableMap<String, String>? = mutableMapOf()
 
                                     //取得
                                     for (week in week_to_day_symbol_list) {
                                         for (period in period_list) {
+
                                             val week_to_day = week + period.toString()
                                             val tmp_data = value?.get(week_to_day) as Map<String?, Any?>?
                                             Log.d("hoge", "tmp_data: ${tmp_data}")
