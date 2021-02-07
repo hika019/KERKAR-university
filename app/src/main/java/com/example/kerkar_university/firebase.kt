@@ -5,6 +5,7 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.ktx.Firebase
@@ -201,6 +202,7 @@ class firedb_register_login(val context: Context){
 
 class firedb_timetable(val context: Context){
     private val TAG = "firedb_timetable"
+
 
     fun create_course(week: String, period: Int){
         firedb.collection("user")
@@ -434,6 +436,22 @@ class firedb_timetable(val context: Context){
                 }
                 .addOnFailureListener {
                     Log.d(TAG, "add_user_timetable: get university_id -> Failure")
+                }
+    }
+
+    fun delete_user_timetable(semester_id: String, week_to_day: String){
+        val uid = get_uid()
+
+        val updates = hashMapOf<String, Any>(
+                week_to_day to FieldValue.delete()
+        )
+
+        firedb.collection("user")
+                .document(uid)
+                .collection("semester")
+                .document(semester_id)
+                .update(updates).addOnCanceledListener {
+                    Log.d(TAG, "delete_user_timetable: $week_to_day -> complete")
                 }
     }
 

@@ -185,6 +185,7 @@ class timetable_dialog(val context: Context){
 
                 }
                 .setNegativeButton("空き授業"){dialog, which ->
+                    firedb_timetable.delete_user_timetable(semester_id, week_to_day+period,)
                     false
 
                 }
