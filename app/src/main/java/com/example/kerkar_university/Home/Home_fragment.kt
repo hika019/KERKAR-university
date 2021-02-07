@@ -68,7 +68,7 @@ class Home_fragment(): Fragment() {
                                             for (period in period_list) {
                                                 val week_to_day = week + period.toString()
                                                 val tmp_data = value?.get(week_to_day) as Map<String?, Any?>?
-                                                Log.d("hoge", "tmp_data: ${tmp_data}")
+//                                                Log.d("hoge", "tmp_data: ${tmp_data}")
 
                                                 if (tmp_data != null) {
                                                     timetable_data_map?.put(week_to_day, tmp_data["course"] as String)

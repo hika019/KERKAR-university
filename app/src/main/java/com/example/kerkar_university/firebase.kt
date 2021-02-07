@@ -96,7 +96,7 @@ class firedb_register_login(val context: Context){
         var university_id_list: Array<String> = arrayOf()
         Log.d(TAG, "get_university_list -> call")
 
-        Log.d("hoge", "data: ${university_name_list}")
+//        Log.d("hoge", "data: ${university_name_list}")
         firedb.collection("university")
                 .get()
                 .addOnSuccessListener {
@@ -594,6 +594,126 @@ class firedb_task(val context: Context){
                     }
         }else{
             Log.w(TAG, "firedb_task -> create_task -> not login")
+        }
+    }
+
+    fun get_task_list(){
+        if(login_cheack()){
+            val uid = get_uid()
+            val user_doc = firedb.collection("user")
+                    .document(uid)
+
+            user_doc.get()
+                    .addOnSuccessListener {
+                        Log.d(TAG, "get_task_list -> get user_data -> success")
+                        val semester = it.getString("semester")
+                        val university_id = it.getString("university_id")
+
+                        var task_list: Array<Map<String, Any>> = arrayOf()
+                        var class_list: Array<Map<String, Any>> = arrayOf()
+
+                        user_doc.collection("semester")
+                                .document(semester!!)
+                                .get()
+                                .addOnSuccessListener {
+                                    Log.d(TAG, "get_task_list -> get user class_data -> success")
+                                    //履修中の授業取得
+                                    for (week in week_to_day_symbol_list){
+                                        for(period in period_list) {
+                                            val class_data = it.get(week + period) as Map<String, Any>?
+
+                                            if(class_data != null){
+                                                val course_id = class_data["course_id"] as String
+
+                                                firedb.collection("university")
+                                                        .document(university_id!!)
+                                                        .collection("semester")
+                                                        .document(semester!!)
+                                                        .collection(week + period)
+                                                        .document(course_id!!)
+                                                        .collection("task")
+                                                        .addSnapshotListener { task_documents, error ->
+                                                            if(error != null){
+                                                                Log.w(TAG, "get_task_list -> get task_data (course_id:${course_id}) -> failure", error)
+                                                                return@addSnapshotListener
+                                                            }
+
+                                                            for(task_item in task_documents!!.documentChanges){
+                                                                val task_name = task_item.document.getString("task_name")
+                                                                //課題取得
+                                                                Log.d("hoge", "task_name: $task_name")
+                                                            }
+                                                        }
+                                            }
+
+
+                                        }
+                                    }
+                                }
+                                .addOnFailureListener {
+                                    Log.w(TAG, "get_task_list -> get user class_data -> failure")
+                                }
+
+
+
+
+                        user_doc.addSnapshotListener{ user_snapshot, error ->
+                                    if(error != null){
+                                        Log.w(TAG, "get_task_list: get user_data -> failed.", error)
+                                        return@addSnapshotListener
+                                    }
+
+                                    Log.d(TAG, "get_task_list: get user_data -> success")
+                                    val semester_id = user_snapshot!!.getString("semester")
+                                    val university_id = user_snapshot!!.getString("university_id")
+
+                                    for (week in week_to_day_symbol_list){
+                                        for(period in period_list) {
+                                            val class_data = user_snapshot.get(week + period) as Map<String, Any>?
+
+                                            Log.d("hoge", "class_data: ${class_data}")
+
+                                            if(class_data != null){
+                                                val class_id = class_data["course_id"] as String
+
+                                                firedb.collection("university")
+                                                        .document(university_id!!)
+                                                        .collection("semester")
+                                                        .document(semester_id!!)
+                                                        .collection(week + period)
+                                                        .document(class_id)
+                                                        .collection("task")
+                                                        .addSnapshotListener{task_snapshots, error ->
+
+                                                            for(task_item in task_snapshots!!.documentChanges){
+                                                                if(error != null){
+                                                                    Log.w(TAG, "get_task_list: get task_data -> failed.", error)
+                                                                    return@addSnapshotListener
+                                                                }
+
+                                                                val task_data = task_item.document.getData() as Map<String, String>
+
+                                                                Log.d("hoge", "task_data: ${task_data["task_name"]}")
+
+
+                                                            }
+                                                        }
+                                            }
+
+                                        }
+                                    }
+
+
+
+                                }
+
+                    }
+                    .addOnFailureListener {
+                        Log.w(TAG, "get_task_list -> get user_data -> failure")
+                    }
+
+        }else{
+            Log.w(TAG, "not login")
         }
     }
 }

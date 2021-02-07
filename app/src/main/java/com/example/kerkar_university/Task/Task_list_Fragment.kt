@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.kerkar_university.R
+import com.example.kerkar_university.firedb_task
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_task_list.view.*
 
@@ -38,6 +39,8 @@ class Task_list_Fragment(): Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
+
+        context?.let { firedb_task(it) }?.get_task_list()
 
         view.add_task_fab.setOnClickListener{
             Log.d(TAG, "add_task_fab -> push")
