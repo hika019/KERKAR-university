@@ -1,6 +1,7 @@
 package com.example.kerkar_university.Task
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,9 @@ import kotlinx.android.synthetic.main.activity_task_list.view.*
 
 
 class Task_list_Fragment(): Fragment() {
+
+    val TAG = "Task_list_Fragment"
+
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -34,6 +38,13 @@ class Task_list_Fragment(): Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
+
+        view.add_task_fab.setOnClickListener{
+            Log.d(TAG, "add_task_fab -> push")
+
+
+
+        }
 
 
 

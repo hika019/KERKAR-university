@@ -1,5 +1,7 @@
 package com.example.kerkar_university
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -8,7 +10,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.dialog_add_class_editer.view.*
+import kotlinx.android.synthetic.main.dialog_add_task.view.*
 import kotlinx.android.synthetic.main.dialog_add_university.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun error_college_upload_dialog(context: Context){
     val messege = "ユーザー情報が正しくアップロードされなかった可能性があります。"
@@ -168,7 +173,7 @@ class timetable_dialog(val context: Context){
         }
 
         val week_jp = week_to_day_jp_chenger(week_to_day)
-        var index: Int = 0
+        var index = 0
 
         val dialog = AlertDialog.Builder(context)
                 .setTitle(week_jp + "曜日 " + period + "限 で検索されています")
@@ -180,7 +185,6 @@ class timetable_dialog(val context: Context){
                     val class_id = data["course_id"] as String
 
                     firedb_timetable.add_user_timetable(semester_id, week_to_day+period, class_id)
-
                     false
 
                 }
@@ -199,7 +203,6 @@ class timetable_dialog(val context: Context){
 
     fun add_timetable(week: String, period: Int, semester_id: String, semester: String){
         val dialog_layout = LayoutInflater.from(context).inflate(R.layout.dialog_add_class_editer, null)
-        dialog_layout.semester_textView.text = semester
 
         val dialog = AlertDialog.Builder(context)
                 .setTitle("授業登録")
@@ -258,12 +261,165 @@ class timetable_dialog(val context: Context){
                         Toast.makeText(context, "未入力の場所があります", Toast.LENGTH_SHORT).show()
                         Log.d(TAG, "未入力あり")
                     }
-
-
+                }
+                .setNeutralButton("破棄"){dialog, which ->
+                    false
                 }
 
         dialog.show()
     }
 
+}
+
+class task_dialog(val context: Context){
+
+    val TAG = "task_dialog"
+
+    var day: String? = null
+    var time: String? = null
+    var subject_data: MutableMap<String, String> = mutableMapOf()
+    var semester_id_data: String? = null
+    var semester: String? = null
+
+    val task_dialog_second = LayoutInflater.from(context).inflate(
+            R.layout.dialog_add_task,
+            null
+    )
+
+    fun course_selecter_dialog(class_name_list: Array<String>,
+                               class_id_list: Array<String>,
+                               class_week_to_day_list: Array<String>,
+                               semester_id: String,
+                               semester_name: String?){
+
+        semester_id_data = semester_id
+        semester = semester_name
+
+        Log.d(TAG, "これがないとなぜか動かない　semester: $semester_name")
+        Log.d(TAG, "これがないとなぜか動かない　semester: $semester")
+
+        var select_point: Int? = null
+
+        val builder = AlertDialog.Builder(context)
+                .setTitle("追加する課題の授業を選択")
+                .setSingleChoiceItems(class_name_list, -1){ dialog, which ->
+                    select_point = which
+                }
+                .setPositiveButton("確定"){ dialog, which ->
+                    if(select_point != null) {
+
+                        val data =hashMapOf<String, String>(
+                                "class_name" to class_name_list[select_point!!],
+                                "class_id" to class_id_list[select_point!!],
+                                "week_to_day" to class_week_to_day_list[select_point!!]
+                        )
+                        subject_data = data
+                        Log.d(TAG, "class_id1: ${class_id_list[select_point!!]}")
+                        create_task_dialog()
+                    }
+                }
+                .setNegativeButton("戻る"){ dialog, which ->
+                }
+
+        builder.show()
+
+    }
+
+    fun create_task_dialog(){
+        task_dialog_second.add_task_semester_textView.text = semester
+
+        task_dialog_second.add_day_button.setOnClickListener {
+            set_deadline_day()
+        }
+        task_dialog_second.add_time_button.setOnClickListener {
+            time_picker()
+        }
+        task_dialog_second.dialog_deadline_day.text = day
+        task_dialog_second.dialog_deadline_time.text = time
+        task_dialog_second.dialog_subject.text = subject_data["class_name"]
+
+        val dialog = AlertDialog.Builder(context)
+                .setTitle("課題追加")
+                .setView(task_dialog_second)
+                .setPositiveButton("確定") { dialog, which ->
+
+                    val title = task_dialog_second.dialog_assignment_special_notes.text
+
+                    if(task_dialog_second.dialog_deadline_day.text.isNotEmpty() &&
+                            task_dialog_second.dialog_deadline_time.text.isNotEmpty() &&
+//                            subject_data["class"] != null &&
+                            title != null){
+
+
+                        val data = hashMapOf(
+                                "day" to task_dialog_second.dialog_deadline_day.text.toString(),
+                                "time" to task_dialog_second.dialog_deadline_time.text.toString(),
+                                "class" to subject_data,
+                                "task_title" to task_dialog_second.dialog_assignment_title.text.toString(),
+                                "note" to task_dialog_second.dialog_assignment_special_notes.text.toString()
+                        )
+                        Log.d(TAG, "set -> data: ${data}")
+
+                        //追加処理
+//                        firedb_add_task_class(context).add_task_to_university(data)
+
+                    }else{
+                        Toast.makeText(context, "空の部分があります", Toast.LENGTH_SHORT).show()
+                    }
+//                    Log.d("dialog", "")
+                }
+                .setNegativeButton("破棄") { dialog, which ->
+                    false
+                }
+
+        dialog.create().show()
+
+
+    }
+
+    fun set_deadline_day(){
+
+        val calendar = Calendar.getInstance()
+
+        val datePickerDialog = DatePickerDialog(context,
+                { view, year, month, dayOfMonth -> //setした日付を取得して表示
+                    calendar.set(year, month, dayOfMonth)
+                    val dfInputeDate = SimpleDateFormat("yyyy/MM/dd", Locale.US)
+                    val strInputDate = dfInputeDate.format(calendar.time)
+//                    Log.d("hoge", "time: ${calendar.time} -> show")
+                    day = strInputDate
+                    Log.d(TAG, "day: ${day} -> set")
+                    task_dialog_second.dialog_deadline_day.text = day
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DATE)
+        )
+        datePickerDialog.show()
+    }
+
+    fun time_picker(){
+        val calender = Calendar.getInstance()
+
+        val timePicker = TimePickerDialog(context,
+                { view, hour, minute ->
+//                    Log.d("hoge", "time: ${hour} -> get")
+                    calender.set(2000,1,5,hour, minute)
+                    val dfInputdata = SimpleDateFormat("HH:mm")
+                    val strInputDate = dfInputdata.format(calender.time)
+//                    Log.d("hoge", "time: ${strInputDate} -> show")
+                    time = strInputDate
+//                    time = ("%2:${minute}").format(hour)
+//                    time = "${hour}:${minute}"
+                    Log.d(TAG, "time: ${time} -> set")
+                    task_dialog_second.dialog_deadline_time.text = time
+                },
+                calender.get(Calendar.HOUR_OF_DAY),
+                calender.get(Calendar.MINUTE),
+                true
+        )
+        timePicker.show()
+
+    }
 
 }

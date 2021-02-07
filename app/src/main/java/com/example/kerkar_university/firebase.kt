@@ -457,3 +457,87 @@ class firedb_timetable(val context: Context){
 
 
 }
+
+class firedb_task(val context: Context){
+    private val TAG = "firedb_task"
+
+    val week_to_day_symbol_list = listOf("sun", "mon", "tue", "wen", "thu", "fri", "sat")
+    val period_list:List<Int> = List(5){it +1}
+
+    fun get_course_list(){
+        if(login_cheack()){
+            Log.d(TAG, "get_course_list: login_check")
+
+            val uid = get_uid()
+
+            val user_doc = firedb.collection("user")
+                    .document(get_uid())
+
+
+            user_doc.get()
+                    .addOnSuccessListener {
+                        Log.d(TAG, "firedb_task.get_course_list: get user data -> success")
+                        val semester_id = it.getString("semester")
+
+                        if (semester_id != null) {
+
+                            var semester: String? = null
+
+                            firedb.collection("semester")
+                                    .document(semester_id)
+                                    .get()
+                                    .addOnSuccessListener {
+                                        semester = it.getString("title")
+                                    }
+
+                            user_doc.collection("semester")
+                                    .document(semester_id)
+                                    .get()
+                                    .addOnSuccessListener {
+                                        Log.d(TAG, "firedb_task.get_course_list: get user timetable -> success")
+
+                                        var class_name_array: Array<String> = arrayOf()
+                                        var class_id_array: Array<String> = arrayOf()
+                                        var class_week_to_day_array: Array<String> = arrayOf()
+
+                                        for( week in week_to_day_symbol_list){
+                                            for(period in period_list){
+
+                                                val week_period = week + period
+
+                                                val raw_data = it.get(week_period)
+
+                                                if (raw_data != null){
+                                                    val data = raw_data as Map<String, Any>
+                                                    class_name_array +=  data["course"] as String
+                                                    class_id_array +=  data["course_id"] as String
+                                                    class_week_to_day_array += data["week_to_day"] as String
+                                                }
+
+
+                                            }
+                                        }
+
+                                        task_dialog(context).course_selecter_dialog(class_name_array, class_id_array, class_week_to_day_array, semester_id, semester)
+
+                                    }
+                                    .addOnFailureListener{
+                                        Log.d(TAG, "firedb_task.get_course_list: get user timetable -> failure")
+                                    }
+
+                        }else{
+                            Log.e(TAG, "firedb_task.get_course_list: university_id/semester_id is null")
+                        }
+
+
+
+                    }
+                    .addOnFailureListener {
+                        Log.d(TAG, "firedb_task.get_course_list: get user data -> failure")
+                    }
+
+        }else{
+            Log.e(TAG, "firedb_task.get_course_list: not login")
+        }
+    }
+}

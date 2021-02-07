@@ -95,16 +95,11 @@ class Timetable_Fragment(): Fragment() {
                                     view.timetable_include_tue4.timetable_title_textView.text = timetable_data_map?.get("tue4")
                                     view.timetable_include_tue5.timetable_title_textView.text = timetable_data_map?.get("tue5")
 
-                                    view.timetable_include_wen1.timetable_title_textView.text =
-                                            timetable_data_map?.get("wed1")
-                                    view.timetable_include_wen2.timetable_title_textView.text =
-                                            timetable_data_map?.get("wed2")
-                                    view.timetable_include_wen3.timetable_title_textView.text =
-                                            timetable_data_map?.get("wed3")
-                                    view.timetable_include_wen4.timetable_title_textView.text =
-                                            timetable_data_map?.get("wed4")
-                                    view.timetable_include_wen5.timetable_title_textView.text =
-                                            timetable_data_map?.get("wed5")
+                                    view.timetable_include_wen1.timetable_title_textView.text = timetable_data_map?.get("wed1")
+                                    view.timetable_include_wen2.timetable_title_textView.text = timetable_data_map?.get("wed2")
+                                    view.timetable_include_wen3.timetable_title_textView.text = timetable_data_map?.get("wed3")
+                                    view.timetable_include_wen4.timetable_title_textView.text = timetable_data_map?.get("wed4")
+                                    view.timetable_include_wen5.timetable_title_textView.text = timetable_data_map?.get("wed5")
 
                                     view.timetable_include_thu1.timetable_title_textView.text =
                                             timetable_data_map?.get("thu1")
