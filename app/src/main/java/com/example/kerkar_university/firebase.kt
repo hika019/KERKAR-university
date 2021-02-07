@@ -267,7 +267,7 @@ class firedb_timetable(val context: Context){
                                             course_list.add(data)
                                         }
 
-                                        timetable_dialog(context).search_timetable_dialog(week, period, course_list)
+                                        timetable_dialog(context).search_timetable_dialog(week, period, course_list, semester_id)
                                     }
                                     .addOnFailureListener {
                                         Log.e(TAG, "get_course_list: get courses -> failure")

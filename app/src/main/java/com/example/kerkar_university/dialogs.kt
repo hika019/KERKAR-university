@@ -123,14 +123,9 @@ class timetable_dialog(val context: Context){
                 .setTitle("${week_jp}曜日 ${time}限の授業")
                 .setMessage(message)
                 .setPositiveButton("授業登録") { dialog, which ->
+
                     //登録画面
-//                    val add_timetable = add_timetable(context, week, time)
-//                    add_timetable.search_timetable_dialog_rapper()
-
-                    val list: List<Any> = listOf()
-
                     firedb_timetable.get_course_list(week, time)
-
                     false
                 }
                 .setNegativeButton("戻る"){ dialog, which ->
@@ -142,7 +137,7 @@ class timetable_dialog(val context: Context){
          dialog.show()
     }
 
-    fun search_timetable_dialog(week_to_day: String, period: Int, list: List<Any>){
+    fun search_timetable_dialog(week_to_day: String, period: Int, list: List<Any>, semester_id: String){
         Log.d(TAG, "course_list_dialog -> call")
         var id_list: Array<String> = arrayOf()
         var selecter_list: Array<String> = arrayOf()
@@ -169,7 +164,6 @@ class timetable_dialog(val context: Context){
 
             selecter_list += str
 
-            Log.d("hoge", selecter_list.toString())
             Log.d(TAG, "item: ${item}")
         }
 
@@ -182,6 +176,11 @@ class timetable_dialog(val context: Context){
                     index = which
                 }
                 .setPositiveButton("確定"){ dialog, which ->
+                    val data = list[index] as Map<String, Any>
+                    val class_id = data["course_id"] as String
+
+                    firedb_timetable.add_user_timetable(semester_id, week_to_day+period, class_id)
+
                     false
 
                 }
