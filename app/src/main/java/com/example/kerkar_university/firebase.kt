@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -538,6 +539,61 @@ class firedb_task(val context: Context){
 
         }else{
             Log.e(TAG, "firedb_task.get_course_list: not login")
+        }
+    }
+
+    fun create_task(task_data: Map<String, Any> , semester_id: String){
+        if(login_cheack()){
+            firedb.collection("user")
+                    .document(get_uid())
+                    .get()
+                    .addOnSuccessListener {
+                        Log.d(TAG, "firedb_task -> create_task -> get user data -> success")
+
+                        val university_id = it.getString("university_id")
+
+                        val class_data = task_data["class"] as Map<String, Any>
+                        val class_id = class_data["class_id"] as String
+                        val week_to_day = class_data["week_to_day"] as String
+
+
+                        if(university_id != null && week_to_day != null && class_id != null){
+                            val task_doc = firedb.collection("university")
+                                    .document(university_id)
+                                    .collection("semester")
+                                    .document(semester_id)
+                                    .collection(week_to_day)
+                                    .document(class_id)
+                                    .collection("task")
+                                    .document()
+
+                            val timelimit = "${task_data["day"]} ${task_data["time"]}"
+
+                            val set_data = hashMapOf(
+                                    "task_id" to task_doc.id,
+                                    "timelimit" to timelimit,
+                                    "task_name" to task_data["task_title"],
+                                    "note" to task_data["note"]
+                            )
+
+                            task_doc.set(set_data)
+                                    .addOnSuccessListener {
+                                        Log.d(TAG, "add task -> success")
+                                        Toast.makeText(context, "課題が追加されました。", Toast.LENGTH_SHORT).show()
+                                    }
+                                    .addOnFailureListener {
+                                        Log.d(TAG, "add task -> failure")
+                                        Toast.makeText(context, "課題が追加できませんでした。", Toast.LENGTH_SHORT).show()
+                                    }
+                        }else{
+                            Log.w(TAG, "firedb_task -> create_task -> university_id is null")
+                        }
+                    }
+                    .addOnFailureListener {
+                        Log.w(TAG, "firedb_task -> create_task -> get user data -> failure")
+                    }
+        }else{
+            Log.w(TAG, "firedb_task -> create_task -> not login")
         }
     }
 }

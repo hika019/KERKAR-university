@@ -360,9 +360,11 @@ class task_dialog(val context: Context){
                         )
                         Log.d(TAG, "set -> data: ${data}")
 
-                        //追加処理
-//                        firedb_add_task_class(context).add_task_to_university(data)
 
+                        //追加処理
+                        if(semester_id_data != null){
+                            firedb_task(context).create_task(data, semester_id_data!!)
+                        }
                     }else{
                         Toast.makeText(context, "空の部分があります", Toast.LENGTH_SHORT).show()
                     }
