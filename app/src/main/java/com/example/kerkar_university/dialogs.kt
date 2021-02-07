@@ -113,10 +113,11 @@ class register_dialog(val context: Context, val uid: String){
 class timetable_dialog(val context: Context){
     private val TAG = "timetable_dialog"
 
-    fun timetable_data_dialog(week: String, time: Int, message: String){
+    val firedb_timetable = firedb_timetable(context)
+
+    fun timetable_data_dialog(week: String, time: Int, message: String?){
 
         val week_jp = week_to_day_jp_chenger(week)
-        val message = "aiueo"
 
         val dialog = AlertDialog.Builder(context)
                 .setTitle("${week_jp}曜日 ${time}限の授業")
@@ -125,7 +126,12 @@ class timetable_dialog(val context: Context){
                     //登録画面
 //                    val add_timetable = add_timetable(context, week, time)
 //                    add_timetable.search_timetable_dialog_rapper()
-                    firedb_timetable(context).add_timetable_semester(week, time)
+
+                    val list: List<Any> = listOf()
+
+                    firedb_timetable.get_course_list(week, time)
+
+                    false
                 }
                 .setNegativeButton("戻る"){ dialog, which ->
 
@@ -136,19 +142,58 @@ class timetable_dialog(val context: Context){
          dialog.show()
     }
 
-    fun course_list_dialog(list: List<Any>){
+    fun search_timetable_dialog(week_to_day: String, period: Int, list: List<Any>){
         Log.d(TAG, "course_list_dialog -> call")
         var id_list: Array<String> = arrayOf()
         var selecter_list: Array<String> = arrayOf()
 
         for(item in list){
             val data = item as Map<String, Any>
-
             id_list += data["course_id"] as String
 
+            val week_to_day = data["week_to_day"]
+            val course = data["course"]
+            val teacher = data["lecturer"] as List<String>
+            val room = data["room"]
+            var lecturer = ""
+
+            if(teacher.size > 1){
+                lecturer += teacher[0] + " ...他"
+            }else{
+                lecturer += teacher[0]
+            }
+
+            val str = "教科: ${course}\n" +
+                    "講師: ${lecturer}\n" +
+                    "教室: ${room}"
+
+            selecter_list += str
+
+            Log.d("hoge", selecter_list.toString())
+            Log.d(TAG, "item: ${item}")
         }
 
+        val week_jp = week_to_day_jp_chenger(week_to_day)
+        var index: Int = 0
 
+        val dialog = AlertDialog.Builder(context)
+                .setTitle(week_jp + "曜日 " + period + "限 で検索されています")
+                .setSingleChoiceItems(selecter_list, -1){ dialog, which ->
+                    index = which
+                }
+                .setPositiveButton("確定"){ dialog, which ->
+                    false
+
+                }
+                .setNegativeButton("空き授業"){dialog, which ->
+                    false
+
+                }
+                .setNeutralButton("授業をつくる"){dialog, which ->
+                    firedb_timetable(context).create_course(week_to_day, period)
+                    false
+                }
+        dialog.create().show()
 
     }
 
@@ -195,8 +240,6 @@ class timetable_dialog(val context: Context){
                                 )
                                 //登録へ
                                 firedb_timetable(context).create_university_timetable(data)
-
-
 
                             }else{
                                 Log.d(TAG, "曜日が不正")

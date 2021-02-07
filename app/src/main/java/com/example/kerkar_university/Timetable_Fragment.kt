@@ -133,15 +133,18 @@ class Timetable_Fragment(): Fragment() {
         }
     }
 
-    private fun timetable_dialog(week_to_day: String){
-
-    }
 
 
     private fun timetable_onclick_event(view: View){
-        val dialog_class = context?.let { timetable_dialog(it) }
+
+        val firedb_timetable = context?.let { firedb_timetable(it) }
+
+
         view.timetable_include_mon1.setOnClickListener{
-            dialog_class?.timetable_data_dialog("mon", 1, "aiueo")
+            firedb_timetable?.get_course_data("mon", 1)
+        }
+        view.timetable_include_mon2.setOnClickListener{
+            firedb_timetable?.get_course_data("mon", 2)
         }
 
     }

@@ -1,8 +1,8 @@
 package com.example.kerkar_university
 
-import android.content.Context
 import android.util.Log
-import android.view.View
+
+
 
 fun week_to_day_jp_chenger(week: String): String{
     val week_to_day_jp_list = listOf("日", "月", "火", "水", "木", "金", "土")
@@ -52,4 +52,26 @@ fun str_to_array(str: String): List<String> {
     else list = listOf(str)
 
     return list
+}
+
+fun course_data_map_to_str(data: Map<String, Any>): String {
+    Log.d("other_fun", "course_data_map_to_str -> call")
+
+    val map_data = data
+    val teacher = map_data["lecturer"] as List<String>
+    var teacher_str = ""
+
+    if(teacher.size > 1){
+        teacher_str = "${teacher[0]} ...他"
+    }else{
+        teacher_str = "${teacher[0]}"
+    }
+
+
+    val str = "教科: ${map_data["course"]}\n" +
+            "講師: $teacher_str\n" +
+            "教室: ${map_data["room"]}\n"
+
+
+    return str
 }
