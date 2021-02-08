@@ -67,11 +67,22 @@ fun course_data_map_to_str(data: Map<String, Any>): String {
         teacher_str = "${teacher[0]}"
     }
 
-
     val str = "教科: ${map_data["course"]}\n" +
             "講師: $teacher_str\n" +
             "教室: ${map_data["room"]}\n"
-
-
     return str
+}
+
+fun add_array_to_array(base: Array<String>?, add: ArrayList<String>?): Array<String> {
+
+    var base_new = arrayOf<String>()
+    if(base != null){
+        base_new = base
+    }
+    if(add != null){
+        for(item in add){
+            base_new += item
+        }
+    }
+    return base_new
 }
