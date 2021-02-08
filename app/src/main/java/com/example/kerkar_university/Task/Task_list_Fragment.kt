@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.kerkar_university.R
 import com.example.kerkar_university.firedb_task
 import com.google.android.material.tabs.TabLayout
@@ -20,6 +21,11 @@ class Task_list_Fragment(): Fragment() {
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.activity_task_list, container, false)
+
+        view.AssignmentActivity_assignment_recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+
+
+        get_notcomp_task(view)
 
         view.unsubmitted_or_submitted_tabs.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -40,27 +46,21 @@ class Task_list_Fragment(): Fragment() {
             }
         })
 
-        context?.let { firedb_task(it) }?.get_not_comp_task_list(view)
+
 
         view.add_task_fab.setOnClickListener{
             Log.d(TAG, "add_task_fab -> push")
 
-
-
         }
-
-
-
-
         return view
     }
 
 
     fun get_comp_task(view: View){
-
+        context?.let { firedb_task(it) }?.get_comp_task_list(view)
     }
 
     fun get_notcomp_task(view: View){
-
+        context?.let { firedb_task(it) }?.get_not_comp_task_list(view)
     }
 }
