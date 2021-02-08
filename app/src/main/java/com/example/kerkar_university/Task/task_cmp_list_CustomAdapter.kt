@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kerkar_university.R
+import com.example.kerkar_university.firedb_task
 import kotlinx.android.synthetic.main.item_assignment_activity.view.*
 
 
@@ -101,8 +102,8 @@ class task_cmp_list_CustomAdapter(
                 }
                 .setNeutralButton("未提出にする") {dialog, which ->
 //                    addListItem(list[position])
-                    val class_data = list[position] as Map<String, Any>
-//                    firedb_load_task_class(context).task_to_not_comp(class_data)
+                    val class_data = list[position]
+                    firedb_task(context).task_to_notcomp(class_data, semester)
                     removeItem(position)
                 }
                 .show()

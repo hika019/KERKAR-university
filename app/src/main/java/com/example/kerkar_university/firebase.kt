@@ -853,4 +853,67 @@ class firedb_task(val context: Context){
         }
 
     }
+
+    fun task_to_notcomp(class_and_task_data: Map<String, Any>, semester: String){
+
+        val class_data= class_and_task_data["class_data"] as Map<String, Any>
+        val week_to_day = class_data["week_to_day"] as String
+        val task_id = class_and_task_data["task_id"] as String
+
+        if(login_cheack()){
+            val uid = get_uid()
+
+            val user_doc = firedb.collection("user")
+                    .document(uid)
+                    .collection("semester")
+                    .document(semester)
+
+
+            user_doc.get()
+                    .addOnSuccessListener {
+                        Log.d(TAG, "task_to_notcomp: get class_doc -> success")
+                        val class_data_online = it.get(week_to_day) as Map<String, Any>
+
+                        Log.d("hoge", "class_data_online: ${class_data_online}")
+                        val task_comp_Array = class_data_online["comp_task"] as MutableList<String>
+
+                        task_comp_Array -= task_id
+
+                        Log.d("hoge", "task_list: ${task_comp_Array}")
+//                        Log.d("hoge", "task_list: ${task_comp_Array?.indexOf(task_id)}")
+
+
+                        val in_data = hashMapOf(
+                                "course" to class_data_online["course"] as String,
+                                "course_id" to class_data_online["course_id"] as String,
+                                "lecturer" to class_data_online["lecturer"] as List<String>,
+                                "room" to class_data_online["room"] as String,
+                                "week_to_day" to class_data_online["week_to_day"] as String,
+                                "comp_task" to task_comp_Array
+                        )
+
+                        Log.d("hoge", "in_data${in_data}")
+
+                        val data = hashMapOf(
+                                week_to_day to in_data
+                        )
+
+                        user_doc.set(data, SetOptions.merge())
+                                .addOnSuccessListener {
+                                    Log.d(TAG, "task_to_notcomp -> comp and success")
+                                    Toast.makeText(context, "未提出にしました",Toast.LENGTH_SHORT).show()
+                                }
+                                .addOnFailureListener {
+                                    Log.w(TAG, "task_to_notcomp -> comp bat failure")
+                                    Toast.makeText(context, "未提出にできませんでした",Toast.LENGTH_SHORT).show()
+                                }
+                    }
+                    .addOnFailureListener {
+                        Log.w(TAG, "task_to_notcomp: get class_doc -> failure")
+                    }
+
+        }else{
+            Log.w(TAG, "task_to_notcomp: not login")
+        }
+    }
 }
