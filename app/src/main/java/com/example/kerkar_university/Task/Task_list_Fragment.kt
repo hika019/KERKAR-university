@@ -40,7 +40,7 @@ class Task_list_Fragment(): Fragment() {
             }
         })
 
-        context?.let { firedb_task(it) }?.get_task_list(view)
+        context?.let { firedb_task(it) }?.get_not_comp_task_list(view)
 
         view.add_task_fab.setOnClickListener{
             Log.d(TAG, "add_task_fab -> push")
