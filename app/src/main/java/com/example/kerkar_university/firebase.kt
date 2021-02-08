@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.kerkar_university.Task.task_cmp_list_CustomAdapter
 import com.example.kerkar_university.Task.task_notcmp_list_CustomAdapter
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
@@ -763,7 +764,7 @@ class firedb_task(val context: Context){
 
                                                                     //表示
                                                                     Log.d(TAG, "tasks show to recyclerview")
-                                                                    val adapter = task_notcmp_list_CustomAdapter(task_list, context, semester)
+                                                                    val adapter = task_cmp_list_CustomAdapter(task_list, context, semester)
                                                                     val layoutManager = LinearLayoutManager(context)
 
                                                                     view.AssignmentActivity_assignment_recyclerView.layoutManager = layoutManager
