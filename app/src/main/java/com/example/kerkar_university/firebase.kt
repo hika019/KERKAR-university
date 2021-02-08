@@ -643,11 +643,13 @@ class firedb_task(val context: Context){
                                                             //課題取得
                                                             for(task_item in task_documents!!.documentChanges){
                                                                 val task_name = task_item.document.getString("task_name")
-                                                                var task_data = task_item.document.getData() as Map<String, Any>
+                                                                var task_data = task_item.document.getData() as MutableMap<String, Any>
 
-                                                                class_data["task"] = task_data
+//                                                                class_data["task"] = task_data
 
-                                                                task_list.add(class_data)
+                                                                task_data["class_data"] = class_data
+
+                                                                task_list.add(task_data)
 
 //                                                                Log.d("hoge", "task_name: $task_name")
 //                                                                Log.d("hoge", "class_data: $class_data")
@@ -655,7 +657,7 @@ class firedb_task(val context: Context){
 
                                                                 //表示
                                                                 Log.d(TAG, "tasks show to recyclerview")
-                                                                val adapter = task_notcmp_list_CustomAdapter(task_list, context)
+                                                                val adapter = task_notcmp_list_CustomAdapter(task_list, context, semester)
                                                                 val layoutManager = LinearLayoutManager(context)
 
                                                                 view.AssignmentActivity_assignment_recyclerView.layoutManager = layoutManager
@@ -684,53 +686,66 @@ class firedb_task(val context: Context){
         }
     }
 
-    fun task_to_compe(class_and_task_data: Map<String, Any>){
-        val task_data = class_and_task_data["task"] as Map<String, String>
+    fun task_to_compe(class_and_task_data: Map<String, Any>, semester: String){
+//        val task_data = class_and_task_data["task"] as Map<String, String>
+        val class_data= class_and_task_data["class_data"] as Map<String, Any>
 
         if(login_cheack()){
             val uid = get_uid()
 
-            val week_to_day = class_and_task_data["week_to_day"] as String
-            var comp_task = class_and_task_data["comp_task"] as ArrayList<String>?
+            val week_to_day = class_data["week_to_day"] as String
 
-            if(comp_task == null) comp_task = arrayListOf()
-
-            comp_task!!.add(task_data["task_id"]!!)
-            Log.d("hoge", "task: ${task_data["task_id"]}")
-            Log.d("hoge", "task: ${comp_task}")
-
-            val in_data = hashMapOf(
-                    "course" to class_and_task_data["course"] as String,
-                    "course_id" to class_and_task_data["course_id"] as String,
-                    "lecturer" to class_and_task_data["lecturer"] as List<String>,
-                    "room" to class_and_task_data["room"] as String,
-                    "week_to_day" to class_and_task_data["week_to_day"] as String,
-                    "comp_task" to comp_task
-            )
-
-            val data = hashMapOf(
-                    class_and_task_data["week_to_day"] as String to in_data
-            )
-
-            val user_doc = firedb.collection("user")
+            val class_doc =
+            firedb.collection("user")
                     .document(uid)
+                    .collection("semester")
+                    .document(semester)
 
-
-
-            user_doc.get()
+            class_doc.get()
                     .addOnSuccessListener {
-                        Log.d(TAG, "task_to_compe: get user data -> success")
 
-                        val semester_id = it.getString("semester")
+                        val class_data_online = it.get(week_to_day) as Map<String, Any>
 
-                        user_doc.collection("semester")
-                                .document(semester_id!!)
-                                .set(data, SetOptions.merge())
+                        var comp_task = class_data_online["comp_task"] as ArrayList<String>?
+
+                        if(comp_task == null) {
+                            comp_task = arrayListOf()
+                            Log.d("hoge", "call")
+                        }
+                        Log.d("hoge", "comp task: ${comp_task}")
+
+                        comp_task!!.add(class_and_task_data["task_id"]!! as String)
+
+
+                        Log.d("hoge", "task: ${class_and_task_data["task_id"] as String}")
+                        Log.d("hoge", "task: ${comp_task}")
+
+                        val in_data = hashMapOf(
+                                "course" to class_data_online["course"] as String,
+                                "course_id" to class_data_online["course_id"] as String,
+                                "lecturer" to class_data_online["lecturer"] as List<String>,
+                                "room" to class_data_online["room"] as String,
+                                "week_to_day" to class_data_online["week_to_day"] as String,
+                                "comp_task" to comp_task
+                        )
+
+                        val data = hashMapOf(
+                                week_to_day to in_data
+                        )
+
+                        class_doc.set(data, SetOptions.merge())
+                                .addOnSuccessListener {
+
+                                }
+                                .addOnFailureListener {
+                                }
+
 
                     }
-                    .addOnFailureListener {
-                        Log.w(TAG, "task_to_compe: get user data -> failure")
+                    .addOnFailureListener{
+
                     }
+
         }else{
             Log.d(TAG, "task_to_compe: not login")
         }

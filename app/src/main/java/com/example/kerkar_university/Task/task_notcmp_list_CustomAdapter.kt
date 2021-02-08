@@ -12,7 +12,9 @@ import com.example.kerkar_university.firedb_task
 import kotlinx.android.synthetic.main.item_assignment_activity.view.*
 
 
-class task_notcmp_list_CustomAdapter(private val list: ArrayList<Map<String, Any>>, private val context: Context?)
+class task_notcmp_list_CustomAdapter(
+        private val list: ArrayList<Map<String, Any>>,
+        private val context: Context?, private val semester: String)
     : RecyclerView.Adapter<task_notcmp_list_CustomAdapter.CustomViewHolder>() {
 
     lateinit var listener: OnItemClickListener
@@ -38,11 +40,11 @@ class task_notcmp_list_CustomAdapter(private val list: ArrayList<Map<String, Any
     //ここで挿入
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
 
-        val classdata = list[position]
-        val task_data = classdata["task"] as Map<String, String>
+        val task_data = list[position]
+        val class_data = task_data["class_data"] as Map<String, Any>
 
         val day = task_data["time_limit"] as String
-        val couse = classdata["course"] as String
+        val couse = class_data["course"] as String
 
 
         holder.day.text = day.substring(5,10)
@@ -84,14 +86,14 @@ class task_notcmp_list_CustomAdapter(private val list: ArrayList<Map<String, Any
     }
 
 
-    fun task_nocomp_ditail_dialog(context: Context, class_data: Map<String, Any>, position: Int){
+    fun task_nocomp_ditail_dialog(context: Context, task_data: Map<String, Any>, position: Int){
 
-        val task = class_data["task"] as Map<String, String>
+        val class_data = task_data["class_data"] as Map<String, Any>
 
-        val str = "　期限: ${task["time_limit"]}\n" +
+        val str = "　期限: ${task_data["time_limit"]}\n" +
                 "　教科: ${class_data["course"]}\n" +
-                "　詳細: ${task["task_name"]}\n" +
-                "その他: ${task["note"]}"
+                "　詳細: ${task_data["task_name"]}\n" +
+                "その他: ${task_data["note"]}"
 
         AlertDialog.Builder(context)
                 .setTitle("課題")
@@ -104,7 +106,7 @@ class task_notcmp_list_CustomAdapter(private val list: ArrayList<Map<String, Any
 //                    addListItem(list[position])
                     val class_data = list[position] as Map<String, Any>
 //                    firedb_load_task_class(context).task_to_comp(class_data)
-                    firedb_task(context).task_to_compe(class_data)
+                    firedb_task(context).task_to_compe(class_data, semester)
                     removeItem(position)
                 }
                 .show()
