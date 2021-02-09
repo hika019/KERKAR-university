@@ -58,17 +58,6 @@ class MessageFragment(): Fragment() {
 
                 }
 
-
-//        val list = arrayListOf(data1,data2,data3,data4,data5)
-
-
-
-
-
-
-
-
-
         return view
     }
 

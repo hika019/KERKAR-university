@@ -95,11 +95,11 @@ class Timetable_Fragment(): Fragment() {
                                     view.timetable_include_tue4.timetable_title_textView.text = timetable_data_map?.get("tue4")
                                     view.timetable_include_tue5.timetable_title_textView.text = timetable_data_map?.get("tue5")
 
-                                    view.timetable_include_wen1.timetable_title_textView.text = timetable_data_map?.get("wed1")
-                                    view.timetable_include_wen2.timetable_title_textView.text = timetable_data_map?.get("wed2")
-                                    view.timetable_include_wen3.timetable_title_textView.text = timetable_data_map?.get("wed3")
-                                    view.timetable_include_wen4.timetable_title_textView.text = timetable_data_map?.get("wed4")
-                                    view.timetable_include_wen5.timetable_title_textView.text = timetable_data_map?.get("wed5")
+                                    view.timetable_include_wed1.timetable_title_textView.text = timetable_data_map?.get("wed1")
+                                    view.timetable_include_wed2.timetable_title_textView.text = timetable_data_map?.get("wed2")
+                                    view.timetable_include_wed3.timetable_title_textView.text = timetable_data_map?.get("wed3")
+                                    view.timetable_include_wed4.timetable_title_textView.text = timetable_data_map?.get("wed4")
+                                    view.timetable_include_wed5.timetable_title_textView.text = timetable_data_map?.get("wed5")
 
                                     view.timetable_include_thu1.timetable_title_textView.text =
                                             timetable_data_map?.get("thu1")
@@ -136,13 +136,92 @@ class Timetable_Fragment(): Fragment() {
 
         val firedb_timetable = context?.let { firedb_timetable(it) }
 
-
+        //月
         view.timetable_include_mon1.setOnClickListener{
             firedb_timetable?.get_course_data("mon", 1)
         }
         view.timetable_include_mon2.setOnClickListener{
             firedb_timetable?.get_course_data("mon", 2)
         }
+        view.timetable_include_mon3.setOnClickListener{
+            firedb_timetable?.get_course_data("mon", 3)
+        }
+        view.timetable_include_mon4.setOnClickListener{
+            firedb_timetable?.get_course_data("mon", 4)
+        }
+        view.timetable_include_mon5.setOnClickListener{
+            firedb_timetable?.get_course_data("mon", 5)
+        }
+
+        //火
+        view.timetable_include_tue1.setOnClickListener{
+            firedb_timetable?.get_course_data("tue", 1)
+        }
+        view.timetable_include_tue2.setOnClickListener{
+            firedb_timetable?.get_course_data("tue", 2)
+        }
+        view.timetable_include_tue3.setOnClickListener{
+            firedb_timetable?.get_course_data("tue", 3)
+        }
+        view.timetable_include_tue4.setOnClickListener{
+            firedb_timetable?.get_course_data("tue", 4)
+        }
+        view.timetable_include_tue5.setOnClickListener{
+            firedb_timetable?.get_course_data("tue", 5)
+        }
+
+        //水
+        view.timetable_include_wed1.setOnClickListener{
+            firedb_timetable?.get_course_data("wed", 1)
+        }
+        view.timetable_include_wed2.setOnClickListener{
+            firedb_timetable?.get_course_data("wed", 2)
+        }
+        view.timetable_include_wed3.setOnClickListener{
+            firedb_timetable?.get_course_data("wed", 3)
+        }
+        view.timetable_include_wed4.setOnClickListener{
+            firedb_timetable?.get_course_data("wed", 4)
+        }
+        view.timetable_include_wed5.setOnClickListener{
+            firedb_timetable?.get_course_data("wed", 5)
+        }
+
+        //木
+        view.timetable_include_thu1.setOnClickListener{
+            firedb_timetable?.get_course_data("thu", 1)
+        }
+        view.timetable_include_thu2.setOnClickListener{
+            firedb_timetable?.get_course_data("thu", 2)
+        }
+        view.timetable_include_thu3.setOnClickListener{
+            firedb_timetable?.get_course_data("thu", 3)
+        }
+        view.timetable_include_thu4.setOnClickListener{
+            firedb_timetable?.get_course_data("thu", 4)
+        }
+        view.timetable_include_thu5.setOnClickListener{
+            firedb_timetable?.get_course_data("thu", 5)
+        }
+
+        //金
+        view.timetable_include_fri1.setOnClickListener{
+            firedb_timetable?.get_course_data("fri", 1)
+        }
+        view.timetable_include_fri2.setOnClickListener{
+            firedb_timetable?.get_course_data("fri", 2)
+        }
+        view.timetable_include_fri3.setOnClickListener{
+            firedb_timetable?.get_course_data("fri", 3)
+        }
+        view.timetable_include_fri4.setOnClickListener{
+            firedb_timetable?.get_course_data("fri", 4)
+        }
+        view.timetable_include_fri5.setOnClickListener{
+            firedb_timetable?.get_course_data("fri", 5)
+        }
+
+
 
     }
 }

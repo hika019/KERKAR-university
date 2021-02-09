@@ -125,7 +125,7 @@
                 android:layout_weight="1" />
 
             <include
-                android:id="@+id/timetable_include_wen1"
+                android:id="@+id/timetable_include_wed1"
                 layout="@layout/item_timetable"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -177,7 +177,7 @@
                 android:layout_weight="1" />
 
             <include
-                android:id="@+id/timetable_include_wen2"
+                android:id="@+id/timetable_include_wed2"
                 layout="@layout/item_timetable"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -229,7 +229,7 @@
                 android:layout_weight="1" />
 
             <include
-                android:id="@+id/timetable_include_wen3"
+                android:id="@+id/timetable_include_wed3"
                 layout="@layout/item_timetable"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -280,7 +280,7 @@
                 android:layout_weight="1" />
 
             <include
-                android:id="@+id/timetable_include_wen4"
+                android:id="@+id/timetable_include_wed4"
                 layout="@layout/item_timetable"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -331,7 +331,7 @@
                 android:layout_weight="1" />
 
             <include
-                android:id="@+id/timetable_include_wen5"
+                android:id="@+id/timetable_include_wed5"
                 layout="@layout/item_timetable"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

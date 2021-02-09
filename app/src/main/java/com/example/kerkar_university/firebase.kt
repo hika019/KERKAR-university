@@ -669,8 +669,9 @@ class firedb_task(val context: Context){
 //                                                                    Log.d("hoge", "data: $task_data")
                                                                     if (all_comp_task.contains(task_id)) {
                                                                     }else{
-                                                                                task_list.add(task_data)
+                                                                        task_list.add(task_data)
                                                                     }
+
 
                                                                     //表示
                                                                     Log.d(TAG, "tasks show to recyclerview")
@@ -884,6 +885,7 @@ class firedb_task(val context: Context){
                                                                     if (!(all_comp_task.contains(task_id)) && time_limit_int <= tomorrow_int) {
                                                                         task_list.add(task_data)
                                                                     }
+
 
                                                                     //表示
                                                                     Log.d(TAG, "tasks show to recyclerview")
