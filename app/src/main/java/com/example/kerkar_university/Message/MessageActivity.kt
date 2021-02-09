@@ -25,6 +25,7 @@ class MessageFragment(): Fragment() {
 
 
         firedb.collection("message")
+                .orderBy("time")
                 .addSnapshotListener { snapshots, error ->
                     if(error != null){
                         Log.w(TAG, "Listen failed.", error)
@@ -34,18 +35,20 @@ class MessageFragment(): Fragment() {
 
                     for(item in snapshots!!.documentChanges){
                         if(item.type == DocumentChange.Type.ADDED){
-                            val day = item.document.getString("day")
+                            val day = item.document.getString("time")
+                            val title = item.document.getString("title")
                             val message = item.document.getString("message")
 
                             val data = hashMapOf(
-                                    "day" to day!!,
+                                    "time" to day!!,
+                                    "title" to title!!,
                                     "message" to message!!
                             )
                             list.add(data)
                         }
                     }
                     Log.d(TAG, "message -> show")
-                    val adapter = Message_CustomAdapter(list)
+                    val adapter = Message_CustomAdapter(list, context)
                     val layoutManager = LinearLayoutManager(context)
 
                     view.message_recycleview.layoutManager = layoutManager

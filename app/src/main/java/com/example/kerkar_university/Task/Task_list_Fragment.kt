@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.kerkar_university.R
+import com.example.kerkar_university.firedb
 import com.example.kerkar_university.firedb_task
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_task_list.view.*
@@ -50,6 +51,7 @@ class Task_list_Fragment(): Fragment() {
 
         view.add_task_fab.setOnClickListener{
             Log.d(TAG, "add_task_fab -> push")
+            context?.let { it1 -> firedb_task(it1).get_course_list() }
 
         }
         return view

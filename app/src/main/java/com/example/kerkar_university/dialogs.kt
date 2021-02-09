@@ -181,10 +181,13 @@ class timetable_dialog(val context: Context){
                     index = which
                 }
                 .setPositiveButton("確定"){ dialog, which ->
-                    val data = list[index] as Map<String, Any>
-                    val class_id = data["course_id"] as String
+                    if(list.isNotEmpty()){
+                        val data = list[index] as Map<String, Any>
+                        val class_id = data["course_id"] as String
 
-                    firedb_timetable.add_user_timetable(semester_id, week_to_day+period, class_id)
+                        firedb_timetable.add_user_timetable(semester_id, week_to_day+period, class_id)
+                    }
+
                     false
 
                 }

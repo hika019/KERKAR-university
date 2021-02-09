@@ -21,7 +21,6 @@ class Home_fragment(): Fragment() {
     val calendar: Calendar = Calendar.getInstance()
     val now_week_to_day = week_to_day_symbol_list[calendar.get(Calendar.DAY_OF_WEEK)-1]
 
-
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
     savedInstanceState: Bundle?): View? {
@@ -29,6 +28,7 @@ class Home_fragment(): Fragment() {
 
         load_timetable(view)
         timetable_onclick_event(view)
+        load_task(view)
 
         view.floatingActionButton.setOnClickListener {
             context?.let { it1 -> firedb_task(it1).get_course_list() }
@@ -113,5 +113,9 @@ class Home_fragment(): Fragment() {
             firedb_timetable?.get_course_data(now_week_to_day, 5)
         }
 
+    }
+
+    private fun load_task(view: View){
+        context?.let { firedb_task(it).get_today_tomorrow_not_comp_task_list(view) }
     }
 }

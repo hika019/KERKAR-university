@@ -1,5 +1,7 @@
 package com.example.kerkar_university.Message
 
+import android.app.AlertDialog
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.kerkar_university.R
 import kotlinx.android.synthetic.main.item_message.view.*
 
-class Message_CustomAdapter(private val list: ArrayList<HashMap<String, String>>)
+class Message_CustomAdapter(private val list: ArrayList<HashMap<String, String>>,
+                            private val context: Context?
+                            )
     : RecyclerView.Adapter<Message_CustomAdapter.CustomViewHolder>(){
     private val TAG = "Message_CustomAdapter"
 
@@ -36,14 +40,29 @@ class Message_CustomAdapter(private val list: ArrayList<HashMap<String, String>>
 
         val data = list[position] as Map<String, String>
 
-        holder.day.text = data["day"]
-        holder.message.text = data["message"]
+        holder.day.text = data["time"]?.substring(0,10)
+        holder.message.text = data["title"]
 
         holder.view.setOnClickListener{
-            Log.d(TAG, "click view!")
-        }
+            Log.d(TAG, "Message_CustomAdapter: click message!")
+            val data = list[position]
 
+            message_dialog(context!!, data)
+        }
     }
 
+    fun message_dialog(context: Context, data: Map<String, String>){
 
+        val str = "${data["time"]}\n" +
+                "${data["title"]}\n" +
+                "${data["message"]}"
+
+        val dialog = AlertDialog.Builder(context)
+                .setTitle("運営からのお知らせ")
+                .setMessage(str)
+                .setPositiveButton("OK"){dialog, which ->
+                    false
+                }
+        dialog.create().show()
+    }
 }
