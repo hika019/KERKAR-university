@@ -9,10 +9,14 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kerkar_university.R
+import com.example.kerkar_university.firedb_task
 import kotlinx.android.synthetic.main.item_home_assignment_info.view.*
 
 
-class Home_task_list_CustomAdapter(private val task_List: ArrayList<Any>, private val context: Context)
+class Home_task_list_CustomAdapter(private val task_List: ArrayList<Map<String, Any>>,
+                                   private val context: Context,
+                                   private val semester: String
+                                   )
     : RecyclerView.Adapter<Home_task_list_CustomAdapter.CustomViewHolder>() {
 
     lateinit var listener: OnItemClickListener
@@ -40,14 +44,15 @@ class Home_task_list_CustomAdapter(private val task_List: ArrayList<Any>, privat
 
     //ここで挿入
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        val classdata = task_List[position] as Map<String, Any>
-        val task_data = classdata["task"] as Map<String, String>
-        Log.d("hoge", "class_data: ${classdata}")
+        val task_data = task_List[position]
+        val class_data = task_data["class_data"] as Map<String, Any>
+
+        Log.d("hoge", "class_data: ${class_data}")
         Log.d("hoge", "task_data: ${task_data}")
 
-        val day = task_data["timelimit"] as String
-        val couse = classdata["course"] as String
-        Log.d("hoge", "couse: ${couse}")
+        val day = task_data["time_limit"] as String
+        val couse = class_data["course"] as String
+//        Log.d("hoge", "couse: ${couse}")
 
 
         holder.day.text = day.substring(5,10)
@@ -58,18 +63,12 @@ class Home_task_list_CustomAdapter(private val task_List: ArrayList<Any>, privat
             Log.d("HomeActivity", "select assignment item: $position")
 
             val class_data = task_List[position] as Map<String, Any>
-            val task = class_data["task"] as Map<String, String>
-
-            val str = "期限: ${task["timelimit"]}\n" +
-                    "教科: ${class_data["course"]}\n" +
-                    "詳細: ${task["task_name"]}\n" +
-                    "その他: ${task["note"]}"
 
 
             //表示する内容
             val id = "unique_id"
 //            val str = "期限: 12/25\n科目: 情報倫理\n詳細: 小課題\n$position"
-            assigmenment_ditail_dialog(context, str, position)
+            home_task_ditail_dialog(context, class_data, position)
 
             //消す
             //removeItem(position)
@@ -86,11 +85,6 @@ class Home_task_list_CustomAdapter(private val task_List: ArrayList<Any>, privat
         this.listener = listener
     }
 
-    // Itemを追加する
-    fun addListItem (item: ClipData.Item) {
-        task_List.add(item.toString())
-        notifyDataSetChanged() // これを忘れるとRecyclerViewにItemが反映されない
-    }
 
     // Itemを削除する
     private fun removeItem(position: Int) {
@@ -100,7 +94,14 @@ class Home_task_list_CustomAdapter(private val task_List: ArrayList<Any>, privat
     }
 
 
-    private fun assigmenment_ditail_dialog(context: Context, str:String, position: Int){
+    private fun home_task_ditail_dialog(context: Context, task_data:Map<String, Any>, position: Int){
+
+        val class_data = task_data["class_data"] as Map<String, Any>
+
+        val str = "期限: ${task_data["time_limit"]}\n" +
+                "教科: ${class_data["course"]}\n" +
+                "詳細: ${task_data["task_name"]}\n" +
+                "その他: ${task_data["note"]}"
 
 
         AlertDialog.Builder(context)
@@ -110,10 +111,13 @@ class Home_task_list_CustomAdapter(private val task_List: ArrayList<Any>, privat
 
                 }
                 .setNeutralButton("提出済みにする") {dialog, which ->
-                    val class_data = task_List[position] as Map<String, Any>
 //                    firedb_load_task_class(context).task_to_comp(class_data)
                     Log.d("Assignment", "$position　を提出済みにする")
-                    removeItem(position)
+
+                    val class_data = task_List[position] as Map<String, Any>
+                    Log.d("hoge", "data:${class_data}")
+                    firedb_task(context).task_to_comp(class_data, semester)
+//                    removeItem(position)
                 }
                 .show()
     }

@@ -116,6 +116,6 @@ class Home_fragment(): Fragment() {
     }
 
     private fun load_task(view: View){
-        context?.let { firedb_task(it).get_today_tomorrow_not_comp_task_list(view) }
+        context?.let { firedb_task(it).get_tomorrow_not_comp_task_list(view) }
     }
 }
