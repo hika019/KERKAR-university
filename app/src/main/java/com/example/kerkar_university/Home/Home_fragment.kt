@@ -15,8 +15,6 @@ class Home_fragment(): Fragment() {
 
     private val TAG = "Home_fragment"
 
-    val week_to_day_symbol_list = listOf("sun", "mon", "tue", "wed", "thu", "fri", "sat")
-    val period_list:List<Int> = List(5){it +1}
 
     val calendar: Calendar = Calendar.getInstance()
     val now_week_to_day = week_to_day_symbol_list[calendar.get(Calendar.DAY_OF_WEEK)-1]

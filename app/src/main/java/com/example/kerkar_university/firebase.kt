@@ -13,6 +13,7 @@ import com.example.kerkar_university.Task.task_notcmp_list_CustomAdapter
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_home.view.*
@@ -23,7 +24,14 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 private val TAG = "firedb"
+
+val settings = FirebaseFirestoreSettings.Builder()
+        .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
+        .build()
+
 var firedb = FirebaseFirestore.getInstance()
+
+
 
 fun login_cheack(): Boolean {
     val cheack_user = Firebase.auth.currentUser
@@ -469,8 +477,6 @@ class firedb_timetable(val context: Context){
 class firedb_task(val context: Context){
     private val TAG = "firedb_task"
 
-    val week_to_day_symbol_list = listOf("sun", "mon", "tue", "wen", "thu", "fri", "sat")
-    val period_list:List<Int> = List(5){it +1}
 
     fun get_course_list(){
         if(login_cheack()){

@@ -228,9 +228,8 @@ class timetable_dialog(val context: Context){
                         Log.d(TAG, "未入力なし")
 
                         if(period.toInt() < 6){
-                            val week_to_day_symnbol_list = listOf("月", "火", "水", "木", "金")
 
-                            if(week_to_day_symnbol_list.find{it == week_to_day} != null){
+                            if(week_to_day_symbol_list_jp_short.find{it == week_to_day} != null){
                                 Log.d(TAG, "edit:" + week_to_day)
                                 Log.d(TAG, "登録へ")
 

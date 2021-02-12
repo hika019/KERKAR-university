@@ -36,7 +36,6 @@ class Timetable_Fragment(): Fragment() {
     }
 
     private fun load_timetable(view: View){
-        val week_to_day_symbol_list = listOf("sun", "mon", "tue", "wed", "thu", "fri", "sat")
         val period_list:List<Int> = List(5){it +1}
 
 
