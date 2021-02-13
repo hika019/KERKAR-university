@@ -76,8 +76,8 @@ class register_dialog(val context: Context, val uid: String){
 
 
 
-                        val i = Intent(context, MainActivity::class.java)
-                        context.startActivity(i)
+//                        val i = Intent(context, MainActivity::class.java)
+//                        context.startActivity(i)
                     }else{
                         Toast.makeText(context, "大学の選択/追加をしてください", Toast.LENGTH_LONG).show()
                     }
@@ -102,8 +102,6 @@ class register_dialog(val context: Context, val uid: String){
                     firedb.create_university_collection(university_name)
 
 
-                    val i = Intent(context, MainActivity::class.java)
-                    context.startActivity(i)
 
                 }
                 .setNegativeButton("戻る"){ dialog, which ->

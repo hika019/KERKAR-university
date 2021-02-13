@@ -113,12 +113,17 @@ class firedb_register_login(val context: Context){
         Log.d(TAG, "get_university_list -> call")
 
 //        Log.d("hoge", "data: ${university_name_list}")
+
         firedb.collection("university")
-                .get()
-                .addOnSuccessListener {
-                    for (i in it){
-                        val university_id = i.id
-                        val university_name = i.getString("university")!!
+                .addSnapshotListener { documents, error ->
+                    if(error != null){
+                        Log.w(TAG, "get_university_list -> failure", error)
+                        return@addSnapshotListener
+                    }
+
+                    for(univer_doc in documents!!.documentChanges){
+                        val university_id = univer_doc.document.id
+                        val university_name = univer_doc.document.getString("university")!!
 
                         university_id_list += university_id
                         university_name_list += university_name
@@ -183,8 +188,13 @@ class firedb_register_login(val context: Context){
                                 .set(data)
                                 .addOnCompleteListener {
                                     Log.d(TAG, "create user_data -> Complete")
+
+                                    val i = Intent(context, MainActivity::class.java)
+                                    context.startActivity(i)
                                 }
                     }
+
+
                 }
                 .addOnFailureListener {
 
