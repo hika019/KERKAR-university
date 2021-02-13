@@ -1,4 +1,4 @@
-package com.example.kerkar_university.Message
+package jp.hika019.kerkar_university.Message
 
 import android.app.AlertDialog
 import android.content.Context
@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kerkar_university.R
+import jp.hika019.kerkar_university.R
 import kotlinx.android.synthetic.main.item_message.view.*
 
 class Message_CustomAdapter(private val list: ArrayList<HashMap<String, String>>,

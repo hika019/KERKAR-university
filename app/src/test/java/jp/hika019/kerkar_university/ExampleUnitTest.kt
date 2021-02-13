@@ -1,4 +1,4 @@
-package com.example.kerkar_university
+package jp.hika019.kerkar_university
 
 import org.junit.Test
 

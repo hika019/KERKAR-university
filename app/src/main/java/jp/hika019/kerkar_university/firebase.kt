@@ -1,4 +1,4 @@
-package com.example.kerkar_university
+package jp.hika019.kerkar_university
 
 import android.content.Context
 import android.content.Intent
@@ -7,9 +7,9 @@ import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.kerkar_university.Home.Home_task_list_CustomAdapter
-import com.example.kerkar_university.Task.task_cmp_list_CustomAdapter
-import com.example.kerkar_university.Task.task_notcmp_list_CustomAdapter
+import jp.hika019.kerkar_university.Home.Home_task_list_CustomAdapter
+import jp.hika019.kerkar_university.Task.task_cmp_list_CustomAdapter
+import jp.hika019.kerkar_university.Task.task_notcmp_list_CustomAdapter
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore

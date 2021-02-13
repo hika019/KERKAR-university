@@ -1,4 +1,4 @@
-package com.example.kerkar_university
+package jp.hika019.kerkar_university
 
 import android.util.Log
 

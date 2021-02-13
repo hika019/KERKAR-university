@@ -1,4 +1,4 @@
-package com.example.kerkar_university
+package jp.hika019.kerkar_university
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,10 +11,10 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.ui.AppBarConfiguration
-import com.example.kerkar_university.Home.Home_fragment
-import com.example.kerkar_university.Message.MessageFragment
-import com.example.kerkar_university.Register_and_Login.LoginActivity
-import com.example.kerkar_university.Task.Task_list_Fragment
+import jp.hika019.kerkar_university.Home.Home_fragment
+import jp.hika019.kerkar_university.Message.MessageFragment
+import jp.hika019.kerkar_university.Register_and_Login.LoginActivity
+import jp.hika019.kerkar_university.Task.Task_list_Fragment
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*

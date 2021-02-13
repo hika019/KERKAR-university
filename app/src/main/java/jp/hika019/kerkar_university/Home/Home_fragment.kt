@@ -1,4 +1,4 @@
-package com.example.kerkar_university.Home
+package jp.hika019.kerkar_university.Home
 
 import android.os.Bundle
 import android.util.Log
@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.kerkar_university.*
+import jp.hika019.kerkar_university.*
 import kotlinx.android.synthetic.main.activity_home.view.*
 import kotlinx.android.synthetic.main.item_home_activity_taimetable.view.*
 import java.util.*

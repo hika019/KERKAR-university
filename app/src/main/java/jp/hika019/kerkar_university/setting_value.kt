@@ -1,4 +1,4 @@
-package com.example.kerkar_university
+package jp.hika019.kerkar_university
 
 val week_to_day_jp_list = listOf("日", "月", "火", "水", "木", "金", "土")
 

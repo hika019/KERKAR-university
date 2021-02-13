@@ -1,4 +1,4 @@
-package com.example.kerkar_university.Task
+package jp.hika019.kerkar_university.Task
 
 import android.os.Bundle
 import android.util.Log
@@ -7,9 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.example.kerkar_university.R
-import com.example.kerkar_university.firedb
-import com.example.kerkar_university.firedb_task
+import jp.hika019.kerkar_university.R
+import jp.hika019.kerkar_university.firedb_task
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_task_list.view.*
 

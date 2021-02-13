@@ -1,11 +1,11 @@
-package com.example.kerkar_university.Register_and_Login
+package jp.hika019.kerkar_university.Register_and_Login
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.kerkar_university.R
-import com.example.kerkar_university.firedb_register_login
+import jp.hika019.kerkar_university.R
+import jp.hika019.kerkar_university.firedb_register_login
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_login.*

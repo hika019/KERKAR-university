@@ -1,9 +1,8 @@
-package com.example.kerkar_university
+package jp.hika019.kerkar_university
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View

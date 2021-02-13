@@ -1,4 +1,4 @@
-package com.example.kerkar_university.Task
+package jp.hika019.kerkar_university.Task
 
 import android.content.Context
 import android.util.Log
@@ -7,15 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kerkar_university.R
-import com.example.kerkar_university.firedb_task
+import jp.hika019.kerkar_university.R
+import jp.hika019.kerkar_university.firedb_task
 import kotlinx.android.synthetic.main.item_assignment_activity.view.*
 
 
-class task_notcmp_list_CustomAdapter(
+class task_cmp_list_CustomAdapter(
         private val list: ArrayList<Map<String, Any>>,
         private val context: Context?, private val semester: String)
-    : RecyclerView.Adapter<task_notcmp_list_CustomAdapter.CustomViewHolder>() {
+    : RecyclerView.Adapter<task_cmp_list_CustomAdapter.CustomViewHolder>() {
 
     lateinit var listener: OnItemClickListener
 
@@ -55,10 +55,10 @@ class task_notcmp_list_CustomAdapter(
             Log.d("AssignmentActivity", "select assignment item: $position")
 
             //表示する内容
-            val class_data = list[position]
+            val class_data = list[position] as Map<String, Any>
 
-            task_nocomp_ditail_dialog(context!!, class_data, position)
-            Log.d("assignment_list", list.toString())
+            assigmenment_comp_ditail_dialog(context!!, class_data, position)
+//            Log.d("assignment_list", list.toString())
 
         }
     }
@@ -85,8 +85,7 @@ class task_notcmp_list_CustomAdapter(
         notifyDataSetChanged() // これを忘れるとRecyclerViewにItemが反映されない
     }
 
-
-    fun task_nocomp_ditail_dialog(context: Context, task_data: Map<String, Any>, position: Int){
+    fun assigmenment_comp_ditail_dialog(context: Context, task_data: Map<String, Any>, position: Int){
 
         val class_data = task_data["class_data"] as Map<String, Any>
 
@@ -101,14 +100,13 @@ class task_notcmp_list_CustomAdapter(
                 .setPositiveButton("OK") { dialog, which ->
 
                 }
-                .setNeutralButton("提出済みにする") {dialog, which ->
-                    Log.d("Assignment", "$position　を提出済みにする")
+                .setNeutralButton("未提出にする") {dialog, which ->
 //                    addListItem(list[position])
-                    val class_data = list[position] as Map<String, Any>
-//                    firedb_load_task_class(context).task_to_comp(class_data)
-                    firedb_task(context).task_to_comp(class_data, semester)
+                    val class_data = list[position]
+                    firedb_task(context).task_to_notcomp(class_data, semester)
                     removeItem(position)
                 }
                 .show()
     }
+
 }
