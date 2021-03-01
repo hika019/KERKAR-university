@@ -107,7 +107,7 @@ class firedb_semester(val context: Context, val view: View){
 class firedb_register_login(val context: Context){
     private val TAG = "firedb_register_login"
 
-    fun get_university_list(uid: String){
+    fun get_university_list(){
         var university_name_list: Array<String> = arrayOf()
         var university_id_list: Array<String> = arrayOf()
         Log.d(TAG, "get_university_list -> call")
@@ -130,8 +130,8 @@ class firedb_register_login(val context: Context){
                     }
 
 
-
-                    register_dialog(context, uid).select_univarsity(university_name_list, university_id_list)
+                    Log.d("hoge", "get univer list")
+                    register_dialog(context).select_univarsity(university_name_list, university_id_list)
                 }
 
     }
@@ -218,7 +218,7 @@ class firedb_register_login(val context: Context){
                         val intent = Intent(context, MainActivity::class.java)
                         context.startActivity(intent)
                     }else{
-                        register_dialog(context, get_uid()).select_univarsity_rapper()
+                        register_dialog(context).select_univarsity_rapper()
                     }
 
                 }

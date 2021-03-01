@@ -43,12 +43,12 @@ fun select_semester_dialog(view: View, context: Context, semester_list: Array<St
     dialog.show()
 }
 
-class register_dialog(val context: Context, val uid: String){
+class register_dialog(val context: Context){
     val TAG = "register_dialog"
 
     fun select_univarsity_rapper(){
         Log.d(TAG, "select_univarsity_rapper -> call")
-        firedb_register_login(context).get_university_list(uid)
+        firedb_register_login(context).get_university_list()
     }
 
 
@@ -71,7 +71,7 @@ class register_dialog(val context: Context, val uid: String){
 //                    Toast.makeText(context, university.toString(), Toast.LENGTH_SHORT).show()
                     if(university != null && university_id != null){
                         val firedb = firedb_register_login(context)
-                        firedb.create_user_data(uid, university.toString(), university_id.toString())
+                        firedb.create_user_data(uid!!, university.toString(), university_id.toString())
 
 
 

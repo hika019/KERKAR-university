@@ -20,20 +20,27 @@ class StartActivity: AppCompatActivity() {
 
         val local_uid = dataStore.getString("uid", null)
 
-        if(local_uid == null){
+        if (local_uid != null){
+            uid = local_uid
+            Log.d("hoge", "uid: $uid")
+            firedb_register_login(this).cheak_user_data(uid!!)
+//            val intent = Intent(this, MainActivity::class.java)
+//            startActivity(intent)
+        }else{
             val uuid = UUID.randomUUID().toString()
-
             uid = sha256(uuid).substring(0, 32)
             Log.d("hoge", uid!!)
 
             val editor: SharedPreferences.Editor = dataStore.edit()
             editor.putString("uid", uid)
             editor.commit()
+
+            val register_dialog_class = register_dialog(this)
+            register_dialog_class.select_univarsity_rapper()
         }
-        uid = local_uid
-        Log.d("hoge", "uid: $uid")
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
+
+
+
 
 
     }

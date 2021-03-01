@@ -9,6 +9,7 @@ import jp.hika019.kerkar_university.R
 import jp.hika019.kerkar_university.register_dialog
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import jp.hika019.kerkar_university.uid
 import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity: AppCompatActivity() {
@@ -50,7 +51,7 @@ class RegisterActivity: AppCompatActivity() {
                         Log.d(TAG, "Successfully created user with uid: ${it.result?.user?.uid}")
 
                         //dialog 大学選択
-                        val register_dialog_class = register_dialog(this, it.result?.user?.uid!!)
+                        val register_dialog_class = register_dialog(this)
                         register_dialog_class.select_univarsity_rapper()
 
 //                        val intent = Intent(this, MainActivity::class.java)
