@@ -23,7 +23,7 @@ class StartActivity: AppCompatActivity() {
         if (local_uid != null){
             uid = local_uid
             Log.d("hoge", "uid: $uid")
-            firedb_register_login(this).cheak_user_data(uid!!)
+            firedb_register_login(this).cheak_user_data()
 //            val intent = Intent(this, MainActivity::class.java)
 //            startActivity(intent)
         }else{

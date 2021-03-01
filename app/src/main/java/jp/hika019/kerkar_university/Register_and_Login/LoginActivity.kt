@@ -35,7 +35,7 @@ class LoginActivity: AppCompatActivity() {
                 .addOnCompleteListener{
                     if(it.isSuccessful){
                         val uid = auth.currentUser!!.uid
-                        firedb_register_login(this).cheak_user_data(uid)
+                        firedb_register_login(this).cheak_user_data()
 
                     }else{
                         Toast.makeText(this, "ログインに失敗しました", Toast.LENGTH_SHORT).show()
