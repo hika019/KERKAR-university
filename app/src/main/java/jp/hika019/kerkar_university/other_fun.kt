@@ -1,8 +1,18 @@
 package jp.hika019.kerkar_university
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
+import java.security.MessageDigest
 
-
+fun sha256(str: String): String {
+    val strHash = MessageDigest.getInstance("SHA-256")
+            .digest(str.toByteArray())
+            .joinToString(separator = "") {
+                "%02x".format(it)
+            }
+    return strHash
+}
 
 
 fun week_to_day_jp_chenger(week: String): String{

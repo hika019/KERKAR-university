@@ -79,16 +79,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_message -> {
                 fragment = MessageFragment()
-                Log.d(TAG, "select fragment: Setting_fragment")
+                Log.d(TAG, "select fragment: Message_fragment")
             }
-            R.id.logout -> {
-                AuthUI.getInstance()
-                        .signOut(this)
-                        .addOnCompleteListener {
-                            val intent = Intent(this, LoginActivity::class.java)
-                            startActivity(intent)
-                        }
-                Log.d(TAG, "logout")
+            R.id.nav_setting -> {
+//                AuthUI.getInstance()
+//                        .signOut(this)
+//                        .addOnCompleteListener {
+//                            val intent = Intent(this, LoginActivity::class.java)
+//                            startActivity(intent)
+//                        }
+//                Log.d(TAG, "logout")
+                fragment = Setting_Fragment()
+                Log.d(TAG, "select fragment: Setting_Fragment")
+
             }
         }
 

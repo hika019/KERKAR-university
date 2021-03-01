@@ -7,3 +7,7 @@ val week_to_day_symbol_list_jp_short = listOf("月", "火", "水", "木", "金")
 val week_to_day_symbol_list = listOf("sun", "mon", "tue", "wed", "thu", "fri", "sat")
 
 val period_list:List<Int> = List(5){it +1}
+
+var uid: String? = null
+
+val SharedPreferences_name = "DataStore"

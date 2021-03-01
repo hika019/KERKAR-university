@@ -8,6 +8,7 @@
     <string name="unsubmitted_assignment">未提出課題</string>
     <string name="logout">ログアウト</string>
     <string name="messege">お知らせ</string>
+    <string name="setting">設定</string>
     
     <string name="assignment_to_date">明日までの未提出課題</string>
     <string name="timetable_to_day">今日の授業</string>
