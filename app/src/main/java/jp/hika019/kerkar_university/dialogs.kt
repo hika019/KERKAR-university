@@ -98,8 +98,12 @@ class register_dialog(val context: Context){
                 .setView(dialog_layout)
                 .setPositiveButton("登録"){ dialog, which ->
                     val university_name = dialog_layout.univarsity_edittext.text.toString()
-                    firedb.create_university_collection(university_name)
 
+                    if(university_name != ""){
+                        firedb.create_university_collection(university_name)
+                    }else{
+                        select_univarsity_rapper()
+                    }
 
 
                 }
