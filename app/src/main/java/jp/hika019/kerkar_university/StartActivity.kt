@@ -1,7 +1,6 @@
 package jp.hika019.kerkar_university
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -16,7 +15,7 @@ class StartActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
 
-        val dataStore = getSharedPreferences(SharedPreferences_name, Context.MODE_PRIVATE)
+        val dataStore = getSharedPreferences(UserData_SharedPreferences_name, Context.MODE_PRIVATE)
 
         val local_uid = dataStore.getString("uid", null)
 

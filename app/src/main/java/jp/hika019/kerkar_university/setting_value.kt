@@ -10,4 +10,4 @@ val period_list:List<Int> = List(5){it +1}
 
 var uid: String? = null
 
-val SharedPreferences_name = "DataStore"
+val UserData_SharedPreferences_name = "UserDataStore"
