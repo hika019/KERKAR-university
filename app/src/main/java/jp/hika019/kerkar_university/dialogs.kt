@@ -61,6 +61,7 @@ class register_dialog(val context: Context){
 
         val dialog = AlertDialog.Builder(context)
                 .setTitle("大学の選択")
+                .setCancelable(false)
                 .setSingleChoiceItems(university_name_list, -1){ dialog, which ->
                     university = university_name_list[which]
                     university_id = university_id_list[which]
@@ -79,6 +80,7 @@ class register_dialog(val context: Context){
 //                        context.startActivity(i)
                     }else{
                         Toast.makeText(context, "大学の選択/追加をしてください", Toast.LENGTH_LONG).show()
+                        select_univarsity(university_name_list, university_id_list)
                     }
                 }
                 .setNegativeButton("大学を追加"){ dialog, which->
@@ -95,6 +97,7 @@ class register_dialog(val context: Context){
 
         val dialog = AlertDialog.Builder(context)
                 .setTitle("大学を追加")
+                .setCancelable(false)
                 .setView(dialog_layout)
                 .setPositiveButton("登録"){ dialog, which ->
                     val university_name = dialog_layout.univarsity_edittext.text.toString()
