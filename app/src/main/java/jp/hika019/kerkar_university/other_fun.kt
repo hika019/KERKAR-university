@@ -96,16 +96,16 @@ fun create_uid(uuid: String){
     val tmp_uid = sha256(uuid).substring(0, 24)
 
     val bloc1 = Integer.parseInt(tmp_uid!!.substring(0, 6), 16)
-//    Log.d("hoge", bloc1.toString())
+    Log.d("hoge", bloc1.toString())
 
     val bloc2 = Integer.parseInt(tmp_uid!!.substring(6, 12), 16)
-//    Log.d("hoge", bloc2.toString())
+    Log.d("hoge", bloc2.toString())
 
     val bloc3 = Integer.parseInt(tmp_uid!!.substring(12,18), 16)
-//    Log.d("hoge", bloc3.toString())
+    Log.d("hoge", bloc3.toString())
 
     val bloc4 = Integer.parseInt(tmp_uid!!.substring(18,24), 16)
-//    Log.d("hoge", bloc4.toString())
+    Log.d("hoge", bloc4.toString())
 
     var check = Integer.toHexString((bloc1 +bloc2 -bloc3 +bloc4)% 16777215) //FFFFFFでmod
     while(check.length < 6){
