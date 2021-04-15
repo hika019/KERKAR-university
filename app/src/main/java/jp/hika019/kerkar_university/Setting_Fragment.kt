@@ -1,6 +1,8 @@
 package jp.hika019.kerkar_university
 
 import android.app.AlertDialog
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -78,7 +80,12 @@ class Setting_Fragment: Fragment() {
                     if(!(enter_uid0.isEmpty() || enter_uid1.isEmpty() || enter_uid2.isEmpty() ||
                             enter_uid3.isEmpty() || enter_uid4.isEmpty())){
                         if(cheack_uid(enter_uid0, enter_uid1, enter_uid2, enter_uid3, enter_uid4)){
-                            Log.d("hoge", "hogehoge")
+                            Log.d(TAG, "enter_uid -> success")
+
+//                            val dataStore = getSharedPreferences(UserData_SharedPreferences_name, Context.MODE_PRIVATE)
+//                            val editor: SharedPreferences.Editor = dataStore.edit()
+//                            editor.putString("uid", uid)
+//                            editor.commit()
                         }
                     }
 

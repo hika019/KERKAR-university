@@ -1,5 +1,7 @@
 package jp.hika019.kerkar_university
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import java.security.MessageDigest
 
