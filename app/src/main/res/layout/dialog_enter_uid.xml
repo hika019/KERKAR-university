@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/dialog_enter_uid_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="引き継ぐユーザIDを入力してください"
+        android:gravity="center"
+        android:textSize="@dimen/dialog_setting_enter_uid"/>
+
+    <EditText
+        android:id="@+id/dialog_enter_uid_edittxt0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="6"
+        android:gravity="center"
+        android:hint="AAAAAA"
+        android:inputType="textMultiLine"
+        android:maxEms="6"
+        android:maxLength="6"
+        android:maxLines="1"
+        android:textSize="20sp" />
+    <EditText
+        android:id="@+id/dialog_enter_uid_edittxt1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="6"
+        android:maxEms="6"
+        android:maxLines="1"
+        android:gravity="center"
+        android:inputType="textMultiLine"
+        android:hint="BBBBBB"
+        android:textSize="20sp"/>
+    <EditText
+        android:id="@+id/dialog_enter_uid_edittxt2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="6"
+        android:maxEms="6"
+        android:maxLines="1"
+        android:gravity="center"
+        android:inputType="textMultiLine"
+        android:hint="CCCCCC"
+        android:textSize="20sp"/>
+    <EditText
+        android:id="@+id/dialog_enter_uid_edittxt3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="6"
+        android:maxLines="1"
+        android:maxEms="6"
+        android:gravity="center"
+        android:inputType="textMultiLine"
+        android:hint="DDDDDD"
+        android:textSize="20sp"/>
+    <EditText
+        android:id="@+id/dialog_enter_uid_edittxt4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="6"
+        android:maxLines="1"
+        android:maxEms="6"
+        android:gravity="center"
+        android:inputType="textMultiLine"
+        android:hint="EEEEEE"
+        android:textSize="20sp"/>
+
+
+</LinearLayout>

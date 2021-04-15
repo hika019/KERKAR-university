@@ -11,7 +11,7 @@
         android:id="@+id/semester_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2020春学期" />
+        android:text="" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
         <EditText
             android:id="@+id/week_to_day_edit_textview"
             android:layout_width="40dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dialog_class_editer_edittextsize"
             android:ems="2"
             android:gravity="center"
             android:hint="木"
@@ -44,7 +44,7 @@
         <EditText
             android:id="@+id/period_edittextview"
             android:layout_width="40dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dialog_class_editer_edittextsize"
             android:layout_marginStart="8dp"
             android:ems="1"
             android:gravity="center"
@@ -70,7 +70,7 @@
     <EditText
         android:id="@+id/lecture_neme_edittext"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dialog_class_editer_edittextsize"
         android:ems="10"
         android:hint="講義名"
         android:inputType="textPersonName"
@@ -82,7 +82,7 @@
     <EditText
         android:id="@+id/teacher_name_edittext"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dialog_class_editer_edittextsize"
         android:ems="12"
         android:hint="教師名（複数の場合[, ][、]で区切る）"
         android:inputType="textPersonName"
@@ -94,7 +94,7 @@
     <EditText
         android:id="@+id/class_name_edittext"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dialog_class_editer_edittextsize"
         android:ems="10"
         android:hint="教室名"
         android:inputType="textPersonName"

@@ -28,7 +28,7 @@
         android:maxLines="1"
         android:paddingLeft="8sp"
         android:paddingRight="8sp"
-        android:text="ユーザID"
+        android:text="@string/setting_uid"
         android:textSize="@dimen/setting_activity_textsize"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
@@ -44,7 +44,7 @@
         android:maxLines="1"
         android:paddingLeft="8sp"
         android:paddingRight="8sp"
-        android:text="登録大学"
+        android:text="@string/setting_your_university"
         android:textSize="@dimen/setting_activity_textsize"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/setting_uid_title" />
@@ -81,5 +81,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/setting_university_title"
         app:layout_constraintTop_toTopOf="@+id/setting_university_title" />
+
+    <Button
+        android:id="@+id/setting_data_transfer_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/white"
+        android:text="@string/setting_data"
+        android:textSize="@dimen/setting_activity_textsize"
+        android:textColor="@color/common_google_signin_btn_text_light_default"
+        app:layout_constraintEnd_toEndOf="@+id/setting_university_textview"
+        app:layout_constraintStart_toStartOf="@+id/setting_university_title"
+        app:layout_constraintTop_toBottomOf="@+id/setting_university_textview" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

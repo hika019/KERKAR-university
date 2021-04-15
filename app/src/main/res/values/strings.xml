@@ -39,5 +39,9 @@
     <string name="create_university">大学を追加</string>
     <string name="add_university_to_account">入学している大学を選択してください</string>
 
+    <string name="setting_data">データの引継ぎ</string>
+    <string name="setting_uid">ユーザID</string>
+    <string name="setting_your_university">登録大学</string>
+
 
 </resources>

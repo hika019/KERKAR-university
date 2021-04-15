@@ -96,23 +96,70 @@ fun create_uid(uuid: String){
     val tmp_uid = sha256(uuid).substring(0, 24)
 
     val bloc1 = Integer.parseInt(tmp_uid!!.substring(0, 6), 16)
-    Log.d("hoge", bloc1.toString())
+    Log.d("create_uid", bloc1.toString())
 
     val bloc2 = Integer.parseInt(tmp_uid!!.substring(6, 12), 16)
-    Log.d("hoge", bloc2.toString())
+    Log.d("create_uid", bloc2.toString())
 
     val bloc3 = Integer.parseInt(tmp_uid!!.substring(12,18), 16)
-    Log.d("hoge", bloc3.toString())
+    Log.d("create_uid", bloc3.toString())
 
     val bloc4 = Integer.parseInt(tmp_uid!!.substring(18,24), 16)
-    Log.d("hoge", bloc4.toString())
+    Log.d("create_uid", bloc4.toString())
 
-    var check = Integer.toHexString((bloc1 +bloc2 -bloc3 +bloc4)% 16777215) //FFFFFFでmod
+    var check = Integer.toHexString((((((bloc1 +bloc2)%16777215) +bloc3)%16777215) +bloc4)% 16777215) //FFFFFFでmod
     while(check.length < 6){
         check = "0" + check
     }
 
     uid = tmp_uid + check
 
+}
 
+fun cheack_uid(uid0: String, uid1: String, uid2: String, uid3: String, uid4: String): Boolean {
+    val block0 = Integer.parseInt(uid0, 16)
+    val block1 = Integer.parseInt(uid1, 16)
+    val block2 = Integer.parseInt(uid2, 16)
+    val block3 = Integer.parseInt(uid3, 16)
+
+    var check = Integer.toHexString((((((block0 +block1)%16777215) +block2)%16777215) +block3)% 16777215) //FFFFFFでmod
+    while(check.length < 6){
+        check = "0" + check
+    }
+
+    if(uid4 == check){
+        return true
+    }else{
+        return false
+    }
+
+
+}
+
+
+fun check_uid(uid_str: String): Boolean {
+    if(uid_str.length != 30){
+        return false
+    }
+
+    val bloc1 = Integer.parseInt(uid_str!!.substring(0, 6), 16)
+    Log.d("create_uid", bloc1.toString())
+
+    val bloc2 = Integer.parseInt(uid_str!!.substring(6, 12), 16)
+    Log.d("create_uid", bloc2.toString())
+
+    val bloc3 = Integer.parseInt(uid_str!!.substring(12,18), 16)
+    Log.d("create_uid", bloc3.toString())
+
+    val bloc4 = Integer.parseInt(uid_str!!.substring(18,24), 16)
+    Log.d("create_uid", bloc4.toString())
+
+    val bloc5 = Integer.parseInt(uid_str!!.substring(24,30), 16)
+    Log.d("create_uid", bloc4.toString())
+
+    val tmp = Integer.toHexString((bloc1 +bloc2 -bloc3 +bloc4)% 16777215) //FFFFFFでmod
+
+    if(uid_str!!.substring(24,30) != tmp) return false
+
+    return true
 }

@@ -123,7 +123,7 @@ class firedb_register_login(val context: Context){
                         university_id_list += university_id
                         university_name_list += university_name
                     }
-
+                    Log.d(TAG, university_name_list.toString())
 
                     Log.d("hoge", "get univer list")
                     register_dialog(context).select_univarsity(university_name_list, university_id_list)
