@@ -12,6 +12,8 @@ import kotlinx.android.synthetic.main.dialog_add_class_editer.view.*
 import kotlinx.android.synthetic.main.dialog_add_task.view.*
 import kotlinx.android.synthetic.main.dialog_add_university.view.*
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalTime
 import java.util.*
 
 fun error_college_upload_dialog(context: Context){
@@ -331,6 +333,36 @@ class task_dialog(val context: Context){
 
     }
 
+    fun day_cheack(today: List<String>, set_day: List<String>): Boolean {
+        val today_y = today[0].toInt()
+        val today_m = today[1].toInt()
+        val today_d = today[2].toInt()
+
+        val set_y = set_day[0].toInt()
+        val set_m = set_day[1].toInt()
+        val set_d = set_day[2].toInt()
+
+        if(today_y > set_y){
+            return false
+        }else if(today_y < set_y){
+            return true
+        }
+
+
+        if(today_m > set_m){
+            return false
+        }else if(today_m < set_m){
+            return true
+        }
+
+        if(today_d > set_d){
+            return false
+        }else{
+            return true
+        }
+
+    }
+
     fun create_task_dialog(){
         task_dialog_second.add_task_semester_textView.text = semester
 
@@ -349,6 +381,8 @@ class task_dialog(val context: Context){
                 .setView(task_dialog_second)
                 .setPositiveButton("確定") { dialog, which ->
 
+
+
                     val title = task_dialog_second.dialog_assignment_special_notes.text
 
                     if(task_dialog_second.dialog_deadline_day.text.isNotEmpty() &&
@@ -356,21 +390,35 @@ class task_dialog(val context: Context){
 //                            subject_data["class"] != null &&
                             title != null){
 
+                        val set_day = task_dialog_second.dialog_deadline_day.text.toString().split("/")
+                        val today = LocalDate.now().toString().split("-")
 
-                        val data = hashMapOf(
-                                "day" to task_dialog_second.dialog_deadline_day.text.toString(),
-                                "time" to task_dialog_second.dialog_deadline_time.text.toString(),
-                                "class" to subject_data,
-                                "task_title" to task_dialog_second.dialog_assignment_title.text.toString(),
-                                "note" to task_dialog_second.dialog_assignment_special_notes.text.toString()
-                        )
-                        Log.d(TAG, "set -> data: ${data}")
+                        Log.d("hoge", "set day ->${set_day}")
+                        Log.d("hoge", "today ->${today}")
+
+                        if(day_cheack(today, set_day)){
+
+                            val data = hashMapOf(
+                                    "day" to task_dialog_second.dialog_deadline_day.text.toString(),
+                                    "time" to task_dialog_second.dialog_deadline_time.text.toString(),
+                                    "class" to subject_data,
+                                    "task_title" to task_dialog_second.dialog_assignment_title.text.toString(),
+                                    "note" to task_dialog_second.dialog_assignment_special_notes.text.toString()
+                            )
+                            Log.d(TAG, "set -> data: ${data}")
 
 
-                        //追加処理
-                        if(semester_id_data != null){
-                            firedb_task(context).create_task(data, semester_id_data!!)
+                            //追加処理
+                            if(semester_id_data != null){
+                                Toast.makeText(context, "課題を追加しました", Toast.LENGTH_SHORT)
+                                firedb_task(context).create_task(data, semester_id_data!!)
+                            }else{
+                                Toast.makeText(context, "課題が追加されませんでした", Toast.LENGTH_SHORT)
+                            }
+                        }else{
+                            Toast.makeText(context, "締め切り日が無効です", Toast.LENGTH_SHORT)
                         }
+
                     }else{
                         Toast.makeText(context, "空の部分があります", Toast.LENGTH_SHORT).show()
                     }
