@@ -10,7 +10,6 @@ import java.util.*
 
 class StartActivity: AppCompatActivity() {
     val TAG = "StartActivity"
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)

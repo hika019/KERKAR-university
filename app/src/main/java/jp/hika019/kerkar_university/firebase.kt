@@ -23,6 +23,8 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
+//要リファクタリング
+
 private val TAG = "firedb"
 
 val settings = FirebaseFirestoreSettings.Builder()
