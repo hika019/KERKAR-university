@@ -43,7 +43,6 @@ fun login_cheack(): Boolean {
 
 class firedb_semester(val context: Context, val view: View){
     val TAG = "firedb_semester"
-
     fun get_semester_list(){
         Log.d(TAG, "get_semester_list -> call")
 
