@@ -41,8 +41,15 @@ fun login_cheack(): Boolean {
     return cheack_user != null
 }
 
+fun firedb_cheack_none_Timetable(context: Context){
+    firedb.collection("user")
+        .document(uid!!)
+        .get()
+}
+
 class firedb_semester(val context: Context, val view: View){
     val TAG = "firedb_semester"
+
     fun get_semester_list(){
         Log.d(TAG, "get_semester_list -> call")
 
@@ -126,7 +133,7 @@ class firedb_register_login(val context: Context){
                     }
                     Log.d(TAG, university_name_list.toString())
 
-                    Log.d("hoge", "get univer list")
+                    Log.d(TAG, "get univer list")
                     register_dialog(context).select_univarsity(university_name_list, university_id_list)
                 }
 
@@ -166,7 +173,7 @@ class firedb_register_login(val context: Context){
 
                     }
                     Log.d(TAG, "semester: ${semester}")
-                    nowsemester = semester.max().toString()
+                    nowsemester = semester.maxOrNull().toString()
 
                     val time = SimpleDateFormat("yyyy/MM/dd HH:mm").format(Date())
                     if(nowsemester != null){
@@ -188,8 +195,9 @@ class firedb_register_login(val context: Context){
                                     val i = Intent(context, MainActivity::class.java)
                                     context.startActivity(i)
                                 }
+                    }else{
+                        Log.e(TAG, "nnowsemester is null!")
                     }
-
 
                 }
                 .addOnFailureListener {
@@ -218,6 +226,9 @@ class firedb_register_login(val context: Context){
                     }
 
                 }
+            .addOnFailureListener {
+                Log.e(TAG, "cheak_user_data -> Failure")
+            }
     }
 
 }
@@ -225,8 +236,25 @@ class firedb_register_login(val context: Context){
 class firedb_timetable(val context: Context){
     private val TAG = "firedb_timetable"
 
+    fun courses_is_none(){
+        Log.d(TAG, "courses_is_none -> call")
+
+        firedb.collection("user")
+            .document(uid!!)
+            .collection("semester")
+            .get()
+            .addOnSuccessListener {
+                Log.d(TAG, "courses_is_none -> success")
+
+                if(it.isEmpty){
+                    none_Timetable(context)
+                }
+            }
+
+    }
 
     fun create_course(week: String, period: Int){
+        Log.d(TAG, "create_course -> call")
         firedb.collection("user")
                 .document(uid!!)
                 .get()
@@ -248,6 +276,8 @@ class firedb_timetable(val context: Context){
                                 .addOnFailureListener {
                                     Log.d(TAG, "firedb_timetable.semester2 -> failure")
                                 }
+                    }else{
+                        Log.e(TAG, "semester is null")
                     }
                 }
                 .addOnFailureListener {
@@ -256,7 +286,7 @@ class firedb_timetable(val context: Context){
     }
 
     fun get_course_list(week: String, period: Int){
-        Log.d(TAG, "get_course_list: login_check")
+        Log.d(TAG, "get_course_list -> call")
 
         firedb.collection("user")
                 .document(uid!!)
@@ -521,8 +551,12 @@ class firedb_task(val context: Context){
 
                                         }
                                     }
+                                    if (class_name_array.isEmpty()){
+                                        none_Timetable(context)
+                                    }else{
+                                        task_dialog(context).course_selecter_dialog(class_name_array, class_id_array, class_week_to_day_array, semester_id, semester)
+                                    }
 
-                                    task_dialog(context).course_selecter_dialog(class_name_array, class_id_array, class_week_to_day_array, semester_id, semester)
 
                                 }
                                 .addOnFailureListener{

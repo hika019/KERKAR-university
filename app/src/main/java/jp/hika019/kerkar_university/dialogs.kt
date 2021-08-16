@@ -45,6 +45,21 @@ fun select_semester_dialog(view: View, context: Context, semester_list: Array<St
     dialog.show()
 }
 
+fun none_Timetable(context: Context){
+
+    val message = "授業がまだありません\n新しく授業を登録しましょう"
+
+    val dialog = AlertDialog.Builder(context)
+        .setTitle(message)
+        .setMessage("時間割画面から授業を追加してください")
+        .setPositiveButton("OK"){ dialog, which ->
+
+        }
+
+    dialog.show()
+}
+
+
 class register_dialog(val context: Context){
     val TAG = "register_dialog"
 

@@ -129,11 +129,7 @@ fun cheack_uid(uid0: String, uid1: String, uid2: String, uid3: String, uid4: Str
         check = "0" + check
     }
 
-    if(uid4 == check){
-        return true
-    }else{
-        return false
-    }
+    return uid4 == check
 
 
 }

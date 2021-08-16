@@ -15,7 +15,6 @@ class Home_fragment(): Fragment() {
 
     private val TAG = "Home_fragment"
 
-
     val calendar: Calendar = Calendar.getInstance()
     val now_week_to_day = week_to_day_symbol_list[calendar.get(Calendar.DAY_OF_WEEK)-1]
 
@@ -27,6 +26,7 @@ class Home_fragment(): Fragment() {
         load_timetable(view)
         timetable_onclick_event(view)
         load_task(view)
+        firedb_timetable(view.context).courses_is_none()
 
         view.floatingActionButton.setOnClickListener {
             context?.let { it1 -> firedb_task(it1).get_course_list() }
