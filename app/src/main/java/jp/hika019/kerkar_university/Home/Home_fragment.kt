@@ -1,5 +1,7 @@
 package jp.hika019.kerkar_university.Home
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +11,7 @@ import androidx.fragment.app.Fragment
 import jp.hika019.kerkar_university.*
 import kotlinx.android.synthetic.main.activity_home.view.*
 import kotlinx.android.synthetic.main.item_home_activity_taimetable.view.*
+import java.lang.Exception
 import java.util.*
 
 class Home_fragment(): Fragment() {
@@ -23,10 +26,15 @@ class Home_fragment(): Fragment() {
     savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.activity_home, container, false)
 
-        load_timetable(view)
-        timetable_onclick_event(view)
-        load_task(view)
-        firedb_timetable(view.context).courses_is_none()
+        try{
+            load_timetable(view)
+            timetable_onclick_event(view)
+            load_task(view)
+            firedb_timetable(view.context).courses_is_none()
+        }catch (e: Exception){
+            Log.w(TAG, "start -> error")
+        }
+
 
         view.floatingActionButton.setOnClickListener {
             context?.let { it1 -> firedb_task(it1).get_course_list() }
@@ -34,6 +42,8 @@ class Home_fragment(): Fragment() {
 
         return view
     }
+
+
 
     private fun load_timetable(view: View){
 
@@ -108,5 +118,33 @@ class Home_fragment(): Fragment() {
 
     private fun load_task(view: View){
         context?.let { firedb_task(it).get_tomorrow_not_comp_task_list(view) }
+    }
+
+    private fun start(view: View){
+        Log.d(TAG, "start() -> call")
+        val dataStore = view.context.getSharedPreferences(UserData_SharedPreferences_name, Context.MODE_PRIVATE)
+
+        val local_uid = dataStore.getString("uid", null)
+
+
+        if (local_uid != null){
+            uid = local_uid
+            Log.d(TAG, "uid: $uid")
+
+            firedb_register_login(view.context).cheak_user_data()
+        }else{
+            val uuid = UUID.randomUUID().toString()
+            create_uid(uuid)
+
+//            uid = sha256(uuid).substring(0, 24)
+            Log.d(TAG, uid!!)
+
+            val editor: SharedPreferences.Editor = dataStore.edit()
+            editor.putString("uid", uid)
+            editor.commit()
+
+            val register_dialog_class = register_dialog(view.context)
+            register_dialog_class.select_univarsity_rapper()
+        }
     }
 }

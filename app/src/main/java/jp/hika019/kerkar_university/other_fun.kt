@@ -114,7 +114,8 @@ fun create_uid(uuid: String){
         check = "0" + check
     }
 
-    uid = tmp_uid + check
+    //uid = tmp_uid + check
+    create_user()
 
 }
 

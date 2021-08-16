@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import jp.hika019.kerkar_university.Home.Home_task_list_CustomAdapter
 import jp.hika019.kerkar_university.Task.task_cmp_list_CustomAdapter
 import jp.hika019.kerkar_university.Task.task_notcmp_list_CustomAdapter
@@ -16,9 +17,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.ktx.Firebase
+import jp.hika019.kerkar_university.Home.Home_fragment
 import kotlinx.android.synthetic.main.activity_home.view.*
 import kotlinx.android.synthetic.main.activity_task_list.view.*
 import kotlinx.android.synthetic.main.activity_timetable.view.*
+import kotlinx.coroutines.runBlocking
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -45,6 +48,28 @@ fun firedb_cheack_none_Timetable(context: Context){
     firedb.collection("user")
         .document(uid!!)
         .get()
+}
+
+fun create_user(){
+    Log.d("StartActivity", "signInAnonymously -> success")
+    val auth = Firebase.auth
+    runBlocking{
+        auth.signInAnonymously()
+            .addOnCompleteListener{ task ->
+                if(task.isSuccessful){
+                    Log.d("StartActivity", "signInAnonymously -> success")
+                    Log.d("StartActivity", auth.uid.toString())
+                    uid = auth.uid
+                    //Log.d("StartActivity", user.uid!!)
+
+
+                }else{
+                    Log.w(TAG, "signInAnonymously -> failure")
+                }
+            }
+    }
+    Log.d("StartActivity", "aaaa")
+
 }
 
 class firedb_semester(val context: Context, val view: View){
@@ -219,8 +244,8 @@ class firedb_register_login(val context: Context){
                     val university_id = it.getString("university_id")
 
                     if(create_at != null || semester != null || uid != null || university != null || university_id != null){
-                        //val intent = Intent(context, MainActivity::class.java)
-                        //context.startActivity(intent)
+                        val intent = Intent(context, MainActivity::class.java)
+                        context.startActivity(intent)
                     }else{
                         register_dialog(context).select_univarsity_rapper()
                     }
@@ -230,6 +255,8 @@ class firedb_register_login(val context: Context){
                 Log.w(TAG, "cheak_user_data -> Failure")
             }
     }
+
+
 
 }
 

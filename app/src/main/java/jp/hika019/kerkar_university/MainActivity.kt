@@ -20,6 +20,10 @@ import jp.hika019.kerkar_university.Task.Task_list_Fragment
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -34,15 +38,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        start()
         setTheme(R.style.AppTheme_Splash)
+        start()
+
+
+
+
 
         setContentView(R.layout.activity_main)
-
         this.setToolbar()
         this.setDrawerLayout()
-
-
         val ft = supportFragmentManager.beginTransaction()
         ft.replace(R.id.nav_host_fragment, Home_fragment())
         ft.commit()
@@ -111,7 +116,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    private fun start(){
+    private fun start() {
         Log.d(TAG, "start() -> call")
         val dataStore = getSharedPreferences(UserData_SharedPreferences_name, Context.MODE_PRIVATE)
 
@@ -121,24 +126,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             uid = local_uid
             Log.d(TAG, "uid: $uid")
 
-
-
             firedb_register_login(this).cheak_user_data()
-//            val intent = Intent(this, MainActivity::class.java)
-//            startActivity(intent)
         }else{
             val uuid = UUID.randomUUID().toString()
-            create_uid(uuid)
+            //create_uid(uuid)
+            Log.d(TAG, "create_user() -> call")
+
+            create_user()
 
 //            uid = sha256(uuid).substring(0, 24)
-            Log.d("hoge", uid!!)
-
+            Log.d(TAG, uid.toString())
             val editor: SharedPreferences.Editor = dataStore.edit()
             editor.putString("uid", uid)
             editor.commit()
 
             val register_dialog_class = register_dialog(this)
             register_dialog_class.select_univarsity_rapper()
+
+
         }
     }
 }
