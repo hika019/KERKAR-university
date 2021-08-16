@@ -13,5 +13,8 @@
 
     </style>
 
+    <style name="AppTheme.Splash" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_drawable</item>
+    </style>
 
 </resources>

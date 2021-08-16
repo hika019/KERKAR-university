@@ -81,7 +81,7 @@ class Home_fragment(): Fragment() {
 
                 }
                 .addOnFailureListener {
-                    Log.d(TAG, "load_timetable: get semester -> failure")
+                    Log.w(TAG, "load_timetable: get semester -> failure")
                 }
     }
 

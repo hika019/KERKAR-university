@@ -97,27 +97,18 @@ class Timetable_Fragment(): Fragment() {
                                 view.timetable_include_wed4.timetable_title_textView.text = timetable_data_map?.get("wed4")
                                 view.timetable_include_wed5.timetable_title_textView.text = timetable_data_map?.get("wed5")
 
-                                view.timetable_include_thu1.timetable_title_textView.text =
-                                        timetable_data_map?.get("thu1")
-                                view.timetable_include_thu2.timetable_title_textView.text =
-                                        timetable_data_map?.get("thu2")
-                                view.timetable_include_thu3.timetable_title_textView.text =
-                                        timetable_data_map?.get("thu3")
-                                view.timetable_include_thu4.timetable_title_textView.text =
-                                        timetable_data_map?.get("thu4")
-                                view.timetable_include_thu5.timetable_title_textView.text =
-                                        timetable_data_map?.get("thu5")
+                                view.timetable_include_thu1.timetable_title_textView.text = timetable_data_map?.get("thu1")
+                                view.timetable_include_thu2.timetable_title_textView.text = timetable_data_map?.get("thu2")
+                                view.timetable_include_thu3.timetable_title_textView.text = timetable_data_map?.get("thu3")
+                                view.timetable_include_thu4.timetable_title_textView.text = timetable_data_map?.get("thu4")
+                                view.timetable_include_thu5.timetable_title_textView.text = timetable_data_map?.get("thu5")
 
-                                view.timetable_include_fri1.timetable_title_textView.text =
-                                        timetable_data_map?.get("fri1")
-                                view.timetable_include_fri2.timetable_title_textView.text =
-                                        timetable_data_map?.get("fri2")
-                                view.timetable_include_fri3.timetable_title_textView.text =
-                                        timetable_data_map?.get("fri3")
-                                view.timetable_include_fri4.timetable_title_textView.text =
-                                        timetable_data_map?.get("fri4")
-                                view.timetable_include_fri5.timetable_title_textView.text =
-                                        timetable_data_map?.get("fri5")
+
+                                view.timetable_include_fri1.timetable_title_textView.text = timetable_data_map?.get("fri1")
+                                view.timetable_include_fri2.timetable_title_textView.text = timetable_data_map?.get("fri2")
+                                view.timetable_include_fri3.timetable_title_textView.text = timetable_data_map?.get("fri3")
+                                view.timetable_include_fri4.timetable_title_textView.text = timetable_data_map?.get("fri4")
+                                view.timetable_include_fri5.timetable_title_textView.text = timetable_data_map?.get("fri5")
 
                             }
                 }

@@ -83,7 +83,7 @@ class firedb_semester(val context: Context, val view: View){
                     get_semester_title()
                 }
                 .addOnFailureListener {
-                    Log.e(TAG, "change_user_semester -> failure")
+                    Log.w(TAG, "change_user_semester -> failure")
                 }
     }
 
@@ -192,11 +192,11 @@ class firedb_register_login(val context: Context){
                                 .addOnCompleteListener {
                                     Log.d(TAG, "create user_data -> Complete")
 
-                                    val i = Intent(context, MainActivity::class.java)
-                                    context.startActivity(i)
+                                    //val i = Intent(context, MainActivity::class.java)
+                                    //context.startActivity(i)
                                 }
                     }else{
-                        Log.e(TAG, "nnowsemester is null!")
+                        Log.w(TAG, "nnowsemester is null!")
                     }
 
                 }
@@ -219,15 +219,15 @@ class firedb_register_login(val context: Context){
                     val university_id = it.getString("university_id")
 
                     if(create_at != null || semester != null || uid != null || university != null || university_id != null){
-                        val intent = Intent(context, MainActivity::class.java)
-                        context.startActivity(intent)
+                        //val intent = Intent(context, MainActivity::class.java)
+                        //context.startActivity(intent)
                     }else{
                         register_dialog(context).select_univarsity_rapper()
                     }
 
                 }
             .addOnFailureListener {
-                Log.e(TAG, "cheak_user_data -> Failure")
+                Log.w(TAG, "cheak_user_data -> Failure")
             }
     }
 
@@ -277,7 +277,7 @@ class firedb_timetable(val context: Context){
                                     Log.d(TAG, "firedb_timetable.semester2 -> failure")
                                 }
                     }else{
-                        Log.e(TAG, "semester is null")
+                        Log.w(TAG, "semester is null")
                     }
                 }
                 .addOnFailureListener {
@@ -323,10 +323,10 @@ class firedb_timetable(val context: Context){
                                     timetable_dialog(context).search_timetable_dialog(week, period, course_list, semester_id)
                                 }
                                 .addOnFailureListener {
-                                    Log.e(TAG, "get_course_list: get courses -> failure")
+                                    Log.w(TAG, "get_course_list: get courses -> failure")
                                 }
                     }else{
-                        Log.e(TAG, "get_course_list: university_id/semester_id is null")
+                        Log.w(TAG, "get_course_list: university_id/semester_id is null")
                     }
 
 
@@ -370,7 +370,7 @@ class firedb_timetable(val context: Context){
                     }
                 }
                 .addOnFailureListener {
-                    Log.e(TAG, "get_course_data -> failure")
+                    Log.w(TAG, "get_course_data -> failure")
                 }
     }
 
@@ -413,7 +413,7 @@ class firedb_timetable(val context: Context){
 
                 }
                 .addOnFailureListener{
-                    Log.e(TAG, "create_university_timetable: get universiyt_id -> failure")
+                    Log.w(TAG, "create_university_timetable: get universiyt_id -> failure")
                 }
     }
 
@@ -564,7 +564,7 @@ class firedb_task(val context: Context){
                                 }
 
                     }else{
-                        Log.e(TAG, "firedb_task.get_course_list: university_id/semester_id is null")
+                        Log.w(TAG, "firedb_task.get_course_list: university_id/semester_id is null")
                     }
 
 

@@ -18,6 +18,8 @@ class Home_task_list_CustomAdapter(private val task_List: ArrayList<Map<String, 
                                    )
     : RecyclerView.Adapter<Home_task_list_CustomAdapter.CustomViewHolder>() {
 
+    private val TAG = "Home_fragment_CustomAdapter"
+
     lateinit var listener: OnItemClickListener
 
     class CustomViewHolder(val view: View): RecyclerView.ViewHolder(view) {
@@ -46,8 +48,8 @@ class Home_task_list_CustomAdapter(private val task_List: ArrayList<Map<String, 
         val task_data = task_List[position]
         val class_data = task_data["class_data"] as Map<String, Any>
 
-        Log.d("hoge", "class_data: ${class_data}")
-        Log.d("hoge", "task_data: ${task_data}")
+        Log.d(TAG, "class_data: ${class_data}")
+        Log.d(TAG, "task_data: ${task_data}")
 
         val day = task_data["time_limit"] as String
         val couse = class_data["course"] as String
@@ -59,7 +61,7 @@ class Home_task_list_CustomAdapter(private val task_List: ArrayList<Map<String, 
         holder.assignment_details.text = "${task_data["task_name"]}"
         //タップ
         holder.view.setOnClickListener {
-            Log.d("HomeActivity", "select assignment item: $position")
+            Log.d(TAG, "select assignment item: $position")
 
             val class_data = task_List[position] as Map<String, Any>
 
@@ -111,10 +113,10 @@ class Home_task_list_CustomAdapter(private val task_List: ArrayList<Map<String, 
                 }
                 .setNeutralButton("提出済みにする") {dialog, which ->
 //                    firedb_load_task_class(context).task_to_comp(class_data)
-                    Log.d("Assignment", "$position　を提出済みにする")
+                    Log.d(TAG, "$position　を提出済みにする")
 
                     val class_data = task_List[position] as Map<String, Any>
-                    Log.d("hoge", "data:${class_data}")
+                    Log.d(TAG, "data:${class_data}")
                     firedb_task(context).task_to_comp(class_data, semester)
 //                    removeItem(position)
                 }

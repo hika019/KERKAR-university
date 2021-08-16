@@ -6,7 +6,8 @@
     android:layout_height="50dp"
     android:gravity="center"
     android:layout_margin="8dp"
-    android:paddingStart="8dp">
+    android:paddingStart="8dp"
+    android:background="@android:color/white">
 
 
     <TextView

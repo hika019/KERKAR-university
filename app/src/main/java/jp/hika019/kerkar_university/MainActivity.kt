@@ -2,6 +2,7 @@ package jp.hika019.kerkar_university
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -19,6 +20,7 @@ import jp.hika019.kerkar_university.Task.Task_list_Fragment
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     val TAG = "MainActivity"
@@ -31,6 +33,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        start()
+        setTheme(R.style.AppTheme_Splash)
+
         setContentView(R.layout.activity_main)
 
         this.setToolbar()
@@ -103,5 +109,36 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun start(){
+        Log.d(TAG, "start() -> call")
+        val dataStore = getSharedPreferences(UserData_SharedPreferences_name, Context.MODE_PRIVATE)
+
+        val local_uid = dataStore.getString("uid", null)
+
+        if (local_uid != null){
+            uid = local_uid
+            Log.d(TAG, "uid: $uid")
+
+
+
+            firedb_register_login(this).cheak_user_data()
+//            val intent = Intent(this, MainActivity::class.java)
+//            startActivity(intent)
+        }else{
+            val uuid = UUID.randomUUID().toString()
+            create_uid(uuid)
+
+//            uid = sha256(uuid).substring(0, 24)
+            Log.d("hoge", uid!!)
+
+            val editor: SharedPreferences.Editor = dataStore.edit()
+            editor.putString("uid", uid)
+            editor.commit()
+
+            val register_dialog_class = register_dialog(this)
+            register_dialog_class.select_univarsity_rapper()
+        }
     }
 }
