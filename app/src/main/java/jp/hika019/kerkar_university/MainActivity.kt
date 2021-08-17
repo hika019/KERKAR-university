@@ -54,7 +54,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         ft.replace(R.id.nav_host_fragment, Home_fragment())
         ft.commit()
 
-
     }
 
     private fun setToolbar(){
@@ -149,8 +148,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             editor.putString("uid", uid)
             editor.commit()
             */
-            val register_dialog_class = register_dialog(context)
-            register_dialog_class.select_univarsity_rapper()
+            firedb_register_login(this).get_university_list()
         }
     }
 }

@@ -152,8 +152,8 @@ class firedb_semester(val context: Context, val view: View){
     }
 }
 
-class firedb_register_login(val context: Context){
-    private val TAG = "MainActivity_firedb_register_login"
+class firedb_register_login(override val context: Context): register_dialog(context){
+    override val TAG = "MainActivity_firedb_register_login"
 
     fun get_university_list(){
         var university_name_list: Array<String> = arrayOf()
@@ -179,7 +179,7 @@ class firedb_register_login(val context: Context){
                     Log.d(TAG, university_name_list.toString())
 
                     Log.d(TAG, "get univer list")
-                    register_dialog(context).select_univarsity(university_name_list, university_id_list)
+                    select_univarsity(university_name_list, university_id_list)
                 }
         }
 
@@ -274,7 +274,7 @@ class firedb_register_login(val context: Context){
                         //val intent = Intent(context, MainActivity::class.java)
                         //context.startActivity(intent)
                     }else{
-                        register_dialog(context).select_univarsity_rapper()
+                        get_university_list()
                     }
 
                 }

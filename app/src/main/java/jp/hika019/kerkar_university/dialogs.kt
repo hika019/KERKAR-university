@@ -61,8 +61,8 @@ fun none_Timetable(context: Context){
 }
 
 
-class register_dialog(val context: Context){
-    val TAG = "register_dialog"
+open class register_dialog(open val context: Context){
+    open val TAG = ""
 
     fun select_univarsity_rapper(){
         Log.d(TAG, "select_univarsity_rapper -> call")
