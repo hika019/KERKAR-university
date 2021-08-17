@@ -17,7 +17,7 @@ class StartActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppTheme_Splash)
-
+        Thread.sleep(200)
         setContentView(R.layout.activity_start)
 
         start()

@@ -40,14 +40,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        /*
-        runBlocking {
-            start()
-        }
-        Thread.sleep(2000)
-        setTheme(R.style.AppTheme_Splash)
-         */
-
         setContentView(R.layout.activity_main)
         this.setToolbar()
         this.setDrawerLayout()
