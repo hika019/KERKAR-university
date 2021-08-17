@@ -240,8 +240,9 @@ class firedb_register_login(override val context: Context): register_dialog(cont
                                     Log.d(TAG, "create user_data -> Complete")
 
 
-                                    //val i = Intent(context, MainActivity::class.java)
-                                    //context.startActivity(i)
+                                    val intent = Intent(context, MainActivity::class.java)
+                                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                    context.startActivity(intent)
                                 }
                         }
 
@@ -271,8 +272,10 @@ class firedb_register_login(override val context: Context): register_dialog(cont
                     val university_id = it.getString("university_id")
 
                     if(create_at != null || semester != null || uid != null || university != null || university_id != null){
-                        //val intent = Intent(context, MainActivity::class.java)
-                        //context.startActivity(intent)
+                        val intent = Intent(context, MainActivity::class.java)
+                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        context.startActivity(intent)
+
                     }else{
                         get_university_list()
                     }

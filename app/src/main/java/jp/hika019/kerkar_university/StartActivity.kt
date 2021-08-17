@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.runBlocking
 import java.sql.Time
 import java.util.*
@@ -14,6 +16,8 @@ class StartActivity: AppCompatActivity() {
     val TAG = "StartActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.AppTheme_Splash)
+
         setContentView(R.layout.activity_start)
 
         start()
@@ -27,30 +31,33 @@ class StartActivity: AppCompatActivity() {
         Log.d(TAG, "start() -> call")
         val dataStore = getSharedPreferences(UserData_SharedPreferences_name, Context.MODE_PRIVATE)
 
-        val local_uid = dataStore.getString("uid", null)
+        //val local_uid = dataStore.getString("uid", null)
+        val context = this
+        //Log.d(TAG, "local_uid: "+ local_uid)
 
-        if (local_uid != null){
-            uid = local_uid
-            Log.d(TAG, "uid: $uid")
 
-            firedb_register_login(this).cheak_user_data()
+        val auth = Firebase.auth
+
+        if (auth.uid != null){
+            Log.d(TAG, "uid: "+auth.uid)
+            uid = auth.uid
+
+            firedb_register_login(context).cheak_user_data()
         }else{
             val uuid = UUID.randomUUID().toString()
             //create_uid(uuid)
             Log.d(TAG, "create_user() -> call")
-
-            create_user()
-
-//            uid = sha256(uuid).substring(0, 24)
+            runBlocking {
+                create_user()
+            }
+            Log.d("Main", "uid: "+ uid)
             Log.d(TAG, uid.toString())
+            /*
             val editor: SharedPreferences.Editor = dataStore.edit()
             editor.putString("uid", uid)
             editor.commit()
-
-            val register_dialog_class = register_dialog(this)
-            register_dialog_class.select_univarsity_rapper()
-
-
+            */
+            firedb_register_login(this).get_university_list()
         }
     }
 }
