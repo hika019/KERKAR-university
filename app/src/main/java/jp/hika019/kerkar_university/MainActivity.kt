@@ -19,6 +19,8 @@ import jp.hika019.kerkar_university.Register_and_Login.LoginActivity
 import jp.hika019.kerkar_university.Task.Task_list_Fragment
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -38,11 +40,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        runBlocking {
+            start()
+        }
+        Thread.sleep(2000)
         setTheme(R.style.AppTheme_Splash)
-        start()
-
-
-
 
 
         setContentView(R.layout.activity_main)
@@ -51,6 +53,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val ft = supportFragmentManager.beginTransaction()
         ft.replace(R.id.nav_host_fragment, Home_fragment())
         ft.commit()
+
 
     }
 
@@ -120,30 +123,34 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Log.d(TAG, "start() -> call")
         val dataStore = getSharedPreferences(UserData_SharedPreferences_name, Context.MODE_PRIVATE)
 
-        val local_uid = dataStore.getString("uid", null)
+        //val local_uid = dataStore.getString("uid", null)
+        val context = this
+        //Log.d(TAG, "local_uid: "+ local_uid)
 
-        if (local_uid != null){
-            uid = local_uid
-            Log.d(TAG, "uid: $uid")
 
-            firedb_register_login(this).cheak_user_data()
+        val auth = Firebase.auth
+
+        if (auth.uid != null){
+            Log.d(TAG, "uid: "+auth.uid)
+            uid = auth.uid
+
+            firedb_register_login(context).cheak_user_data()
         }else{
             val uuid = UUID.randomUUID().toString()
             //create_uid(uuid)
             Log.d(TAG, "create_user() -> call")
-
-            create_user()
-
-//            uid = sha256(uuid).substring(0, 24)
+            runBlocking {
+                create_user()
+            }
+            Log.d("Main", "uid: "+ uid)
             Log.d(TAG, uid.toString())
+            /*
             val editor: SharedPreferences.Editor = dataStore.edit()
             editor.putString("uid", uid)
             editor.commit()
-
-            val register_dialog_class = register_dialog(this)
+            */
+            val register_dialog_class = register_dialog(context)
             register_dialog_class.select_univarsity_rapper()
-
-
         }
     }
 }

@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import jp.hika019.kerkar_university.*
 import kotlinx.android.synthetic.main.activity_home.view.*
 import kotlinx.android.synthetic.main.item_home_activity_taimetable.view.*
+import kotlinx.coroutines.runBlocking
 import java.lang.Exception
 import java.util.*
 
@@ -25,15 +26,17 @@ class Home_fragment(): Fragment() {
                               container: ViewGroup?,
     savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.activity_home, container, false)
-
-        try{
-            load_timetable(view)
-            timetable_onclick_event(view)
-            load_task(view)
-            firedb_timetable(view.context).courses_is_none()
-        }catch (e: Exception){
-            Log.w(TAG, "start -> error")
+        runBlocking {
+            try{
+                load_timetable(view)
+                timetable_onclick_event(view)
+                load_task(view)
+                firedb_timetable(view.context).courses_is_none()
+            }catch (e: Exception){
+                Log.w(TAG, "start -> error")
+            }
         }
+
 
 
         view.floatingActionButton.setOnClickListener {
@@ -46,7 +49,7 @@ class Home_fragment(): Fragment() {
 
 
     private fun load_timetable(view: View){
-
+        Log.d(TAG, "load_timetable -> call")
         val user_doc = firedb.collection("user")
                 .document(uid!!)
 
@@ -87,6 +90,8 @@ class Home_fragment(): Fragment() {
                                     view.today_fourth_period.timetable_title_textView.text = timetable_data_map?.get(now_week_to_day+4)
                                     view.today_fifth_period.timetable_title_textView.text = timetable_data_map?.get(now_week_to_day+5)
                                 }
+                    }else{
+                        Log.w(TAG, "semester is null")
                     }
 
                 }

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.dialog_add_class_editer.view.*
 import kotlinx.android.synthetic.main.dialog_add_task.view.*
 import kotlinx.android.synthetic.main.dialog_add_university.view.*
+import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalTime
@@ -91,8 +92,6 @@ class register_dialog(val context: Context){
                         val firedb = firedb_register_login(context)
                         firedb.create_user_data(uid!!, university.toString(), university_id.toString())
 
-
-
 //                        val i = Intent(context, MainActivity::class.java)
 //                        context.startActivity(i)
                     }else{
@@ -103,7 +102,10 @@ class register_dialog(val context: Context){
                 .setNegativeButton("大学を追加"){ dialog, which->
                     create_university()
                 }
-        dialog.create().show()
+        runBlocking {
+            dialog.create().show()
+        }
+
     }
 
     fun create_university(){

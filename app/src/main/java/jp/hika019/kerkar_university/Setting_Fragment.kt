@@ -37,13 +37,9 @@ class Setting_Fragment: Fragment() {
     }
 
     fun uid_dialog(){
-
-        val uid_message = uid!!.substring(0, 6) + "-" +uid!!.substring(6, 12) + "-"+
-                uid!!.substring(12, 18) + "-" +uid!!.substring(18, 24) + "-"+uid!!.substring(24, 30)
-
         val dialog = AlertDialog.Builder(context)
                 .setTitle("ユーザID")
-                .setMessage(uid_message)
+                .setMessage(uid)
                 .setPositiveButton("ok"){ dialog, which ->
 
                 }

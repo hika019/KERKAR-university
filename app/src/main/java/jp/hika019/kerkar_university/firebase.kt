@@ -50,26 +50,46 @@ fun firedb_cheack_none_Timetable(context: Context){
         .get()
 }
 
-fun create_user(){
-    Log.d("StartActivity", "signInAnonymously -> success")
+fun create_user() {
+    Log.d("create_user", "signInAnonymously -> success")
     val auth = Firebase.auth
     runBlocking{
         auth.signInAnonymously()
             .addOnCompleteListener{ task ->
                 if(task.isSuccessful){
-                    Log.d("StartActivity", "signInAnonymously -> success")
-                    Log.d("StartActivity", auth.uid.toString())
-                    uid = auth.uid
-                    //Log.d("StartActivity", user.uid!!)
-
+                    Log.d("create_user", "signInAnonymously -> success")
+                    Log.d("create_user", auth.uid.toString())
+                    runBlocking {
+                        uid = auth.uid
+                    }
 
                 }else{
                     Log.w(TAG, "signInAnonymously -> failure")
                 }
             }
     }
-    Log.d("StartActivity", "aaaa")
+    Log.d("create_user", "create_user -> end")
+}
 
+fun set_uid(){
+    val auth = Firebase.auth
+    runBlocking {
+        auth.signInAnonymously()
+            .addOnCompleteListener{ login ->
+                Log.d("MainActivity", "hogee3")
+                runBlocking {
+                    if (login.isSuccessful){
+
+                        Log.d("MainActivity", "login -> success")
+                        runBlocking {
+                            uid = auth.uid
+                        }
+                    }else{
+                        Log.w("MainActivity", "login -> failure")
+                    }
+                }
+            }
+    }
 }
 
 class firedb_semester(val context: Context, val view: View){
@@ -133,7 +153,7 @@ class firedb_semester(val context: Context, val view: View){
 }
 
 class firedb_register_login(val context: Context){
-    private val TAG = "firedb_register_login"
+    private val TAG = "MainActivity_firedb_register_login"
 
     fun get_university_list(){
         var university_name_list: Array<String> = arrayOf()
@@ -141,8 +161,8 @@ class firedb_register_login(val context: Context){
         Log.d(TAG, "get_university_list -> call")
 
 //        Log.d("hoge", "data: ${university_name_list}")
-
-        firedb.collection("university")
+        runBlocking {
+            firedb.collection("university")
                 .addSnapshotListener { documents, error ->
                     if(error != null){
                         Log.w(TAG, "get_university_list -> failure", error)
@@ -161,6 +181,8 @@ class firedb_register_login(val context: Context){
                     Log.d(TAG, "get univer list")
                     register_dialog(context).select_univarsity(university_name_list, university_id_list)
                 }
+        }
+
 
     }
 
@@ -187,8 +209,8 @@ class firedb_register_login(val context: Context){
 
         var semester: Array<Int> = arrayOf()
         var nowsemester: String? = null
-
-        firedb.collection("semester")
+        runBlocking {
+            firedb.collection("semester")
                 .get()
                 .addOnSuccessListener {
                     for(item in it){
@@ -204,30 +226,35 @@ class firedb_register_login(val context: Context){
                     if(nowsemester != null){
 
                         val data = hashMapOf(
-                                "uid" to uid,
-                                "university" to university,
-                                "create_at" to time,
-                                "university_id" to university_id,
-                                "semester" to nowsemester
+                            "uid" to uid,
+                            "university" to university,
+                            "create_at" to time,
+                            "university_id" to university_id,
+                            "semester" to nowsemester
                         )
-
-                        firedb.collection("user")
+                        runBlocking {
+                            firedb.collection("user")
                                 .document(uid)
                                 .set(data)
                                 .addOnCompleteListener {
                                     Log.d(TAG, "create user_data -> Complete")
 
+
                                     //val i = Intent(context, MainActivity::class.java)
                                     //context.startActivity(i)
                                 }
+                        }
+
                     }else{
-                        Log.w(TAG, "nnowsemester is null!")
+                        Log.w(TAG, "nowsemester is null!")
                     }
 
                 }
                 .addOnFailureListener {
 
                 }
+        }
+
     }
 
     fun cheak_user_data(){
@@ -244,8 +271,8 @@ class firedb_register_login(val context: Context){
                     val university_id = it.getString("university_id")
 
                     if(create_at != null || semester != null || uid != null || university != null || university_id != null){
-                        val intent = Intent(context, MainActivity::class.java)
-                        context.startActivity(intent)
+                        //val intent = Intent(context, MainActivity::class.java)
+                        //context.startActivity(intent)
                     }else{
                         register_dialog(context).select_univarsity_rapper()
                     }
@@ -830,8 +857,11 @@ class firedb_task(val context: Context){
     }
 
     fun get_tomorrow_not_comp_task_list(view: View){
+        Log.d(TAG, "get_tomorrow_not_comp_task_list -> call")
         val user_doc = firedb.collection("user")
                 .document(uid!!)
+
+        Log.d(TAG, uid.toString())
 
         val cal = Calendar.getInstance()
         cal.time = Date()
@@ -856,8 +886,9 @@ class firedb_task(val context: Context){
 
                     user_doc.collection("semester")
 
-                    user_doc.collection("semester")
-                            .document(semester!!)
+                    if (semester != null) {
+                        user_doc.collection("semester")
+                            .document(semester)
                             .addSnapshotListener { value, error ->
                                 if (error != null) {
                                     Log.w(TAG, "get_tomorrow_not_comp_task_list -> get user class_data -> failure", error)
@@ -886,53 +917,53 @@ class firedb_task(val context: Context){
                                                 val course_id = class_data["course_id"] as String
 
                                                 firedb.collection("university")
-                                                        .document(university_id!!)
-                                                        .collection("semester")
-                                                        .document(semester!!)
-                                                        .collection(week + period)
-                                                        .document(course_id!!)
-                                                        .collection("task")
-                                                        .orderBy("time_limit")
-                                                        .addSnapshotListener { task_documents, error ->
-                                                            if (error != null) {
-                                                                Log.w(TAG, "get_tomorrow_not_comp_task_list -> get task_data (course_id:${course_id}) -> failure", error)
-                                                                return@addSnapshotListener
-                                                            }
-
-                                                            //課題取得
-                                                            for (task_item in task_documents!!.documentChanges) {
-                                                                val task_id = task_item.document.getString("task_id")
-                                                                var task_data = task_item.document.getData() as MutableMap<String, Any>
-
-                                                                task_data["class_data"] = class_data
-
-                                                                var time_limit = task_data["time_limit"] as String
-                                                                time_limit = time_limit.substring(0,10).replace("/", "")
-
-                                                                val time_limit_int = time_limit.toInt()
-
-
-//                                                                    Log.d("hoge", "int: ${time_limit_int}")
-//                                                                    Log.d("hoge", "to_int: ${tomorrow_int}")
-
-
-//                                                                    Log.d("hoge", "data: $task_data")
-                                                                if (!(all_comp_task.contains(task_id)) && time_limit_int <= tomorrow_int) {
-                                                                    task_list.add(task_data)
-                                                                }
-
-
-                                                                //表示
-                                                                Log.d(TAG, "tasks show to recyclerview")
-                                                                val adapter = Home_task_list_CustomAdapter(task_list, context, semester)
-                                                                val layoutManager = LinearLayoutManager(context)
-
-                                                                view.main_assignment_info_recyclerview.layoutManager = layoutManager
-                                                                view.main_assignment_info_recyclerview.adapter = adapter
-                                                                view.main_assignment_info_recyclerview.setHasFixedSize(true)
-
-                                                            }
+                                                    .document(university_id!!)
+                                                    .collection("semester")
+                                                    .document(semester!!)
+                                                    .collection(week + period)
+                                                    .document(course_id!!)
+                                                    .collection("task")
+                                                    .orderBy("time_limit")
+                                                    .addSnapshotListener { task_documents, error ->
+                                                        if (error != null) {
+                                                            Log.w(TAG, "get_tomorrow_not_comp_task_list -> get task_data (course_id:${course_id}) -> failure", error)
+                                                            return@addSnapshotListener
                                                         }
+
+                                                        //課題取得
+                                                        for (task_item in task_documents!!.documentChanges) {
+                                                            val task_id = task_item.document.getString("task_id")
+                                                            var task_data = task_item.document.getData() as MutableMap<String, Any>
+
+                                                            task_data["class_data"] = class_data
+
+                                                            var time_limit = task_data["time_limit"] as String
+                                                            time_limit = time_limit.substring(0,10).replace("/", "")
+
+                                                            val time_limit_int = time_limit.toInt()
+
+
+                //                                                                    Log.d("hoge", "int: ${time_limit_int}")
+                //                                                                    Log.d("hoge", "to_int: ${tomorrow_int}")
+
+
+                //                                                                    Log.d("hoge", "data: $task_data")
+                                                            if (!(all_comp_task.contains(task_id)) && time_limit_int <= tomorrow_int) {
+                                                                task_list.add(task_data)
+                                                            }
+
+
+                                                            //表示
+                                                            Log.d(TAG, "tasks show to recyclerview")
+                                                            val adapter = Home_task_list_CustomAdapter(task_list, context, semester)
+                                                            val layoutManager = LinearLayoutManager(context)
+
+                                                            view.main_assignment_info_recyclerview.layoutManager = layoutManager
+                                                            view.main_assignment_info_recyclerview.adapter = adapter
+                                                            view.main_assignment_info_recyclerview.setHasFixedSize(true)
+
+                                                        }
+                                                    }
                                             } else {
                                                 Log.d(TAG, "get_tomorrow_not_comp_task_list: class_data is null")
                                             }
@@ -942,6 +973,9 @@ class firedb_task(val context: Context){
                                     }
                                 }
                             }
+                    }else{
+                        Log.w(TAG, "semester is null")
+                    }
 
 
 
