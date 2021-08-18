@@ -10,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import jp.hika019.kerkar_university.R
 import jp.hika019.kerkar_university.Setting_Fragment
+import jp.hika019.kerkar_university.setup_dialog
 
 class SetupActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private val TAG = "Setup_Activity"
@@ -33,3 +34,5 @@ class SetupActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 }
+
+class setup(): setup_dialog()

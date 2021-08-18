@@ -19,7 +19,9 @@ class LoadActivity: AppCompatActivity() {
         Thread.sleep(200)
         setContentView(R.layout.activity_load)
 
-        start()
+        val setup_class = setup()
+
+        setup_class.start(this)
         
 
     }
@@ -28,9 +30,6 @@ class LoadActivity: AppCompatActivity() {
 
     private fun start() {
         Log.d(TAG, "start() -> call")
-        val dataStore = getSharedPreferences(UserData_SharedPreferences_name, Context.MODE_PRIVATE)
-
-        //val local_uid = dataStore.getString("uid", null)
         val context = this
         //Log.d(TAG, "local_uid: "+ local_uid)
 
@@ -51,11 +50,7 @@ class LoadActivity: AppCompatActivity() {
             }
             Log.d("Main", "uid: "+ uid)
             Log.d(TAG, uid.toString())
-            /*
-            val editor: SharedPreferences.Editor = dataStore.edit()
-            editor.putString("uid", uid)
-            editor.commit()
-            */
+
             firedb_register_login(this).get_university_list_LoadActivity()
         }
     }

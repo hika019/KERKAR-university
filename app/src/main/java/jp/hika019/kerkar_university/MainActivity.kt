@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         if (fragment != null){
             val ft = supportFragmentManager.beginTransaction()
-            ft.replace(R.id.setup_host_fragment, fragment)
+            ft.replace(R.id.main_host_fragment, fragment)
             ft.commit()
         }
         drawer_layout.closeDrawer(GravityCompat.START)

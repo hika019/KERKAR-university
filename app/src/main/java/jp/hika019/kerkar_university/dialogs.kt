@@ -59,6 +59,28 @@ fun none_Timetable(context: Context){
     dialog.show()
 }
 
+open class setup_dialog(): firedb_setup(){
+    private val TAG = "setup_dialog"
+
+    fun create_university(context: Context){
+        Log.d(TAG, "create_university -> call")
+
+        val dialog_layout = LayoutInflater.from(context).inflate(R.layout.dialog_add_university, null)
+        val dialog = AlertDialog.Builder(context)
+            .setTitle("大学の追加")
+            .setCancelable(false)
+            .setView(dialog_layout)
+            .setPositiveButton("登録"){dialog, which ->
+                val university_name = dialog_layout.univarsity_edittext.text.toString()
+                if (!(university_name.isNullOrEmpty())) create_university(university_name)
+            }
+            .setNegativeButton("キャンセル"){dialog, which ->
+            }
+
+        dialog.show()
+
+    }
+}
 
 open class register_dialog(open val context: Context){
     open val TAG = ""

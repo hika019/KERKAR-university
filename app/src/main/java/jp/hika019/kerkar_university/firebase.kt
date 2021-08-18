@@ -16,6 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.ktx.Firebase
+import jp.hika019.kerkar_university.Setup.SetupActivity
 import kotlinx.android.synthetic.main.activity_home.view.*
 import kotlinx.android.synthetic.main.activity_task_list.view.*
 import kotlinx.android.synthetic.main.activity_timetable.view.*
@@ -150,16 +151,183 @@ class firedb_semester(val context: Context, val view: View){
     }
 }
 
-class firedb_Setup(){
-    private val TAG = "firedb_Setup"
-    private val context: Context? = null
+open class firedb_setup(){
+    private val TAG = "firedb_setup"
 
-    fun get_university_list(){
+    fun start(context: Context) {
+        Log.d(TAG, "start() -> call")
+        //Log.d(TAG, "local_uid: "+ local_uid)
 
+
+        val auth = Firebase.auth
+
+        if (auth.uid != null){
+            Log.d(TAG, "uid: "+auth.uid)
+            uid = auth.uid
+
+            cheak_user_data(context)
+        }else{
+            val uuid = UUID.randomUUID().toString()
+            //create_uid(uuid)
+            Log.d(TAG, "create_user() -> call")
+            runBlocking {
+                create_user()
+            }
+            Log.d("Main", "uid: "+ uid)
+            Log.d(TAG, uid.toString())
+
+            //firedb_register_login(this).get_university_list_LoadActivity()
+        }
+    }
+
+    fun set_uid(){
+        val auth = Firebase.auth
+        runBlocking {
+            auth.signInAnonymously()
+                .addOnCompleteListener{ login ->
+                    Log.d("MainActivity", "hogee3")
+                    runBlocking {
+                        if (login.isSuccessful){
+
+                            Log.d("MainActivity", "login -> success")
+                            runBlocking {
+                                uid = auth.uid
+                            }
+                        }else{
+                            Log.w("MainActivity", "login -> failure")
+                        }
+                    }
+                }
+        }
+    }
+
+    fun create_user() {
+        Log.d("create_user", "signInAnonymously -> success")
+        val auth = Firebase.auth
+        runBlocking{
+            auth.signInAnonymously()
+                .addOnCompleteListener{ task ->
+                    if(task.isSuccessful){
+                        Log.d("create_user", "signInAnonymously -> success")
+                        Log.d("create_user", auth.uid.toString())
+                        runBlocking {
+                            uid = auth.uid
+                        }
+
+                    }else{
+                        Log.w(TAG, "signInAnonymously -> failure")
+                    }
+                }
+        }
+        Log.d("create_user", "create_user -> end")
+    }
+
+    fun create_university(university_name: String){
+        Log.d(TAG, "create_university -> call")
+
+        val doc_id = firedb.collection("university")
+            .document()
+
+        val data = hashMapOf(
+            "university" to university_name,
+            "university_id" to doc_id.id
+        )
+
+        doc_id.set(data)
+            .addOnCompleteListener{
+                Log.d(TAG, "create university -> Complete")
+                if (it.isSuccessful) Log.d(TAG, "create university -> Successful")
+                else Log.w(TAG, "create university -> Failure")
+            }
+    }
+
+    fun create_user_data(context: Context,  university: String, university_id: String){
+
+        Log.d(TAG, "create_user_data -> call")
+
+        var semester: Array<Int> = arrayOf()
+        var nowsemester: String? = null
+        runBlocking {
+            firedb.collection("semester")
+                .get()
+                .addOnSuccessListener {
+                    for(item in it){
+                        semester += item.id.toInt()
+//                        Log.d("hoge", "semester: ${item.id}")
+
+
+                    }
+                    Log.d(TAG, "semester: ${semester}")
+                    nowsemester = semester.maxOrNull().toString()
+
+                    val time = SimpleDateFormat("yyyy/MM/dd HH:mm").format(Date())
+                    if(nowsemester != null){
+
+                        val data = hashMapOf(
+                            "uid" to uid,
+                            "university" to university,
+                            "create_at" to time,
+                            "university_id" to university_id,
+                            "semester" to nowsemester
+                        )
+
+                        firedb.collection("user")
+                            .document(uid!!)
+                            .set(data)
+                            .addOnCompleteListener {
+                                Log.d(TAG, "create user_data -> Complete")
+
+
+                                val intent = Intent(context, MainActivity::class.java)
+                                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                context.startActivity(intent)
+                            }
+
+                    }else{
+                        Log.w(TAG, "nowsemester is null!")
+                    }
+
+                }
+                .addOnFailureListener {
+
+                }
+        }
+
+    }
+
+    fun cheak_user_data(context: Context){
+
+        Log.d(TAG, "cheak_user_data -> call")
+        firedb.collection("user")
+            .document(uid!!)
+            .get()
+            .addOnSuccessListener {
+                val create_at = it.getString("create_at")
+                val semester = it.get("semester")
+                val uid = it.getString("uid")
+                val university = it.getString("university")
+                val university_id = it.getString("university_id")
+
+                if(create_at != null || semester != null || uid != null || university != null || university_id != null){
+                    val intent = Intent(context, MainActivity::class.java)
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    context.startActivity(intent)
+
+                }else{
+                    val intent = Intent(context, SetupActivity::class.java)
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    context.startActivity(intent)
+                }
+
+            }
+            .addOnFailureListener {
+                Log.w(TAG, "cheak_user_data -> Failure")
+            }
     }
 
 
 }
+
 
 class firedb_register_login(override val context: Context): register_dialog(context){
     override val TAG = "MainActivity_firedb_register_login"
@@ -242,17 +410,7 @@ class firedb_register_login(override val context: Context): register_dialog(cont
                             "semester" to nowsemester
                         )
                         runBlocking {
-                            firedb.collection("user")
-                                .document(uid)
-                                .set(data)
-                                .addOnCompleteListener {
-                                    Log.d(TAG, "create user_data -> Complete")
 
-
-                                    val intent = Intent(context, MainActivity::class.java)
-                                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                                    context.startActivity(intent)
-                                }
                         }
 
                     }else{
