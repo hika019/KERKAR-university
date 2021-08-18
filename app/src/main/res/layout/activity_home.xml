@@ -8,7 +8,7 @@
     android:background="@android:color/white">
 
     <View
-        android:id="@+id/view"
+        android:id="@+id/today_courses"
         android:layout_width="0dp"
         android:layout_height="150dp"
         android:layout_marginTop="8dp"
@@ -25,8 +25,8 @@
         android:layout_marginTop="8dp"
         android:text="@string/timetable_to_day"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toTopOf="@+id/view" />
+        app:layout_constraintStart_toStartOf="@+id/today_courses"
+        app:layout_constraintTop_toTopOf="@+id/today_courses" />
 
     <View
         android:id="@+id/main_assignment_info_veiw"
@@ -41,7 +41,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
+        app:layout_constraintTop_toBottomOf="@+id/today_courses" />
 
     <TextView
         android:id="@+id/main_assignment_info_textveiw"
@@ -90,9 +90,9 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@+id/view"
-        app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintBottom_toBottomOf="@+id/today_courses"
+        app:layout_constraintEnd_toEndOf="@+id/today_courses"
+        app:layout_constraintStart_toStartOf="@+id/today_courses"
         app:layout_constraintTop_toBottomOf="@+id/today_timetable_textview">
 
         <LinearLayout

@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.activity_home.view.*
 import kotlinx.android.synthetic.main.activity_task_list.view.*
 import kotlinx.android.synthetic.main.activity_timetable.view.*
 import kotlinx.coroutines.runBlocking
+import java.lang.Exception
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -123,9 +124,9 @@ open class firedb_setup(){
             //create_uid(uuid)
             Log.d(TAG, "create_user() -> call")
             runBlocking {
-                create_user()
+                create_user(context)
             }
-            Log.d("Main", "uid: "+ uid)
+            //Log.d("Main", "uid: "+ uid)
             Log.d(TAG, uid.toString())
 
             //firedb_register_login(this).get_university_list_LoadActivity()
@@ -153,17 +154,23 @@ open class firedb_setup(){
         }
     }
 
-    fun create_user() {
-        Log.d("create_user", "signInAnonymously -> success")
+    fun create_user(context: Context) {
+        Log.d(TAG, "signInAnonymously -> success")
         val auth = Firebase.auth
         runBlocking{
             auth.signInAnonymously()
                 .addOnCompleteListener{ task ->
                     if(task.isSuccessful){
-                        Log.d("create_user", "signInAnonymously -> success")
-                        Log.d("create_user", auth.uid.toString())
-                        runBlocking {
+                        Log.d(TAG, "signInAnonymously -> success")
+                        Log.d(TAG, auth.uid.toString())
+
+                        try{
                             uid = auth.uid
+                            cheak_user_data(context)
+
+                        }catch (e: Exception){
+                            Toast.makeText(context, "error: "+e.message, Toast.LENGTH_LONG)
+                            Log.w(TAG, "error: "+e.message)
                         }
 
                     }else{
@@ -171,7 +178,7 @@ open class firedb_setup(){
                     }
                 }
         }
-        Log.d("create_user", "create_user -> end")
+        Log.d(TAG, "create_user -> end")
     }
 
     fun create_university(university_name: String){
@@ -376,35 +383,6 @@ class firedb_register_login(override val context: Context): register_dialog(cont
         }
 
     }
-
-    fun cheak_user_data(){
-
-        Log.d(TAG, "cheak_user_data -> call")
-        firedb.collection("user")
-                .document(uid!!)
-                .get()
-                .addOnSuccessListener {
-                    val create_at = it.getString("create_at")
-                    val semester = it.get("semester")
-                    val uid = it.getString("uid")
-                    val university = it.getString("university")
-                    val university_id = it.getString("university_id")
-
-                    if(create_at != null || semester != null || uid != null || university != null || university_id != null){
-                        val intent = Intent(context, MainActivity::class.java)
-                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        context.startActivity(intent)
-
-                    }else{
-                        get_university_list_LoadActivity()
-                    }
-
-                }
-            .addOnFailureListener {
-                Log.w(TAG, "cheak_user_data -> Failure")
-            }
-    }
-
 
 
 }
