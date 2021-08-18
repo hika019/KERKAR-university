@@ -1,24 +1,23 @@
-package jp.hika019.kerkar_university
+package jp.hika019.kerkar_university.Setup
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import jp.hika019.kerkar_university.*
 import kotlinx.coroutines.runBlocking
-import java.sql.Time
 import java.util.*
 
 
-class StartActivity: AppCompatActivity() {
+class LoadActivity: AppCompatActivity() {
     val TAG = "StartActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppTheme_Splash)
         Thread.sleep(200)
-        setContentView(R.layout.activity_start)
+        setContentView(R.layout.activity_load)
 
         start()
         
@@ -57,7 +56,7 @@ class StartActivity: AppCompatActivity() {
             editor.putString("uid", uid)
             editor.commit()
             */
-            firedb_register_login(this).get_university_list()
+            firedb_register_login(this).get_university_list_LoadActivity()
         }
     }
 }

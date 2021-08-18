@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.auth.FirebaseAuth
 import jp.hika019.kerkar_university.Home.Home_task_list_CustomAdapter
 import jp.hika019.kerkar_university.Task.task_cmp_list_CustomAdapter
 import jp.hika019.kerkar_university.Task.task_notcmp_list_CustomAdapter
@@ -17,7 +16,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.ktx.Firebase
-import jp.hika019.kerkar_university.Home.Home_fragment
 import kotlinx.android.synthetic.main.activity_home.view.*
 import kotlinx.android.synthetic.main.activity_task_list.view.*
 import kotlinx.android.synthetic.main.activity_timetable.view.*
@@ -152,10 +150,21 @@ class firedb_semester(val context: Context, val view: View){
     }
 }
 
+class firedb_Setup(){
+    private val TAG = "firedb_Setup"
+    private val context: Context? = null
+
+    fun get_university_list(){
+
+    }
+
+
+}
+
 class firedb_register_login(override val context: Context): register_dialog(context){
     override val TAG = "MainActivity_firedb_register_login"
 
-    fun get_university_list(){
+    fun get_university_list_LoadActivity(){
         var university_name_list: Array<String> = arrayOf()
         var university_id_list: Array<String> = arrayOf()
         Log.d(TAG, "get_university_list -> call")
@@ -277,7 +286,7 @@ class firedb_register_login(override val context: Context): register_dialog(cont
                         context.startActivity(intent)
 
                     }else{
-                        get_university_list()
+                        get_university_list_LoadActivity()
                     }
 
                 }

@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.dialog_add_university.view.*
 import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.time.LocalTime
 import java.util.*
 
 fun error_college_upload_dialog(context: Context){
@@ -66,7 +65,7 @@ open class register_dialog(open val context: Context){
 
     fun select_univarsity_rapper(){
         Log.d(TAG, "select_univarsity_rapper -> call")
-        firedb_register_login(context).get_university_list()
+        firedb_register_login(context).get_university_list_LoadActivity()
     }
 
 
