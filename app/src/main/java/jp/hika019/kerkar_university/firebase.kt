@@ -174,6 +174,7 @@ open class firedb_setup(){
                         }
 
                     }else{
+                        Toast.makeText(context, "error: Can't sign in", Toast.LENGTH_LONG)
                         Log.w(TAG, "signInAnonymously -> failure")
                     }
                 }
