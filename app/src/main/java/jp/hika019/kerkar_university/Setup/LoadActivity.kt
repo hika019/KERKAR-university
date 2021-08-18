@@ -20,38 +20,7 @@ class LoadActivity: AppCompatActivity() {
         setContentView(R.layout.activity_load)
 
         val setup_class = setup()
-
         setup_class.start(this)
-        
 
-    }
-
-
-
-    private fun start() {
-        Log.d(TAG, "start() -> call")
-        val context = this
-        //Log.d(TAG, "local_uid: "+ local_uid)
-
-
-        val auth = Firebase.auth
-
-        if (auth.uid != null){
-            Log.d(TAG, "uid: "+auth.uid)
-            uid = auth.uid
-
-            firedb_register_login(context).cheak_user_data()
-        }else{
-            val uuid = UUID.randomUUID().toString()
-            //create_uid(uuid)
-            Log.d(TAG, "create_user() -> call")
-            runBlocking {
-                create_user()
-            }
-            Log.d("Main", "uid: "+ uid)
-            Log.d(TAG, uid.toString())
-
-            firedb_register_login(this).get_university_list_LoadActivity()
-        }
     }
 }

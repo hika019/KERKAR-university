@@ -125,31 +125,4 @@ class Home_fragment(): Fragment() {
         context?.let { firedb_task(it).get_tomorrow_not_comp_task_list(view) }
     }
 
-    private fun start(view: View){
-        Log.d(TAG, "start() -> call")
-        val dataStore = view.context.getSharedPreferences(UserData_SharedPreferences_name, Context.MODE_PRIVATE)
-
-        val local_uid = dataStore.getString("uid", null)
-
-
-        if (local_uid != null){
-            uid = local_uid
-            Log.d(TAG, "uid: $uid")
-
-            firedb_register_login(view.context).cheak_user_data()
-        }else{
-            val uuid = UUID.randomUUID().toString()
-            create_uid(uuid)
-
-//            uid = sha256(uuid).substring(0, 24)
-            Log.d(TAG, uid!!)
-
-            val editor: SharedPreferences.Editor = dataStore.edit()
-            editor.putString("uid", uid)
-            editor.commit()
-
-            val register_dialog_class = register_dialog(view.context)
-            register_dialog_class.select_univarsity_rapper()
-        }
-    }
 }

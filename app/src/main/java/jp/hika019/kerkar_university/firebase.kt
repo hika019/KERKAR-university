@@ -43,54 +43,6 @@ fun login_cheack(): Boolean {
     return cheack_user != null
 }
 
-fun firedb_cheack_none_Timetable(context: Context){
-    firedb.collection("user")
-        .document(uid!!)
-        .get()
-}
-
-fun create_user() {
-    Log.d("create_user", "signInAnonymously -> success")
-    val auth = Firebase.auth
-    runBlocking{
-        auth.signInAnonymously()
-            .addOnCompleteListener{ task ->
-                if(task.isSuccessful){
-                    Log.d("create_user", "signInAnonymously -> success")
-                    Log.d("create_user", auth.uid.toString())
-                    runBlocking {
-                        uid = auth.uid
-                    }
-
-                }else{
-                    Log.w(TAG, "signInAnonymously -> failure")
-                }
-            }
-    }
-    Log.d("create_user", "create_user -> end")
-}
-
-fun set_uid(){
-    val auth = Firebase.auth
-    runBlocking {
-        auth.signInAnonymously()
-            .addOnCompleteListener{ login ->
-                Log.d("MainActivity", "hogee3")
-                runBlocking {
-                    if (login.isSuccessful){
-
-                        Log.d("MainActivity", "login -> success")
-                        runBlocking {
-                            uid = auth.uid
-                        }
-                    }else{
-                        Log.w("MainActivity", "login -> failure")
-                    }
-                }
-            }
-    }
-}
-
 class firedb_semester(val context: Context, val view: View){
     val TAG = "firedb_semester"
 
