@@ -20,25 +20,9 @@ class LoadActivity: AppCompatActivity() {
         Thread.sleep(200)
         setContentView(R.layout.activity_load)
 
-        if (Intent.ACTION_PACKAGE_FULLY_REMOVED.equals(intent.action)){
-            val uid = Firebase.auth.uid
-
-            if (uid != null) {
-                firedb.collection("user")
-                    .document(uid)
-                    .delete()
-                    .addOnSuccessListener {
-                        Log.d(TAG, "user data delete -> success")
-                    }
-                    .addOnFailureListener {e ->
-                        Log.w(TAG, "user data delete -> failure", e)
-                    }
-            }
-        }
-
 
         val setup_class = setup()
         setup_class.start(this)
 
-            }
+    }
 }

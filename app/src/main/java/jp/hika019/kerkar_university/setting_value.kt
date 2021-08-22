@@ -13,3 +13,5 @@ var uid: String? = null
 val UserData_SharedPreferences_name = "UserDataStore"
 
 var semester: String? = null
+var university_id: String? = null
+
