@@ -72,7 +72,7 @@ open class setup_dialog(): firedb_setup(){
             .setView(dialog_layout)
             .setPositiveButton("登録"){dialog, which ->
                 val university_name = dialog_layout.univarsity_edittext.text.toString()
-                if (!(university_name.isNullOrEmpty())) create_university(context, university_name)
+                if (university_name != "" || university_name == "null") create_university(context, university_name)
             }
             .setNegativeButton("キャンセル"){dialog, which ->
             }

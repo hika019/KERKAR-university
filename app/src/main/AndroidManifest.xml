@@ -26,8 +26,17 @@
 
 
         <activity android:name=".MainActivity">
-
         </activity>
+
+        <receiver android:name=".Uninstall">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

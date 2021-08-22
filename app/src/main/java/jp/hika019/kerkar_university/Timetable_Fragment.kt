@@ -146,8 +146,6 @@ class Timetable_Fragment(): Fragment() {
     }
 
 
-
-
     private fun timetable_onclick_event(view: View){
 
         val firedb_timetable = context?.let { firedb_timetable(it) }

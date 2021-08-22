@@ -64,6 +64,11 @@ class Setting_Fragment: Fragment() {
         val layout = LayoutInflater.from(context).inflate(R.layout.dialog_enter_uid, null)
 
         val dialog = AlertDialog.Builder(context)
+                .setTitle("未実装機能")
+                .setMessage("しばらくしたら実装されます")
+
+        /*
+        val dialog = AlertDialog.Builder(context)
                 .setTitle("データを引き継ぐ")
                 .setView(layout)
                 .setPositiveButton("引き継ぐ"){dialog, which ->
@@ -86,7 +91,7 @@ class Setting_Fragment: Fragment() {
                     }
 
 
-                }
+                }*/
 
         dialog.create().show()
     }

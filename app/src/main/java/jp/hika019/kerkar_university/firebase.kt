@@ -503,37 +503,53 @@ class firedb_timetable(val context: Context){
 
     fun get_course_data(week_to_day: String, period: Int){
         var str: String? = null
-
+        Log.d(TAG, "get_course_data -> call")
         val user_doc = firedb.collection("user")
                 .document(uid!!)
         user_doc.get()
                 .addOnSuccessListener {
 
                     val semester = it.getString("semester")
+                    val university_id = it.getString("university_id")
 
                     if (semester != null) {
+
                         user_doc.collection("semester")
                                 .document(semester)
                                 .get()
                                 .addOnSuccessListener {
-                                    Log.d(TAG, "get_course_data${week_to_day + period} -> success")
+                                    Log.d(TAG, "get_course_data(user)${week_to_day + period} -> success")
+
                                     val raw_data = it.get(week_to_day+period) as? Map<String, Any>
+                                    val course_id = raw_data?.get("course_id") as? String
+                                    Log.d(TAG, course_id.toString())
 
-                                    val course_id = raw_data as? String
-                                    //Log.d("TAG", "hoge: "+course_id.toString())
-
-
-                                    if (raw_data != null){
-                                        str = course_data_map_to_str(raw_data as Map<String, Any>)
-                                    }else{
-                                        str = "授業が登録されていません"
-                                    }
-
-                                    timetable_dialog(context).timetable_data_dialog(week_to_day, period, str)
+                                    firedb.collection("university")
+                                        .document(university_id!!)
+                                        .collection("semester")
+                                        .document(semester)
+                                        .collection(week_to_day+period)
+                                        .document(course_id!!)
+                                        .get()
+                                        .addOnSuccessListener {
+                                            Log.d(TAG, "get_course_data${week_to_day + period} -> success")
+                                            val data = it.data
+                                            if (data != null){
+                                                str = course_data_map_to_str(data as Map<String, Any>)
+                                            }else{
+                                                str = "授業が登録されていません"
+                                            }
+                                            timetable_dialog(context).timetable_data_dialog(week_to_day, period, str)
+                                        }
+                                        .addOnFailureListener {
+                                            Log.w(TAG, "get_course_data(university)${week_to_day + period} -> failure")
+                                            Toast.makeText(context, "通信エラー", Toast.LENGTH_SHORT).show()
+                                        }
 
                                 }
                                 .addOnFailureListener {
-                                    Log.d(TAG, "get_course_data${week_to_day + period} -> failure")
+                                    Log.w(TAG, "get_course_data(user)${week_to_day + period} -> failure")
+                                    Toast.makeText(context, "通信エラー", Toast.LENGTH_SHORT).show()
                                 }
                     }
                 }
