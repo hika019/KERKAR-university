@@ -25,25 +25,7 @@ fun error_college_upload_dialog(context: Context){
             .show()
 }
 
-fun select_semester_dialog(view: View, context: Context, semester_list: Array<String>, semester_id_list: Array<String>){
 
-    Log.d("dialog", "select_semester_dialog -> call")
-
-    var semester_id = ""
-    val dialog = AlertDialog.Builder(context)
-            .setTitle("学期選択")
-            .setSingleChoiceItems(semester_list, -1){dialog, which ->
-                semester_id = semester_id_list[which]
-            }
-            .setPositiveButton("OK"){ dialog, which ->
-                if(semester_id != ""){
-                    firedb_semester(context, view).change_user_semester(semester_id)
-                }else{
-                    false
-                }
-            }
-    dialog.show()
-}
 
 fun none_Timetable(context: Context){
 

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import jp.hika019.kerkar_university.Home.Home_task_list_CustomAdapter
@@ -48,9 +49,6 @@ fun login_cheack(): Boolean {
 class firedb_semester(val context: Context, val view: View){
     val TAG = "firedb_semester"
 
-    fun get_semester_type(){
-
-    }
 
     fun get_semester_list(){
         Log.d(TAG, "get_semester_list -> call")
@@ -66,21 +64,18 @@ class firedb_semester(val context: Context, val view: View){
                         semester_id_list += item.id
                         semester_name_list += item.getString("title")!!
                     }
-                    select_semester_dialog(view, context, semester_name_list, semester_id_list)
+                    select_semester_dialog(semester_name_list, semester_id_list)
 
                 }
     }
 
-    fun change_user_semester(semester: String){
+    fun change_user_semester(semester_id: String){
         Log.d(TAG, "change_user_semester -> call")
         firedb.collection("user")
                 .document(uid!!)
-                .update("semester", semester)
+                .update("semester", semester_id)
                 .addOnSuccessListener {
-                    firedb.collection("user")
-                            .document(uid!!)
-                            .collection("semester")
-                            .document(semester)
+                    semester = semester_id
                     Log.d(TAG, "change_user_semester -> success")
                     get_semester_title()
                 }
@@ -90,22 +85,32 @@ class firedb_semester(val context: Context, val view: View){
     }
 
     fun get_semester_title(){
-        firedb.collection("user")
-                .document(uid!!)
-                .get()
-                .addOnSuccessListener {
-                    val semester_id = it.getString("semester")
+        firedb.collection("semester")
+            .document(semester!!)
+            .get()
+            .addOnSuccessListener {
+                view.semester_textView.text = it.getString("title")
+            }
+    }
 
-                    if (semester_id != null) {
-                        firedb.collection("semester")
-                                .document(semester_id)
-                                .get()
-                                .addOnSuccessListener {
-                                    view.semester_textView.text = it.getString("title")
-                                }
-                    }
+    fun select_semester_dialog(semester_list: Array<String>, semester_id_list: Array<String>){
 
+        Log.d("dialog", "select_semester_dialog -> call")
+
+        var semester_id = ""
+        val dialog = AlertDialog.Builder(context)
+            .setTitle("学期選択")
+            .setSingleChoiceItems(semester_list, -1){dialog, which ->
+                semester_id = semester_id_list[which]
+            }
+            .setPositiveButton("OK"){ dialog, which ->
+                if(semester_id != ""){
+                    change_user_semester(semester_id)
+                }else{
+                    false
                 }
+            }
+        dialog.show()
     }
 }
 
