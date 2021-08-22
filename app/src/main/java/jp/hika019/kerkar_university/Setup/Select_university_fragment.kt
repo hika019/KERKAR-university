@@ -66,7 +66,10 @@ class Select_university_fragment(): Fragment() {
                 val adapter = Select_university_list_CustopmAdapter(university_name_list, university_id_list, view.context)
                 val layouManager = LinearLayoutManager(view.context)
                 view.select_university_recycle_view.layoutManager = layouManager
-                view.select_university_recycle_view.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+                if (!(university_name_list.isNullOrEmpty())){
+                    view.select_university_recycle_view.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+
+                }
                 view.select_university_recycle_view.adapter = adapter
                 view.select_university_recycle_view.setHasFixedSize(true)
             }

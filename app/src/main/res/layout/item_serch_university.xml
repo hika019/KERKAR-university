@@ -23,5 +23,5 @@
         android:layout_weight="5"
         android:gravity="start"
         android:text="大学名"
-        android:textSize="30sp" />
+        android:textSize="24sp" />
 </androidx.appcompat.widget.LinearLayoutCompat>

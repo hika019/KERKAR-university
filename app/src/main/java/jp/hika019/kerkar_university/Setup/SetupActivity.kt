@@ -1,5 +1,6 @@
 package jp.hika019.kerkar_university.Setup
 
+import android.content.Context
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
@@ -27,6 +28,9 @@ class SetupActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val ft = supportFragmentManager.beginTransaction()
         ft.replace(R.id.setup_host_fragment, Select_university_fragment())
         ft.commit()
+
+
+
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -35,4 +39,8 @@ class SetupActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 }
 
-class setup(): setup_dialog()
+class setup(): setup_dialog(){
+    fun hoge(context: Context){
+
+    }
+}

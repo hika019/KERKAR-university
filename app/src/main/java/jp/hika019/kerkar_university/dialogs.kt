@@ -72,7 +72,7 @@ open class setup_dialog(): firedb_setup(){
             .setView(dialog_layout)
             .setPositiveButton("登録"){dialog, which ->
                 val university_name = dialog_layout.univarsity_edittext.text.toString()
-                if (!(university_name.isNullOrEmpty())) create_university(university_name)
+                if (!(university_name.isNullOrEmpty())) create_university(context, university_name)
             }
             .setNegativeButton("キャンセル"){dialog, which ->
             }
@@ -429,13 +429,16 @@ class task_dialog(val context: Context){
                             title != null){
 
                         val set_day = task_dialog_second.dialog_deadline_day.text.toString().split("/")
-                        val today = LocalDate.now().toString().split("-")
+
+                        val d = Date() // 現在時刻
+                        val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm")
+                        //val today = LocalDate.now().toString().split("-")
 
                         Log.d("hoge", "set day ->${set_day}")
-                        Log.d("hoge", "today ->${today}")
+                        //Log.d("hoge", "today ->${today}")
 
-                        if(day_cheack(today, set_day)){
-
+                        //if(day_cheack(today, set_day)){
+                        if(true){
                             val data = hashMapOf(
                                     "day" to task_dialog_second.dialog_deadline_day.text.toString(),
                                     "time" to task_dialog_second.dialog_deadline_time.text.toString(),

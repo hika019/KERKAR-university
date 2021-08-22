@@ -40,16 +40,7 @@
             android:layout_height="0dp"
             android:layout_weight="0.6"
             android:gravity="center|right"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/next_Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="32dp"
-                android:text="Next" />
-        </LinearLayout>
+            android:orientation="vertical"/>
 
     </LinearLayout>
 

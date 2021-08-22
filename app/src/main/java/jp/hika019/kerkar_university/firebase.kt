@@ -1,5 +1,6 @@
 package jp.hika019.kerkar_university
 
+import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -46,6 +47,10 @@ fun login_cheack(): Boolean {
 
 class firedb_semester(val context: Context, val view: View){
     val TAG = "firedb_semester"
+
+    fun get_semester_type(){
+
+    }
 
     fun get_semester_list(){
         Log.d(TAG, "get_semester_list -> call")
@@ -182,7 +187,7 @@ open class firedb_setup(){
         Log.d(TAG, "create_user -> end")
     }
 
-    fun create_university(university_name: String){
+    fun create_university(context: Context, university_name: String){
         Log.d(TAG, "create_university -> call")
 
         val doc_id = firedb.collection("university")
@@ -196,7 +201,10 @@ open class firedb_setup(){
         doc_id.set(data)
             .addOnCompleteListener{
                 Log.d(TAG, "create university -> Complete")
-                if (it.isSuccessful) Log.d(TAG, "create university -> Successful")
+                if (it.isSuccessful) {
+                    Log.d(TAG, "create university -> Successful")
+                    create_user_data(context, university_name, doc_id.id)
+                }
                 else Log.w(TAG, "create university -> Failure")
             }
     }
@@ -272,6 +280,7 @@ open class firedb_setup(){
                     val intent = Intent(context, MainActivity::class.java)
                         .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     context.startActivity(intent)
+
 
                 }else{
                     val intent = Intent(context, SetupActivity::class.java)
@@ -508,7 +517,11 @@ class firedb_timetable(val context: Context){
                                 .get()
                                 .addOnSuccessListener {
                                     Log.d(TAG, "get_course_data${week_to_day + period} -> success")
-                                    val raw_data = it.get(week_to_day+period)
+                                    val raw_data = it.get(week_to_day+period) as? Map<String, Any>
+
+                                    val course_id = raw_data as? String
+                                    //Log.d("TAG", "hoge: "+course_id.toString())
+
 
                                     if (raw_data != null){
                                         str = course_data_map_to_str(raw_data as Map<String, Any>)

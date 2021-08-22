@@ -11,3 +11,5 @@ val period_list:List<Int> = List(5){it +1}
 var uid: String? = null
 
 val UserData_SharedPreferences_name = "UserDataStore"
+
+var semester: String? = null

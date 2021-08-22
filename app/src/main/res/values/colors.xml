@@ -14,4 +14,7 @@
 
     <color name="setting_gray">#E4E4E4</color>
 
+    <color name="logo_color">#32CD99</color>
+    <color name="logo_color2">#339C64</color>
+
 </resources>
