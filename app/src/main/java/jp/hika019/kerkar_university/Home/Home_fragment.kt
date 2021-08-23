@@ -101,6 +101,10 @@ class Home_fragment(): Fragment() {
                 }
     }
 
+    private fun show_timetable(view: View, week_to_day: String, course_name: String){
+
+    }
+
     private fun timetable_onclick_event(view: View){
         val firedb_timetable = context?.let { firedb_timetable(it) }
 
