@@ -53,56 +53,69 @@ class Home_fragment(): Fragment() {
         val user_doc = firedb.collection("user")
                 .document(uid!!)
 
-        user_doc.get()
-                .addOnSuccessListener {
-                    val semester = it.getString("semester")
-                    Log.d(TAG, "load_timetable: get semester -> success")
+        user_doc.addSnapshotListener { value, error ->
+            if(error != null){
+                Log.w(TAG, "Listen failed.", error)
+                return@addSnapshotListener
+            }
+            if(value != null){
+                semester = value.getString("semester")
 
-                    if(semester != null){
-                        user_doc.collection("semester")
-                                .document(semester)
-                                .addSnapshotListener { value, error ->
-                                    if(error != null){
-                                        Log.w(TAG, "Home_fragment -> load_timetable -> get timetable -> failed", error)
-                                        return@addSnapshotListener
-                                    }
+                if (semester != null) {
+                    user_doc.collection("semester")
+                        .document(semester!!)
+                        .addSnapshotListener { value, error ->
+                            if (error != null) {
+                                Log.w(TAG, "Listen failed.", error)
+                                return@addSnapshotListener
+                            }
+                            Log.d(TAG, "get_course_symbol -> success")
 
-                                    Log.d(TAG, "get_course_data -> success")
 
-                                    var timetable_data_map: MutableMap<String, String>? = mutableMapOf()
+                            //取得
+                            for (period in period_list) {
 
-                                    for (week in week_to_day_symbol_list) {
-                                        for (period in period_list) {
-                                            val week_to_day = week + period.toString()
-                                            val tmp_data = value?.get(week_to_day) as Map<String?, Any?>?
-//                                                Log.d("hoge", "tmp_data: ${tmp_data}")
+                                val week_to_day = now_week_to_day + period.toString()
+                                val tmp_data = value?.get(week_to_day) as Map<String?, Any?>?
+                                val course_id = tmp_data?.get("course_id") as? String
+                                var course_name = ""
+                                //Log.d(TAG, period.toString()+" "+course_id.toString())
+                                show_timetable(view, period, course_name)
+                                if (course_id != null) {
+                                    firedb.collection("university")
+                                        .document(university_id!!)
+                                        .collection("semester")
+                                        .document(semester!!)
+                                        .collection(week_to_day)
+                                        .document(course_id)
+                                        .get()
+                                        .addOnSuccessListener {
+                                            val data = it.data
+                                            course_name = data?.get("course").toString()
+                                            Log.d(TAG, week_to_day+": "+course_name)
+                                            show_timetable(view, period, course_name)
 
-                                            if (tmp_data != null) {
-                                                timetable_data_map?.put(week_to_day, tmp_data["course_id"] as String)
-                                            }
                                         }
-                                    }
-
-                                    /*
-                                    view.today_first_period.timetable_title_textView.text = timetable_data_map?.get(now_week_to_day+1)
-                                    view.today_second_period.timetable_title_textView.text = timetable_data_map?.get(now_week_to_day+2)
-                                    view.today_third_period.timetable_title_textView.text = timetable_data_map?.get(now_week_to_day+3)
-                                    view.today_fourth_period.timetable_title_textView.text = timetable_data_map?.get(now_week_to_day+4)
-                                    view.today_fifth_period.timetable_title_textView.text = timetable_data_map?.get(now_week_to_day+5)
-                                     */
                                 }
-                    }else{
-                        Log.w(TAG, "semester is null")
-                    }
+                                //Log.d(TAG, "show: "+week_to_day)
+                                show_timetable(view, period, course_name)
 
-                }
-                .addOnFailureListener {
-                    Log.w(TAG, "load_timetable: get semester -> failure")
-                }
+                            }
+
+                        }
+                }else Log.w(TAG, "semester is null")
+            }
+        }
     }
 
-    private fun show_timetable(view: View, week_to_day: String, course_name: String){
-
+    private fun show_timetable(view: View, period: Int, course_name: String){
+        when(period){
+            1 -> view.today_first_period.timetable_title_textView.text = course_name
+            2 -> view.today_second_period.timetable_title_textView.text = course_name
+            3 -> view.today_third_period.timetable_title_textView.text = course_name
+            4 -> view.today_fourth_period.timetable_title_textView.text = course_name
+            5 -> view.today_fifth_period.timetable_title_textView.text = course_name
+        }
     }
 
     private fun timetable_onclick_event(view: View){
