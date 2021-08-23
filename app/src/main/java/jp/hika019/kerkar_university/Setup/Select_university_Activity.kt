@@ -3,16 +3,21 @@ package jp.hika019.kerkar_university.Setup
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.DocumentChange
 import jp.hika019.kerkar_university.R
+import jp.hika019.kerkar_university.check_position
 import jp.hika019.kerkar_university.firedb
 import kotlinx.android.synthetic.main.activity_set_university.*
 
 class Select_university_Activity(): AppCompatActivity() {
     val TAG = "Setup_select_university_fragment"
+
+    var university_name_list: Array<String> = arrayOf()
+    var university_id_list: Array<String> = arrayOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,18 +25,24 @@ class Select_university_Activity(): AppCompatActivity() {
 
         get_university_list()
 
-        new_university.setOnClickListener {
+        new_university_button.setOnClickListener {
             val instance = setup()
             instance.create_university(this)
+        }
+
+        next_button.setOnClickListener {
+            if (check_position != -1 && check_position <= university_name_list.size && university_name_list.size == university_id_list.size){
+                val instance = setup()
+                instance.create_user_data(this, university_name_list[check_position], university_id_list[check_position])
+            }else{
+                Toast.makeText(this, "大学の選択が不正です", Toast.LENGTH_SHORT).show()
+            }
         }
 
     }
 
     fun get_university_list(){
         Log.d(TAG, "get_university_list -> call")
-
-        var university_name_list: Array<String> = arrayOf()
-        var university_id_list: Array<String> = arrayOf()
 
 
         firedb.collection("university")

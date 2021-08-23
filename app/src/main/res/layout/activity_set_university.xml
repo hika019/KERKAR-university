@@ -26,21 +26,32 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/new_university"
+        app:layout_constraintBottom_toTopOf="@+id/new_university_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/select_university_img"
-        tools:listitem="@layout/item_select_university"/>
+        tools:listitem="@layout/item_select_university" />
 
     <Button
-        android:id="@+id/new_university"
-        android:layout_width="wrap_content"
+        android:id="@+id/new_university_button"
+        android:layout_width="148dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="32dp"
         android:text="新たに大学を作る"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/next_button"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/next_button"
+        android:layout_width="148dp"
+        android:layout_height="wrap_content"
+        android:text="次へ"
+        app:layout_constraintBottom_toBottomOf="@+id/new_university_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/new_university_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

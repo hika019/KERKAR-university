@@ -6,10 +6,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
 import androidx.recyclerview.widget.RecyclerView
 
 import jp.hika019.kerkar_university.R
+import jp.hika019.kerkar_university.check_position
 import kotlinx.android.synthetic.main.item_select_university.view.*
 
 
@@ -19,7 +19,6 @@ class Select_university_list_CustopmAdapter(
         private val context: Context
         )
     : RecyclerView.Adapter<Select_university_list_CustopmAdapter.CustomViewHolder>(){
-    private var check_position = -1
 
     private val TAG = "Select_university_list_CustopmAdapter"
     lateinit var listener: OnItemClickListener
@@ -49,11 +48,6 @@ class Select_university_list_CustopmAdapter(
 
         holder.uni_text.text = university_name
         holder.uni_text.setOnClickListener{
-
-            /*
-            val instance = setup()
-            instance.create_user_data(context, university_name, university_id)
-             */
 
             check_position = position
             notifyDataSetChanged()
