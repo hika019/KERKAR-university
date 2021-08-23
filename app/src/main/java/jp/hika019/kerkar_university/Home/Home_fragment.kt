@@ -78,17 +78,18 @@ class Home_fragment(): Fragment() {
 //                                                Log.d("hoge", "tmp_data: ${tmp_data}")
 
                                             if (tmp_data != null) {
-                                                timetable_data_map?.put(week_to_day, tmp_data["course"] as String)
+                                                timetable_data_map?.put(week_to_day, tmp_data["course_id"] as String)
                                             }
                                         }
                                     }
 
-
+                                    /*
                                     view.today_first_period.timetable_title_textView.text = timetable_data_map?.get(now_week_to_day+1)
                                     view.today_second_period.timetable_title_textView.text = timetable_data_map?.get(now_week_to_day+2)
                                     view.today_third_period.timetable_title_textView.text = timetable_data_map?.get(now_week_to_day+3)
                                     view.today_fourth_period.timetable_title_textView.text = timetable_data_map?.get(now_week_to_day+4)
                                     view.today_fifth_period.timetable_title_textView.text = timetable_data_map?.get(now_week_to_day+5)
+                                     */
                                 }
                     }else{
                         Log.w(TAG, "semester is null")

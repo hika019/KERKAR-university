@@ -223,7 +223,7 @@ class timetable_dialog(val context: Context){
 
                 }
                 .setNeutralButton("授業をつくる"){dialog, which ->
-                    firedb_timetable(context).create_course(week_to_day, period)
+                    //firedb_timetable(context).create_course(week_to_day, period)
                     false
                 }
         dialog.create().show()
