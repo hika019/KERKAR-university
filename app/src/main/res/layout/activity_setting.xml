@@ -95,4 +95,16 @@
         app:layout_constraintStart_toStartOf="@+id/setting_university_title"
         app:layout_constraintTop_toBottomOf="@+id/setting_university_textview" />
 
+    <Button
+        android:id="@+id/setting_destroy_user"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="24dp"
+        android:background="@android:color/holo_red_dark"
+        android:text="@string/setting_destroy_user"
+        android:textSize="@dimen/setting_activity_textsize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/setting_data_transfer_button" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

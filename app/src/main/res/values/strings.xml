@@ -42,6 +42,7 @@
     <string name="setting_data">データの引継ぎ</string>
     <string name="setting_uid">ユーザID</string>
     <string name="setting_your_university">登録大学</string>
+    <string name="setting_destroy_user">データ消去</string>
 
 
 </resources>

@@ -1,8 +1,6 @@
 package jp.hika019.kerkar_university
 
 import android.app.AlertDialog
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,11 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_setting.view.*
-import kotlinx.android.synthetic.main.dialog_enter_uid.view.*
 
 class Setting_Fragment: Fragment() {
-    val TAG = "Setting_Fragment"
+    private val TAG = "Setting_Fragment"
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -32,6 +31,9 @@ class Setting_Fragment: Fragment() {
             enter_uid(view)
         }
 
+        view.setting_destroy_user.setOnClickListener {
+            destroy_user()
+        }
 
         return view
     }
@@ -58,6 +60,27 @@ class Setting_Fragment: Fragment() {
                 .addOnFailureListener{
                     Toast.makeText(context, "大学情報が取得できませんでした", Toast.LENGTH_SHORT).show()
                 }
+    }
+
+    private fun destroy_user(){
+        Log.d(TAG, "destroy_user -> call")
+        /*
+        firedb.collection("user")
+            .document(uid!!)
+            .delete()
+            .addOnSuccessListener {
+                Log.d(TAG, "delete data -> success")
+
+            }
+            .addOnFailureListener {
+                Log.w(TAG, "delete data -> failure", it)
+                Toast.makeText(context, "データ消去に失敗しました", Toast.LENGTH_SHORT).show()
+            }
+         */
+
+        Firebase.auth.signOut()
+        activity?.finish()
+
     }
 
     fun enter_uid(view: View){
