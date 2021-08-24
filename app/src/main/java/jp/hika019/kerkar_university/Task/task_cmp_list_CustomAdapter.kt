@@ -103,7 +103,7 @@ class task_cmp_list_CustomAdapter(
                 .setNeutralButton("未提出にする") {dialog, which ->
 //                    addListItem(list[position])
                     val class_data = list[position]
-                    firedb_task(context).task_to_notcomp(class_data, semester)
+                    firedb_task(context).task_to_notcomp(class_data)
                     removeItem(position)
                 }
                 .show()

@@ -34,6 +34,7 @@ class Task_list_Fragment(): Fragment() {
 //                    list(view,  submmitted_list, unsubmmitted_list, frame_context)
                     get_comp_task(view)
                 } else {
+                    //Log.d("hoge", "call")
 //                    list(view, unsubmmitted_list, submmitted_list, frame_context)
                     get_notcomp_task(view)
                 }

@@ -118,7 +118,7 @@ class Home_task_list_CustomAdapter(private val task_List: ArrayList<Map<String, 
                     val class_data = task_List[position] as Map<String, Any>
                     Log.d(TAG, "data:${class_data}")
                     firedb_task(context).task_to_comp(class_data)
-//                    removeItem(position)
+                    removeItem(position)
                 }
                 .show()
     }
