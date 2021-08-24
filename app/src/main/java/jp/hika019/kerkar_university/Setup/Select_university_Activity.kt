@@ -1,6 +1,7 @@
 package jp.hika019.kerkar_university.Setup
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -27,8 +28,13 @@ class Select_university_Activity(): AppCompatActivity() {
         get_university_list()
 
         new_university_button.setOnClickListener {
+            val intent = Intent(this, CreateUniversityActivity::class.java)
+            startActivity(intent)
+        /*
             val instance = setup()
             instance.create_university(this)
+
+             */
         }
 
         next_button.setOnClickListener {
