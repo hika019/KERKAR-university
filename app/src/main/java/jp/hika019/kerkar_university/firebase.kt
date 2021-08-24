@@ -27,6 +27,7 @@ import java.lang.Exception
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 //要リファクタリング
 
@@ -769,7 +770,6 @@ class firedb_task(val context: Context){
                 }
                 Log.d(TAG, "get_not_comp_task_list -> get user class_data -> success")
 
-                var all_comp_task: Array<String> = arrayOf()
                 //履修中の授業取得
                 var task_list: ArrayList<Map<String, Any>> = arrayListOf()
 
@@ -785,6 +785,7 @@ class firedb_task(val context: Context){
                                 .collection(week + period)
                                 .document(course_id)
 
+                            //授業の詳細の取得
                             class_db.get()
                                 .addOnSuccessListener {
                                     Log.d(TAG, "get 授業のデータ -> success")
@@ -792,19 +793,13 @@ class firedb_task(val context: Context){
 
                                     if (class_data != null) {
 
-                                        val course_id = class_data["course_id"] as String
-                                        val comp_task = class_data["comp_task"] as? ArrayList<String>
-                                        Log.d("hoge", comp_task.toString())
+                                        //val comp_task = class_data["comp_task"] as? ArrayList<String>
+                                        //Log.d("hoge", comp_task.toString())
 
-                                        all_comp_task = add_array_to_array(all_comp_task, comp_task)
+                                        //all_comp_task = add_array_to_array(all_comp_task, comp_task)
 
                                         //履修中の授業取得
-                                        firedb.collection("university")
-                                            .document(university_id!!)
-                                            .collection("semester")
-                                            .document(semester!!)
-                                            .collection(week + period)
-                                            .document(course_id!!)
+                                        class_db
                                             .collection("task")
                                             .orderBy("time_limit")
                                             .addSnapshotListener { task_documents, error ->
@@ -815,12 +810,15 @@ class firedb_task(val context: Context){
 
                                                 //課題取得
                                                 for (task_item in task_documents!!.documentChanges) {
-                                                    val task_id = task_item.document.getString("task_id")
                                                     var task_data = task_item.document.getData() as MutableMap<String, Any>
+                                                    val comp_user_list = task_data["comp_task"] as? ArrayList<String>
 
                                                     task_data["class_data"] = class_data
 
-                                                    if (all_comp_task.contains(task_id)) {
+                                                    if (comp_user_list != null) {
+                                                        if (!(comp_user_list.contains(uid!!))) {
+                                                            task_list.add(task_data)
+                                                        }
                                                     }else{
                                                         task_list.add(task_data)
                                                     }
