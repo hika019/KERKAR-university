@@ -88,13 +88,17 @@ class Home_fragment(): Fragment() {
                                         .document(semester!!)
                                         .collection(week_to_day)
                                         .document(course_id)
-                                        .get()
-                                        .addOnSuccessListener {
-                                            val data = it.data
+                                        .addSnapshotListener{ value, error ->
+                                            if (error != null) {
+                                                Log.w(TAG, "Listen failed.", error)
+                                                return@addSnapshotListener
+                                            }
+                                            Log.d(TAG, "get_course_symbol -> success")
+
+                                            val data = value?.data
                                             course_name = data?.get("course").toString()
                                             Log.d(TAG, week_to_day+": "+course_name)
                                             show_timetable(view, period, course_name)
-
                                         }
                                 }
                                 //Log.d(TAG, "show: "+week_to_day)

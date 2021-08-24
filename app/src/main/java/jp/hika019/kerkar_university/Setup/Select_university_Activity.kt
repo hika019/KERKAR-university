@@ -11,6 +11,7 @@ import com.google.firebase.firestore.DocumentChange
 import jp.hika019.kerkar_university.R
 import jp.hika019.kerkar_university.check_position
 import jp.hika019.kerkar_university.firedb
+import jp.hika019.kerkar_university.university_id
 import kotlinx.android.synthetic.main.activity_set_university.*
 
 class Select_university_Activity(): AppCompatActivity() {
@@ -32,6 +33,7 @@ class Select_university_Activity(): AppCompatActivity() {
 
         next_button.setOnClickListener {
             if (check_position != -1 && check_position <= university_name_list.size && university_name_list.size == university_id_list.size){
+                university_id = university_id_list[check_position]
                 val instance = setup()
                 instance.create_user_data(this, university_name_list[check_position], university_id_list[check_position])
             }else{

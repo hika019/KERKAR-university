@@ -106,7 +106,7 @@ class task_notcmp_list_CustomAdapter(
 //                    addListItem(list[position])
                     val class_data = list[position] as Map<String, Any>
 //                    firedb_load_task_class(context).task_to_comp(class_data)
-                    firedb_task(context).task_to_comp(class_data, semester)
+                    firedb_task(context).task_to_comp(class_data)
                     removeItem(position)
                 }
                 .show()

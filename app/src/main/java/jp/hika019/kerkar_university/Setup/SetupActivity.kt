@@ -1,5 +1,6 @@
 package jp.hika019.kerkar_university.Setup
 
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -36,9 +37,11 @@ class SetupActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
          */
 
         new_acount.setOnClickListener {
+
             val intent = Intent(this, Select_university_Activity::class.java)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
+            overridePendingTransition(0, 0)
             finish()
         }
 
