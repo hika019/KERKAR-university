@@ -43,7 +43,7 @@ fun none_Timetable(context: Context){
 
 open class setup_dialog(): firedb_setup(){
     private val TAG = "setup_dialog"
-
+    /*
     fun create_university(context: Context){
         Log.d(TAG, "create_university -> call")
 
@@ -62,6 +62,7 @@ open class setup_dialog(): firedb_setup(){
         dialog.show()
 
     }
+     */
 }
 
 open class register_dialog(open val context: Context){

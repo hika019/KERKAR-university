@@ -27,8 +27,9 @@
         <activity android:name=".Setup.Select_university_Activity">
         </activity>
 
-        <activity android:name=".Setup.CreateUniversityActivity">
-        </activity>
+        <activity android:name=".Setup.CreateUniversityActivity"
+            android:windowSoftInputMode="adjustResize"
+            />
 
         <activity android:name=".MainActivity">
         </activity>

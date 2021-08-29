@@ -38,6 +38,10 @@
     <string name="enter_university">確定</string>
     <string name="create_university">大学を追加</string>
     <string name="add_university_to_account">入学している大学を選択してください</string>
+    <string name="select_term_2">2学期制</string>
+    <string name="select_term_3">3学期制</string>
+    <string name="select_term_4">4学期制</string>
+
 
     <string name="setting_data">データの引継ぎ</string>
     <string name="setting_uid">ユーザID</string>

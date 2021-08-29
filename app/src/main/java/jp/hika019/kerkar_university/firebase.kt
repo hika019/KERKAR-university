@@ -194,7 +194,7 @@ open class firedb_setup(){
 
     }
 
-    fun create_university(context: Context, university_name: String){
+    fun create_university(context: Context, university_name: String, term: Int){
         Log.d(TAG, "create_university -> call")
 
         val doc_id = firedb.collection("university")
@@ -202,7 +202,8 @@ open class firedb_setup(){
 
         val data = hashMapOf(
             "university" to university_name,
-            "university_id" to doc_id.id
+            "university_id" to doc_id.id,
+            "term" to term
         )
 
         doc_id.set(data)
@@ -279,7 +280,7 @@ open class firedb_setup(){
             .document(uid!!)
             .get()
             .addOnSuccessListener {
-                val create_at = it.get("create_at") as com.google.firebase.Timestamp
+                val create_at = it.get("create_at") as? com.google.firebase.Timestamp
                 semester = it.getString("semester")
                 uid = it.getString("uid")
                 val university = it.getString("university")
