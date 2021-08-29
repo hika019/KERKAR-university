@@ -234,7 +234,9 @@ open class firedb_setup(){
                     //Log.d(TAG, "semester: ${semester}")
                     nowsemester = semester_list.maxOrNull().toString()
 
-                    val time = SimpleDateFormat("yyyy/MM/dd HH:mm").format(Date())
+                    //val time = SimpleDateFormat("yyyy/MM/dd HH:mm").format(Date())
+                    val time = FieldValue.serverTimestamp()
+
                     if(nowsemester != null){
                         semester = nowsemester
 
@@ -277,7 +279,7 @@ open class firedb_setup(){
             .document(uid!!)
             .get()
             .addOnSuccessListener {
-                val create_at = it.getString("create_at")
+                val create_at = it.get("create_at") as com.google.firebase.Timestamp
                 semester = it.getString("semester")
                 uid = it.getString("uid")
                 val university = it.getString("university")
