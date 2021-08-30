@@ -763,9 +763,10 @@ class firedb_task(val context: Context){
         Log.d(TAG, "get_not_comp_task_list -> call")
         val user_doc = firedb.collection("user")
                 .document(uid!!)
+                .collection("semester")
+                .document(semester!!)
 
-        user_doc.collection("semester")
-            .document(semester!!)
+        user_doc
             .addSnapshotListener { value, error ->
                 if (error != null) {
                     Log.w(TAG, "get_not_comp_task_list -> get user class_data -> failure", error)
@@ -773,6 +774,7 @@ class firedb_task(val context: Context){
                 }
                 Log.d(TAG, "get_not_comp_task_list -> get user class_data -> success")
 
+                var all_not_comp_task: Array<String> = arrayOf()
                 //履修中の授業取得
                 var task_list: ArrayList<Map<String, Any>> = arrayListOf()
 
@@ -1048,24 +1050,36 @@ class firedb_task(val context: Context){
     fun task_to_comp(class_and_task_data: Map<String, Any>){
         Log.d(TAG, "task_to_comp -> call")
         val class_data= class_and_task_data["class_data"] as Map<String, Any>
-
+        val task_id = class_and_task_data["task_id"] as String
         val week_to_day = class_data["week_to_day"] as String
 
-        firedb.collection("university")
-            .document(university_id!!)
-            .collection("semester")
-            .document(semester!!)
-            .collection(week_to_day)
-            .document(class_data["course_id"] as String)
-            .collection("task")
-            .document(class_and_task_data["task_id"] as String)
-            .update("comp_task", FieldValue.arrayUnion(uid))
+        val timetable = firedb.collection("user")
+                            .document(uid!!)
+                            .collection("semester")
+                            .document(semester!!)
+
+        timetable.get()
             .addOnSuccessListener {
-                Log.d(TAG, "task_to_compe -> comp and success")
-                Toast.makeText(context, "提出済みにしました",Toast.LENGTH_SHORT).show()
+                Log.w(TAG, "get course data -> success")
+                val online_class_data = it.get(week_to_day) as MutableMap<String, Any?>
+                val comp_task = online_class_data["comp_task"] as? ArrayList<String?>
+
+                comp_task?.add(task_id)
+                online_class_data["comp_task"] = comp_task
+
+                timetable.update(week_to_day, online_class_data)
+                    .addOnSuccessListener {
+                        Log.d(TAG, "task_to_compe -> success")
+                        Toast.makeText(context, "提出済みにしました",Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener {
+                        Log.w(TAG, "task_to_compe -> failure")
+                        Toast.makeText(context, "提出済みにできませんでした",Toast.LENGTH_SHORT).show()
+                    }
+
             }
             .addOnFailureListener {
-                Log.w(TAG, "task_to_compe -> comp bat failure")
+                Log.w(TAG, "get course data -> failure")
                 Toast.makeText(context, "提出済みにできませんでした",Toast.LENGTH_SHORT).show()
             }
 
@@ -1075,26 +1089,38 @@ class firedb_task(val context: Context){
     fun task_to_notcomp(class_and_task_data: Map<String, Any>){
         Log.d(TAG, "task_to_notcomp -> call")
         val class_data= class_and_task_data["class_data"] as Map<String, Any>
-
+        val task_id = class_and_task_data["task_id"] as String
         val week_to_day = class_data["week_to_day"] as String
 
-        firedb.collection("university")
-            .document(university_id!!)
+        val timetable = firedb.collection("user")
+            .document(uid!!)
             .collection("semester")
             .document(semester!!)
-            .collection(week_to_day)
-            .document(class_data["course_id"] as String)
-            .collection("task")
-            .document(class_and_task_data["task_id"] as String)
-            .update("comp_task", FieldValue.arrayRemove(uid))
+
+        timetable.get()
             .addOnSuccessListener {
-                Log.d(TAG, "task_to_compe -> comp and success")
-                Toast.makeText(context, "提出済みにしました",Toast.LENGTH_SHORT).show()
+                Log.w(TAG, "get course data -> success")
+                val online_class_data = it.get(week_to_day) as MutableMap<String, Any?>
+                val comp_task = online_class_data["comp_task"] as MutableList<String>
+
+                comp_task -= task_id
+                online_class_data["comp_task"] = comp_task
+
+                timetable.update(week_to_day, online_class_data)
+                    .addOnSuccessListener {
+                        Log.d(TAG, "task_to_notcomp -> success")
+                        Toast.makeText(context, "未提出にしました",Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener {
+                        Log.w(TAG, "task_to_notcomp -> failure")
+                        Toast.makeText(context, "未提出にできませんでした",Toast.LENGTH_SHORT).show()
+                    }
             }
             .addOnFailureListener {
-                Log.w(TAG, "task_to_compe -> comp bat failure")
-                Toast.makeText(context, "提出済みにできませんでした",Toast.LENGTH_SHORT).show()
+                Log.w(TAG, "task_to_notcomp -> failure")
+                Toast.makeText(context, "未提出にできませんでした",Toast.LENGTH_SHORT).show()
             }
+
     }
 }
 
