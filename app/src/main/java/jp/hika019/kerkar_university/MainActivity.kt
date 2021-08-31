@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         this.setDrawerLayout()
         val ft = supportFragmentManager.beginTransaction()
         ft.replace(R.id.main_host_fragment, Home_fragment())
+        //ft.replace(R.id.main_host_fragment, Home_fragment())
         ft.commit()
 
     }

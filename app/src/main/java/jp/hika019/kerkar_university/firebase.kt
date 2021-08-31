@@ -1,6 +1,5 @@
 package jp.hika019.kerkar_university
 
-import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -47,8 +46,8 @@ fun login_cheack(): Boolean {
     return cheack_user != null
 }
 
-class firedb_semester(val context: Context, val view: View){
-    val TAG = "firedb_semester"
+class firedb_semester(val context: Context, val view: View): local_db(){
+    override val TAG = "firedb_semester"
 
 
     fun get_semester_list(){
@@ -78,6 +77,7 @@ class firedb_semester(val context: Context, val view: View){
                 .addOnSuccessListener {
                     semester = semester_id
                     Log.d(TAG, "change_user_semester -> success")
+                    update_local_course_id()
                     get_semester_title()
                 }
                 .addOnFailureListener {
@@ -115,8 +115,8 @@ class firedb_semester(val context: Context, val view: View){
     }
 }
 
-open class firedb_setup(){
-    private val TAG = "firedb_setup"
+open class firedb_setup(): local_db(){
+    override val TAG = "firedb_setup"
 
     fun start(context: Context) {
         Log.d(TAG, "start() -> call")
@@ -128,7 +128,6 @@ open class firedb_setup(){
         if (auth.uid != null){
             Log.d(TAG, "uid: "+auth.uid)
             uid = auth.uid
-
             cheak_user_data(context)
         }else{
 
@@ -280,18 +279,29 @@ open class firedb_setup(){
             .document(uid!!)
             .get()
             .addOnSuccessListener {
-                val create_at = it.get("create_at") as? com.google.firebase.Timestamp
-                semester = it.getString("semester")
-                uid = it.getString("uid")
-                val university = it.getString("university")
-                university_id = it.getString("university_id")
+                val data = it.data
 
-                if(create_at != null || semester != null || uid != null || university != null || university_id != null){
-                    val intent = Intent(context, MainActivity::class.java)
-                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    context.startActivity(intent)
+                if (data != null){
+                    val create_at = data["create_at"] as? com.google.firebase.Timestamp
+                    val university = data["university"] as? String
+                    semester = data["semester"] as? String
+                    uid = Firebase.auth.uid
+                    university_id = data["university_id"] as? String
+
+                    update_local_course_id()
+
+                    if(create_at != null || semester != null || uid != null || university != null || university_id != null){
+                        val intent = Intent(context, MainActivity::class.java)
+                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        context.startActivity(intent)
 
 
+                    }else{
+                        uid = Firebase.auth.uid
+                        val intent = Intent(context, SetupActivity::class.java)
+                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        context.startActivity(intent)
+                    }
                 }else{
                     uid = Firebase.auth.uid
                     val intent = Intent(context, SetupActivity::class.java)
@@ -408,8 +418,9 @@ class firedb_register_login(override val context: Context): register_dialog(cont
 
 }
 
-class firedb_timetable(val context: Context){
+open class firedb_timetable(context: Context){
     private val TAG = "firedb_timetable"
+    open val context: Context = context
 
     fun courses_is_none(){
         Log.d(TAG, "courses_is_none -> call")
@@ -428,25 +439,6 @@ class firedb_timetable(val context: Context){
 
     }
 
-    fun create_course(week: String, period: Int){
-        Log.d(TAG, "create_course -> call")
-        semester?.let {
-            firedb.collection("semester")
-                .document(it)
-                .get()
-                .addOnSuccessListener {
-                    val semester_name = it.getString("title")
-
-                    if (semester_name != null) {
-                        timetable_dialog(context).add_timetable(week, period, semester!!, semester_name)
-                    }
-
-                }
-                .addOnFailureListener {
-                    Log.d(TAG, "firedb_timetable.semester2 -> failure")
-                }
-        }
-    }
 
     fun get_course_list(week: String, period: Int){
         Log.d(TAG, "get_course_list -> call")
@@ -464,12 +456,13 @@ class firedb_timetable(val context: Context){
                     val course_list: ArrayList<Any> = arrayListOf()
 
                     for(document in it){
+                        val tmpdata = document.data
                         val data = hashMapOf<String, Any>(
                             "course_id" to document.id,
-                            "week_to_day" to document.get("week_to_day") as String,
-                            "course" to document.get("course") as String,
-                            "lecturer" to document.get("lecturer") as ArrayList<String>,
-                            "room" to document.get("room") as String
+                            "week_to_day" to tmpdata?.get("week_to_day") as String,
+                            "course" to tmpdata?.get("course") as String,
+                            "lecturer" to tmpdata?.get("lecturer") as ArrayList<String>,
+                            "room" to tmpdata?.get("room") as String
                         )
                         course_list.add(data)
                     }
@@ -545,7 +538,6 @@ class firedb_timetable(val context: Context){
                 .get()
                 .addOnSuccessListener {
 
-                    val university_id = it.getString("university_id")
                     Log.d(TAG, "create_university_timetable: get universiyt_id -> success")
 
                     val doc = firedb.collection("university")
@@ -561,56 +553,36 @@ class firedb_timetable(val context: Context){
                             .addOnSuccessListener {
                                 Log.d(TAG, "create_university_timetable: set data -> success")
 
-                                add_user_timetable(data["semester_id"] as String, data["week_to_day"] as String, doc.id)
-
+                                add_user_timetable(data["week_to_day"] as String, doc.id)
                             }
                             .addOnFailureListener{
                                 Log.d(TAG, "create_university_timetable: set data -> failure")
                             }
-
                 }
                 .addOnFailureListener{
                     Log.w(TAG, "create_university_timetable: get universiyt_id -> failure")
                 }
     }
 
-    fun add_user_timetable(semester_id: String, week_to_day: String, classId: String){
+    fun add_user_timetable(week_to_day: String, classId: String){
 
-        firedb.collection("university")
-            .document(university_id!!)
+        val data = hashMapOf(
+            week_to_day to hashMapOf(
+                "course_id" to classId
+            )
+        )
+
+        firedb.collection("user")
+            .document(uid!!)
             .collection("semester")
-            .document(semester_id)
-            .collection(week_to_day)
-            .document(classId)
-            .get()
+            .document(semester!!)
+            .set(data, SetOptions.merge())
             .addOnSuccessListener {
-                Log.d(TAG, "add_user_timetable: get university_id -> success")
-
-                val time = it.getString("week_to_day")
-                val id = it.getString("course_id")
-                val in_data = hashMapOf(
-                    "course_id" to id
-                )
-
-                val data = hashMapOf(
-                    time.toString() to in_data
-                )
-
-                firedb.collection("user")
-                    .document(uid!!)
-                    .collection("semester")
-                    .document(semester_id)
-                    .set(data, SetOptions.merge())
-                    .addOnSuccessListener {
-                        Log.d(TAG, "add course to user: ${id} -> success")
-                    }
-                    .addOnFailureListener{
-                        Log.d(TAG, "add course to user: ${id} -> failure")
-                    }
-
+                Log.d(TAG, "add course to user: ${classId} -> success")
+                local_timetable[week_to_day] = classId
             }
-            .addOnFailureListener {
-                Log.d(TAG, "add_user_timetable: get university_id -> failure")
+            .addOnFailureListener{
+                Log.d(TAG, "add course to user: ${classId} -> failure")
             }
     }
 
@@ -625,6 +597,7 @@ class firedb_timetable(val context: Context){
                 .collection("semester")
                 .document(semester_id)
                 .update(updates).addOnCanceledListener {
+                    local_timetable.remove(week_to_day)
                     Log.d(TAG, "delete_user_timetable: $week_to_day -> complete")
                 }
     }
@@ -647,7 +620,6 @@ class firedb_task(val context: Context){
                     val semester_id = it.getString("semester")
 
                     if (semester_id != null) {
-
                         var semester: String? = null
 
                         firedb.collection("semester")
@@ -695,13 +667,9 @@ class firedb_task(val context: Context){
                                 .addOnFailureListener{
                                     Log.d(TAG, "firedb_task.get_course_list: get user timetable -> failure")
                                 }
-
                     }else{
                         Log.w(TAG, "firedb_task.get_course_list: university_id/semester_id is null")
                     }
-
-
-
                 }
                 .addOnFailureListener {
                     Log.d(TAG, "firedb_task.get_course_list: get user data -> failure")
@@ -970,11 +938,9 @@ class firedb_task(val context: Context){
 
                 for (week in week_to_day_symbol_list) {
                     for (period in period_list) {
-                        val user_class_data = value!!.get(week + period) as MutableMap<String, Any>?
-
-                        if (user_class_data != null) {
-
-                            val course_id = user_class_data["course_id"] as String
+                        val course_id = local_timetable[week+period]
+                        //TODO
+                        if (course_id != null) {
                             val class_db = firedb.collection("university")
                                 .document(university_id!!)
                                 .collection("semester")
@@ -995,8 +961,8 @@ class firedb_task(val context: Context){
                                             .addOnSuccessListener {
                                                 //課題取得
                                                 for (task_item in it!!.documentChanges) {
-                                                    val task_id = task_item.document.getString("task_id")
                                                     var task_data = task_item.document.getData() as MutableMap<String, Any>
+                                                    val task_id = task_data["task_id"] as? String
 
                                                     task_data["class_data"] = class_data
 
@@ -1124,3 +1090,33 @@ class firedb_task(val context: Context){
     }
 }
 
+open class local_db(){
+    open val TAG = "local_db"
+
+    fun update_local_course_id(){
+        Log.d(TAG, "update_local_course_id -> call")
+        //val sharedPref = this.context.getSharedPreferences("timetablse", Context.MODE_PRIVATE)
+        //val editer = sharedPref.edit()
+        local_timetable = mutableMapOf()
+        firedb.collection("user")
+            .document(uid!!)
+            .collection("semester")
+            .document(semester!!)
+            .get()
+            .addOnSuccessListener {
+                for( week in week_to_day_symbol_list) {
+                    for (period in period_list) {
+                        val course_id = it.getString("course_id")
+                        if (course_id != null) {
+                            Log.d(TAG, "${week+period}: update_local_course_id -> success")
+                            local_timetable[week + period] = course_id
+                        }
+                    }
+                }
+            }
+            .addOnFailureListener {
+                Log.d(TAG, "get data -> failure")
+            }
+    }
+
+}

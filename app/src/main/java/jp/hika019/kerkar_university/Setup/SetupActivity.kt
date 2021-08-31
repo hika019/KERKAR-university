@@ -1,10 +1,8 @@
 package jp.hika019.kerkar_university.Setup
 
-import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
@@ -13,8 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import jp.hika019.kerkar_university.R
-import jp.hika019.kerkar_university.Setting_Fragment
-import jp.hika019.kerkar_university.setup_dialog
+import jp.hika019.kerkar_university.firedb_setup
 import kotlinx.android.synthetic.main.activity_setup.*
 
 class SetupActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -58,7 +55,7 @@ class SetupActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 }
 
-class setup(): setup_dialog(){
+class setup(): firedb_setup(){
     fun hoge(context: Context){
 
     }

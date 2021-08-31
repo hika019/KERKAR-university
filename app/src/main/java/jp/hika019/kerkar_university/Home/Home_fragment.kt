@@ -53,13 +53,10 @@ class Home_fragment(): Fragment() {
         val user_doc = firedb.collection("user")
                 .document(uid!!)
 
-        user_doc.addSnapshotListener { value, error ->
-            if(error != null){
-                Log.w(TAG, "Listen failed.", error)
-                return@addSnapshotListener
-            }
-            if(value != null){
-                semester = value.getString("semester")
+        user_doc.
+            get()
+            .addOnSuccessListener {
+                semester = it.getString("semester")
 
                 if (semester != null) {
                     user_doc.collection("semester")
@@ -70,7 +67,6 @@ class Home_fragment(): Fragment() {
                                 return@addSnapshotListener
                             }
                             Log.d(TAG, "get_course_symbol -> success")
-
 
                             //取得
                             for (period in period_list) {
@@ -88,7 +84,7 @@ class Home_fragment(): Fragment() {
                                         .document(semester!!)
                                         .collection(week_to_day)
                                         .document(course_id)
-                                        .addSnapshotListener{ value, error ->
+                                        .addSnapshotListener { value, error ->
                                             if (error != null) {
                                                 Log.w(TAG, "Listen failed.", error)
                                                 return@addSnapshotListener
@@ -97,7 +93,7 @@ class Home_fragment(): Fragment() {
 
                                             val data = value?.data
                                             course_name = data?.get("course").toString()
-                                            Log.d(TAG, week_to_day+": "+course_name)
+                                            Log.d(TAG, week_to_day + ": " + course_name)
                                             show_timetable(view, period, course_name)
                                         }
                                 }
@@ -107,9 +103,11 @@ class Home_fragment(): Fragment() {
                             }
 
                         }
-                }else Log.w(TAG, "semester is null")
+                } else Log.w(TAG, "semester is null")
             }
-        }
+            .addOnFailureListener {
+                Log.w(TAG, "Listen failed.", it)
+            }
     }
 
     private fun show_timetable(view: View, period: Int, course_name: String){

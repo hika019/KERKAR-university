@@ -5,7 +5,6 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.dialog_add_class_editer.view.*
@@ -13,7 +12,6 @@ import kotlinx.android.synthetic.main.dialog_add_task.view.*
 import kotlinx.android.synthetic.main.dialog_add_university.view.*
 import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.*
 
 fun error_college_upload_dialog(context: Context){
@@ -41,29 +39,6 @@ fun none_Timetable(context: Context){
     dialog.show()
 }
 
-open class setup_dialog(): firedb_setup(){
-    private val TAG = "setup_dialog"
-    /*
-    fun create_university(context: Context){
-        Log.d(TAG, "create_university -> call")
-
-        val dialog_layout = LayoutInflater.from(context).inflate(R.layout.dialog_add_university, null)
-        val dialog = AlertDialog.Builder(context)
-            .setTitle("大学の追加")
-            .setCancelable(false)
-            .setView(dialog_layout)
-            .setPositiveButton("登録"){dialog, which ->
-                val university_name = dialog_layout.univarsity_edittext.text.toString()
-                if (university_name != "" || university_name == "null") create_university(context, university_name)
-            }
-            .setNegativeButton("キャンセル"){dialog, which ->
-            }
-
-        dialog.show()
-
-    }
-     */
-}
 
 open class register_dialog(open val context: Context){
     open val TAG = ""
@@ -142,7 +117,7 @@ open class register_dialog(open val context: Context){
 
 }
 
-class timetable_dialog(val context: Context){
+class timetable_dialog(override val context: Context): firedb_timetable(context){
     private val TAG = "timetable_dialog"
 
     val firedb_timetable = firedb_timetable(context)
@@ -157,8 +132,7 @@ class timetable_dialog(val context: Context){
                 .setPositiveButton("授業登録") { dialog, which ->
 
                     //登録画面
-                    firedb_timetable.get_course_list(week, time)
-                    false
+                    get_course_list(week, time)
                 }
                 .setNegativeButton("戻る"){ dialog, which ->
 
@@ -212,26 +186,21 @@ class timetable_dialog(val context: Context){
                         val data = list[index] as Map<String, Any>
                         val class_id = data["course_id"] as String
 
-                        firedb_timetable.add_user_timetable(semester_id, week_to_day+period, class_id)
+                        add_user_timetable(week_to_day+period, class_id)
                     }
-
-                    false
-
                 }
                 .setNegativeButton("空き授業"){dialog, which ->
-                    firedb_timetable.delete_user_timetable(semester_id, week_to_day+period,)
-                    false
-
+                    delete_user_timetable(semester_id, week_to_day+period,)
                 }
                 .setNeutralButton("授業をつくる"){dialog, which ->
-                    //firedb_timetable(context).create_course(week_to_day, period)
-                    false
+                    create_course_dialog()
                 }
         dialog.create().show()
 
     }
 
-    fun add_timetable(week: String, period: Int, semester_id: String, semester: String){
+    fun create_course_dialog(){
+        Log.d(TAG, "create_course -> call")
         val dialog_layout = LayoutInflater.from(context).inflate(R.layout.dialog_add_class_editer, null)
 
         val dialog = AlertDialog.Builder(context)
@@ -264,14 +233,14 @@ class timetable_dialog(val context: Context){
                                 val teacher_list = str_to_array(teacher_name)
 
                                 val data = hashMapOf(
-                                        "semester_id" to semester_id,
+                                        "semester_id" to semester!!,
                                         "week_to_day" to week_symbol + period,
                                         "course" to lecture_name,
                                         "lecturer" to teacher_list,
                                         "room" to class_name
                                 )
                                 //登録へ
-                                firedb_timetable(context).create_university_timetable(data)
+                                create_university_timetable(data)
 
                             }else{
                                 Log.d(TAG, "曜日が不正")

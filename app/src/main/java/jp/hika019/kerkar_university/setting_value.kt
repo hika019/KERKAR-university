@@ -17,3 +17,5 @@ val UserData_SharedPreferences_name = "UserDataStore"
 var semester: String? = null
 var university_id: String? = null
 
+var local_timetable = mutableMapOf<String, String?>()
+
