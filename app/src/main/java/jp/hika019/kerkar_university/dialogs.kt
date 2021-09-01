@@ -120,8 +120,6 @@ open class register_dialog(open val context: Context){
 class timetable_dialog(override val context: Context): firedb_timetable(context){
     private val TAG = "timetable_dialog"
 
-    val firedb_timetable = firedb_timetable(context)
-
     fun timetable_data_dialog(week: String, time: Int, message: String?){
 
         val week_jp = week_to_day_jp_chenger(week)

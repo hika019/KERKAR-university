@@ -287,14 +287,14 @@ open class firedb_setup(): local_db(){
                     semester = data["semester"] as? String
                     uid = Firebase.auth.uid
                     university_id = data["university_id"] as? String
-
-                    update_local_course_id()
+                    if (uid != null) update_local_course_id()
 
                     if(create_at != null || semester != null || uid != null || university != null || university_id != null){
+
+                        Log.d(TAG, "画面遷移")
                         val intent = Intent(context, MainActivity::class.java)
                             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         context.startActivity(intent)
-
 
                     }else{
                         uid = Firebase.auth.uid
@@ -436,9 +436,7 @@ open class firedb_timetable(context: Context){
                     none_Timetable(context)
                 }
             }
-
     }
-
 
     fun get_course_list(week: String, period: Int){
         Log.d(TAG, "get_course_list -> call")
@@ -478,7 +476,7 @@ open class firedb_timetable(context: Context){
     }
 
     fun get_course_data(week_to_day: String, period: Int){
-        var str: String = "授業が登録されていません"
+        var str = "授業が登録されていません"
         Log.d(TAG, "get_course_data -> call")
         val user_doc = firedb.collection("user")
                 .document(uid!!)
@@ -516,7 +514,6 @@ open class firedb_timetable(context: Context){
                 }else{
                     timetable_dialog(context).timetable_data_dialog(week_to_day, period, str)
                 }
-
             }
             .addOnFailureListener {
                 Log.w(TAG, "get_course_data(user)${week_to_day + period} -> failure")
@@ -1099,20 +1096,23 @@ open class local_db(){
         //val editer = sharedPref.edit()
         local_timetable = mutableMapOf()
         firedb.collection("user")
-            .document(uid!!)
+            .document(Firebase.auth.uid!!)
             .collection("semester")
             .document(semester!!)
             .get()
             .addOnSuccessListener {
                 for( week in week_to_day_symbol_list) {
                     for (period in period_list) {
-                        val course_id = it.getString("course_id")
+                        val tmp = it.get(week+period) as? Map<String, Any>
+                        val course_id = tmp?.get("course_id") as? String
+                        //Log.d(TAG, "${week+period}: $course_id")
                         if (course_id != null) {
-                            Log.d(TAG, "${week+period}: update_local_course_id -> success")
+                            Log.d(TAG, "${week+period}: $course_id -> success")
                             local_timetable[week + period] = course_id
                         }
                     }
                 }
+                return@addOnSuccessListener
             }
             .addOnFailureListener {
                 Log.d(TAG, "get data -> failure")

@@ -15,8 +15,6 @@ import kotlinx.android.synthetic.main.item_select_university.view.*
 
 class Select_university_list_CustopmAdapter(
         private val university_name_list: Array<String>,
-        private val university_id_list: Array<String>,
-        private val context: Context
         )
     : RecyclerView.Adapter<Select_university_list_CustopmAdapter.CustomViewHolder>(){
 

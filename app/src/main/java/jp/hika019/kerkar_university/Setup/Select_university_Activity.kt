@@ -78,7 +78,7 @@ class Select_university_Activity(): AppCompatActivity() {
 
 
 
-                            val adapter = Select_university_list_CustopmAdapter(university_name_list, university_id_list, this)
+                            val adapter = Select_university_list_CustopmAdapter(university_name_list)
                             val layouManager = LinearLayoutManager(this)
 
                             select_university_recycle_view.layoutManager = layouManager

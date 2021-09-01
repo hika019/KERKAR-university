@@ -20,7 +20,6 @@ class LoadActivity: AppCompatActivity() {
         Thread.sleep(200)
         setContentView(R.layout.activity_load)
 
-
         val setup_class = setup()
         setup_class.start(this)
 
