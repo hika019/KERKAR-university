@@ -739,16 +739,20 @@ class firedb_task(val context: Context){
                 }
                 Log.d(TAG, "get_not_comp_task_list -> get user class_data -> success")
 
-                var all_not_comp_task: Array<String> = arrayOf()
+                var all_comp_task: Array<String> = arrayOf()
                 //履修中の授業取得
                 var task_list: ArrayList<Map<String, Any>> = arrayListOf()
+                val user_data = value?.data
 
                 for (week in week_to_day_symbol_list) {
                     for (period in period_list) {
-                        val user_class_data = value!!.get(week + period) as MutableMap<String, Any>?
+                        val user_class_data = user_data?.get(week + period) as? MutableMap<String, Any>
 
                         if (user_class_data != null){
                             val course_id = user_class_data["course_id"] as String
+                            val comp_task = user_class_data["comp_task"] as? ArrayList<String?>
+                            all_comp_task = add_array_to_array(all_comp_task, comp_task)
+
                             val class_db = firedb.collection("university")
                                 .document(university_id!!)
                                 .collection("semester")
@@ -763,7 +767,6 @@ class firedb_task(val context: Context){
                                     val class_data = it.data
 
                                     if (class_data != null) {
-
                                         class_db
                                             .collection("task")
                                             .orderBy("time_limit")
@@ -771,19 +774,14 @@ class firedb_task(val context: Context){
                                             .addOnSuccessListener {
                                                 //課題取得
                                                 for (task_item in it!!.documentChanges) {
-                                                    var task_data = task_item.document.getData() as MutableMap<String, Any>
-                                                    val comp_user_list = task_data["comp_task"] as? ArrayList<String>
+                                                    val task_data = task_item.document.getData() as MutableMap<String, Any>
+                                                    val task_id = task_data["task_id"] as? String
 
                                                     task_data["class_data"] = class_data
 
-                                                    if (comp_user_list != null) {
-                                                        if (!(comp_user_list.contains(uid!!))) {
-                                                            task_list.add(task_data)
-                                                        }
-                                                    }else{
+                                                    if (!(all_comp_task.contains(task_id))) {
                                                         task_list.add(task_data)
                                                     }
-
 
                                                     //表示
                                                     Log.d(TAG, "tasks show to recyclerview")
@@ -829,14 +827,17 @@ class firedb_task(val context: Context){
                 var all_comp_task: Array<String> = arrayOf()
                 //履修中の授業取得
                 var task_list: ArrayList<Map<String, Any>> = arrayListOf()
+                val user_data = value?.data
 
                 for (week in week_to_day_symbol_list) {
                     for (period in period_list) {
-                        val user_class_data = value!!.get(week + period) as MutableMap<String, Any>?
+                        val user_class_data = user_data?.get(week + period) as MutableMap<String, Any>?
 
                         //授業のデータ
                         if (user_class_data != null){
+                            val comp_task = user_class_data["comp_task"] as? ArrayList<String?>
                             val course_id = user_class_data["course_id"] as String
+                            all_comp_task = add_array_to_array(all_comp_task, comp_task)
                             val class_db = firedb.collection("university")
                                             .document(university_id!!)
                                             .collection("semester")
@@ -859,15 +860,11 @@ class firedb_task(val context: Context){
                                                 //課題取得
                                                 for (task_item in it!!.documentChanges) {
                                                     val task_data = task_item.document.getData() as MutableMap<String, Any>
-                                                    val comp_user_list = task_data["comp_task"] as? ArrayList<String>
-
+                                                    val task_id = task_data["task_id"] as String
                                                     task_data["class_data"] = class_data
 
-
-                                                    if (comp_user_list != null) {
-                                                        if (comp_user_list.contains(uid!!)) {
-                                                            task_list.add(task_data)
-                                                        }
+                                                    if (all_comp_task.contains(task_id)) {
+                                                        task_list.add(task_data)
                                                     }
 
                                                     //表示
@@ -931,13 +928,17 @@ class firedb_task(val context: Context){
                 var all_comp_task: Array<String> = arrayOf()
                 //履修中の授業取得
                 var task_list: ArrayList<Map<String, Any>> = arrayListOf()
-
+                val user_data = value?.data
 
                 for (week in week_to_day_symbol_list) {
                     for (period in period_list) {
-                        val course_id = local_timetable[week+period]
-                        //TODO
-                        if (course_id != null) {
+                        val user_class_data = user_data?.get(week + period) as MutableMap<String, Any>?
+
+                        if (user_class_data != null) {
+                            val course_id = user_class_data["course_id"] as String
+                            val comp_task = user_class_data["comp_task"] as? ArrayList<String?>
+                            all_comp_task = add_array_to_array(all_comp_task, comp_task)
+
                             val class_db = firedb.collection("university")
                                 .document(university_id!!)
                                 .collection("semester")
@@ -948,6 +949,7 @@ class firedb_task(val context: Context){
                             //履修中の授業取得
                             class_db.get()
                                 .addOnSuccessListener {
+                                    Log.d(TAG, "get 授業のデータ -> success")
                                     val class_data = it.data
 
                                     if (class_data != null){
@@ -960,20 +962,14 @@ class firedb_task(val context: Context){
                                                 for (task_item in it!!.documentChanges) {
                                                     var task_data = task_item.document.getData() as MutableMap<String, Any>
                                                     val task_id = task_data["task_id"] as? String
-
                                                     task_data["class_data"] = class_data
 
                                                     var time_limit = task_data["time_limit"] as String
                                                     time_limit = time_limit.substring(0,10).replace("/", "")
 
-                                                    val comp_user_list = task_data["comp_task"] as? ArrayList<String>
                                                     val time_limit_int = time_limit.toInt()
 
-                                                    if (comp_user_list != null && time_limit_int <= tomorrow_int) {
-                                                        if (!(comp_user_list.contains(uid!!)) && time_limit_int <= tomorrow_int) {
-                                                            task_list.add(task_data)
-                                                        }
-                                                    }else if(time_limit_int <= tomorrow_int){
+                                                    if (!(all_comp_task.contains(task_id)) && time_limit_int <= tomorrow_int) {
                                                         task_list.add(task_data)
                                                     }
 
@@ -1025,9 +1021,15 @@ class firedb_task(val context: Context){
             .addOnSuccessListener {
                 Log.w(TAG, "get course data -> success")
                 val online_class_data = it.get(week_to_day) as MutableMap<String, Any?>
-                val comp_task = online_class_data["comp_task"] as? ArrayList<String?>
+                var comp_task = online_class_data["comp_task"] as? ArrayList<String?>
 
-                comp_task?.add(task_id)
+
+                if (comp_task != null) {
+                    comp_task.add(task_id)
+                }else{
+                    comp_task = arrayListOf(task_id)
+                }
+
                 online_class_data["comp_task"] = comp_task
 
                 timetable.update(week_to_day, online_class_data)
@@ -1101,9 +1103,10 @@ open class local_db(){
             .document(semester!!)
             .get()
             .addOnSuccessListener {
+                val user_data = it.data
                 for( week in week_to_day_symbol_list) {
                     for (period in period_list) {
-                        val tmp = it.get(week+period) as? Map<String, Any>
+                        val tmp = user_data?.get(week+period) as? Map<String, Any>
                         val course_id = tmp?.get("course_id") as? String
                         //Log.d(TAG, "${week+period}: $course_id")
                         if (course_id != null) {
@@ -1112,7 +1115,6 @@ open class local_db(){
                         }
                     }
                 }
-                return@addOnSuccessListener
             }
             .addOnFailureListener {
                 Log.d(TAG, "get data -> failure")

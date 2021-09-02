@@ -5,6 +5,8 @@ plugins {
     id 'kotlin-kapt'
 
     id 'com.google.gms.google-services'
+
+    id 'com.google.firebase.firebase-perf'
 }
 
 android {
@@ -15,8 +17,8 @@ android {
         applicationId "jp.hika019.kerkar_university"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 11
-        versionName "2.3.0"
+        versionCode 12
+        versionName "2.3.1a"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -48,6 +50,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
+    implementation 'com.google.firebase:firebase-perf:19.0.5'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -69,7 +72,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-database-ktx:19.5.0'
     implementation 'com.google.firebase:firebase-firestore:19.6.0'
     implementation'com.google.android.gms:play-services-auth:17.0.0'
-    implementation'com.facebook.android:facebook-login:5.2.0'
+    //implementation'com.facebook.android:facebook-login:5.2.0'
+
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+
 
     //QRcode
     //compile 'com.journeyapps:zxing-android-embedded:3.6.0'
@@ -85,3 +92,6 @@ dependencies {
 }
 
 apply plugin:'com.google.gms.google-services'
+// Apply the Crashlytics Gradle plugin
+apply plugin: 'com.google.firebase.crashlytics'
+

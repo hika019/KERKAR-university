@@ -80,7 +80,7 @@ fun course_data_map_to_str(data: Map<String, Any>): String {
     return str
 }
 
-fun add_array_to_array(base: Array<String>?, add: ArrayList<String>?): Array<String> {
+fun add_array_to_array(base: Array<String>?, add: ArrayList<String?>?): Array<String> {
 
     var base_new = arrayOf<String>()
     if(base != null){
@@ -88,7 +88,7 @@ fun add_array_to_array(base: Array<String>?, add: ArrayList<String>?): Array<Str
     }
     if(add != null){
         for(item in add){
-            base_new += item
+            if (item != null) base_new += item
         }
     }
     return base_new

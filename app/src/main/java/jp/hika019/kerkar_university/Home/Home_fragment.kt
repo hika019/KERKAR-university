@@ -52,7 +52,7 @@ class Home_fragment(): Fragment() {
         Log.d(TAG, "load_timetable -> call")
         val user_doc = firedb.collection("user")
                 .document(uid!!)
-
+        /*
         for (period in period_list) {
             val week_to_day = now_week_to_day + period.toString()
             val course_id = local_timetable[week_to_day]
@@ -78,7 +78,7 @@ class Home_fragment(): Fragment() {
                     }
             }
         }
-        /*
+        */
         user_doc.
             get()
             .addOnSuccessListener {
@@ -135,7 +135,6 @@ class Home_fragment(): Fragment() {
                 Log.w(TAG, "Listen failed.", it)
             }
 
-         */
     }
 
     private fun show_timetable(view: View, period: Int, course_name: String){
