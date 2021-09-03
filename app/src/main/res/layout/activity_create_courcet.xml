@@ -82,6 +82,8 @@
         android:ems="10"
         android:hint=" 授業名"
         android:inputType="textPersonName"
+        android:maxLines="1"
+        android:maxLength="10"
         android:textSize="@dimen/class_edit_textsize"
         app:layout_constraintEnd_toEndOf="@+id/textView5"
         app:layout_constraintStart_toStartOf="@+id/periodPicker"
@@ -95,6 +97,8 @@
         android:ems="10"
         android:hint=" 教室"
         android:inputType="textPersonName"
+        android:maxLines="1"
+        android:maxLength="10"
         android:textSize="@dimen/class_edit_textsize"
         app:layout_constraintEnd_toEndOf="@+id/textView5"
         app:layout_constraintHorizontal_bias="0.0"
@@ -118,6 +122,8 @@
             android:ems="10"
             android:hint=" 教員名"
             android:inputType="textPersonName"
+            android:maxLength="10"
+            android:maxLines="1"
             android:textSize="@dimen/class_edit_textsize" />
 
     </LinearLayout>

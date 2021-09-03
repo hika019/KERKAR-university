@@ -45,6 +45,9 @@ class Create_courceActivity: AppCompatActivity() {
                 val edittext = EditText(this)
                 edittext.hint = " 教員名$teacher_num"
                 edittext.textSize = 24F
+                edittext.maxEms = 10
+                edittext.maxLines = 1
+                edittext.maxLines = 10
                 linearLayout.addView(edittext)
             }else{
                 Toast.makeText(this, "上限に達しました", Toast.LENGTH_SHORT).show()
