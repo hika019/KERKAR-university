@@ -36,6 +36,8 @@
         <activity android:name=".MainActivity">
         </activity>
 
+        <activity android:name=".Create_courceActivity"/>
+
         <receiver android:name=".Uninstall">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />

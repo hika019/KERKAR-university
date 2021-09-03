@@ -17,4 +17,6 @@
     <dimen name="dialog_setting_enter_uid">24sp</dimen>
 
     <dimen name="dialog_class_editer_edittextsize">50dp</dimen>
+
+    <dimen name="class_edit_textsize">24sp</dimen>
 </resources>

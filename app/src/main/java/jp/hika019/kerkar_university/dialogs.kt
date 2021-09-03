@@ -3,6 +3,7 @@ package jp.hika019.kerkar_university
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
@@ -191,7 +192,9 @@ class timetable_dialog(override val context: Context): firedb_timetable(context)
                     delete_user_timetable(semester_id, week_to_day+period,)
                 }
                 .setNeutralButton("授業をつくる"){dialog, which ->
-                    create_course_dialog()
+                    val i = Intent(context, Create_courceActivity::class.java)
+                    context.startActivity(i)
+                    //create_course_dialog()
                 }
         dialog.create().show()
 

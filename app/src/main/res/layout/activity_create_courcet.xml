@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <NumberPicker
+        android:id="@+id/periodPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/textView3"
+        app:layout_constraintEnd_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toTopOf="@+id/textView3" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="登録"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="限"
+        android:textSize="@dimen/class_edit_textsize"
+        app:layout_constraintBottom_toBottomOf="@+id/textView8"
+        app:layout_constraintEnd_toStartOf="@+id/textView8"
+        app:layout_constraintTop_toTopOf="@+id/textView8" />
+
+    <NumberPicker
+        android:id="@+id/weekPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar2" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="曜日"
+        android:textSize="@dimen/class_edit_textsize"
+        app:layout_constraintBottom_toBottomOf="@+id/weekPicker"
+        app:layout_constraintStart_toEndOf="@+id/weekPicker"
+        app:layout_constraintTop_toTopOf="@+id/weekPicker" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="32dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/weekPicker"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/weekPicker" />
+
+    <EditText
+        android:id="@+id/course_name_edittext"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint=" 授業名"
+        android:inputType="textPersonName"
+        android:textSize="@dimen/class_edit_textsize"
+        app:layout_constraintEnd_toEndOf="@+id/textView5"
+        app:layout_constraintStart_toStartOf="@+id/periodPicker"
+        app:layout_constraintTop_toBottomOf="@+id/weekPicker" />
+
+    <EditText
+        android:id="@+id/course_edittext"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint=" 教室"
+        android:inputType="textPersonName"
+        android:textSize="@dimen/class_edit_textsize"
+        app:layout_constraintEnd_toEndOf="@+id/textView5"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/periodPicker"
+        app:layout_constraintTop_toBottomOf="@+id/course_name_edittext" />
+
+    <LinearLayout
+        android:id="@+id/Create_class_linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="@+id/textView5"
+        app:layout_constraintStart_toStartOf="@+id/periodPicker"
+        app:layout_constraintTop_toBottomOf="@+id/course_edittext">
+
+        <EditText
+            android:id="@+id/editTextTextPersonName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint=" 教員名"
+            android:inputType="textPersonName"
+            android:textSize="@dimen/class_edit_textsize" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/Add_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add"
+        app:layout_constraintEnd_toEndOf="@+id/Create_class_linearLayout"
+        app:layout_constraintStart_toStartOf="@+id/Create_class_linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/Create_class_linearLayout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
-    lateinit var toolbar: Toolbar
+    private lateinit var toolbar: Toolbar
     lateinit var drawerLayout: DrawerLayout
     lateinit var navView: NavigationView
 
@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowHomeEnabled(false)
-
     }
 
 
