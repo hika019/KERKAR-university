@@ -26,7 +26,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView3" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/CreateButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -90,7 +90,7 @@
         app:layout_constraintTop_toBottomOf="@+id/weekPicker" />
 
     <EditText
-        android:id="@+id/course_edittext"
+        android:id="@+id/class_edittext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -113,10 +113,10 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="@+id/textView5"
         app:layout_constraintStart_toStartOf="@+id/periodPicker"
-        app:layout_constraintTop_toBottomOf="@+id/course_edittext">
+        app:layout_constraintTop_toBottomOf="@+id/class_edittext">
 
         <EditText
-            android:id="@+id/editTextTextPersonName"
+            android:id="@+id/teacherName_editTextText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"

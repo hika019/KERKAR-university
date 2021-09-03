@@ -241,7 +241,7 @@ class timetable_dialog(override val context: Context): firedb_timetable(context)
                                         "room" to class_name
                                 )
                                 //登録へ
-                                create_university_timetable(data)
+                                create_course_university_timetable(data)
 
                             }else{
                                 Log.d(TAG, "曜日が不正")

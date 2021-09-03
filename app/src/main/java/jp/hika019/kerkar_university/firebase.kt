@@ -521,7 +521,8 @@ open class firedb_timetable(context: Context){
             }
     }
 
-    fun create_university_timetable(data: Map<String, Any>){
+    fun create_course_university_timetable(data: Map<String, Any>){
+        Log.d(TAG, "create_course_university_timetable -> call")
 
         val course_data = mutableMapOf(
                 "week_to_day" to data["week_to_day"] as String,
@@ -530,39 +531,28 @@ open class firedb_timetable(context: Context){
                 "room" to data["room"] as String
         )
 
-        firedb.collection("user")
-                .document(uid!!)
-                .get()
-                .addOnSuccessListener {
+        val doc = firedb.collection("university")
+            .document(university_id!!)
+            .collection("semester")
+            .document(data["semester_id"] as String)
+            .collection(data["week_to_day"] as String)
+            .document()
 
-                    Log.d(TAG, "create_university_timetable: get universiyt_id -> success")
+        course_data["course_id"] = doc.id
 
-                    val doc = firedb.collection("university")
-                            .document(university_id!!)
-                            .collection("semester")
-                            .document(data["semester_id"] as String)
-                            .collection(data["week_to_day"] as String)
-                            .document()
+        doc.set(course_data, SetOptions.merge())
+            .addOnSuccessListener {
+                Log.d(TAG, "create_university_timetable: set data -> success")
 
-                    course_data["course_id"] = doc.id
-
-                    doc.set(course_data, SetOptions.merge())
-                            .addOnSuccessListener {
-                                Log.d(TAG, "create_university_timetable: set data -> success")
-
-                                add_user_timetable(data["week_to_day"] as String, doc.id)
-                            }
-                            .addOnFailureListener{
-                                Log.d(TAG, "create_university_timetable: set data -> failure")
-                            }
-                }
-                .addOnFailureListener{
-                    Log.w(TAG, "create_university_timetable: get universiyt_id -> failure")
-                }
+                add_user_timetable(data["week_to_day"] as String, doc.id)
+            }
+            .addOnFailureListener{
+                Log.d(TAG, "create_university_timetable: set data -> failure")
+            }
     }
 
     fun add_user_timetable(week_to_day: String, classId: String){
-
+        Log.d(TAG, "add_user_timetable -> call")
         val data = hashMapOf(
             week_to_day to hashMapOf(
                 "course_id" to classId

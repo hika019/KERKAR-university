@@ -3,41 +3,37 @@ package jp.hika019.kerkar_university
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View.generateViewId
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_create_courcet.*
 
 class Create_courceActivity: AppCompatActivity() {
-    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private val TAG = "Create_courceActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_courcet)
 
         setToolbar()
 
-        val crashButton = Button(this)
-        crashButton.text = "Test Crash"
-        crashButton.setOnClickListener {
-            finish()
-        }
-
-
-
         val period_item = arrayOf("1", "2", "3", "4", "5")
         val week_item =arrayOf("月", "火", "水", "木", "金", "土")
-
 
 
         periodPicker.maxValue = 5
         periodPicker.minValue = 1
 
-        weekPicker.maxValue = 4
-        weekPicker.minValue = 0
+        weekPicker.maxValue = 5
+        weekPicker.minValue = 1
         weekPicker.displayedValues = week_item
+
 
         val linearLayout = findViewById<LinearLayout>(R.id.Create_class_linearLayout)
         var teacher_num = 1
+        var editText_id_list = arrayListOf<Int>()
+        editText_id_list.add(R.id.teacherName_editTextText)
+
 
         Add_button.setOnClickListener {
             if (teacher_num <3){
@@ -48,6 +44,8 @@ class Create_courceActivity: AppCompatActivity() {
                 edittext.maxEms = 10
                 edittext.maxLines = 1
                 edittext.maxLines = 10
+                edittext.id = generateViewId()
+                editText_id_list.add(edittext.id)
                 linearLayout.addView(edittext)
             }else{
                 Toast.makeText(this, "上限に達しました", Toast.LENGTH_SHORT).show()
@@ -61,12 +59,38 @@ class Create_courceActivity: AppCompatActivity() {
 
          */
 
-        button4.setOnClickListener {
-            Log.d("hogee", "call")
+        CreateButton.setOnClickListener {
+            Log.d(TAG, "call")
+            val course_name = course_name_edittext.text.toString()
+            val class_name = class_edittext.text.toString()
             val period = periodPicker.value
             val week = weekPicker.value
-            Log.d("hogee", "period: $period /week: ${week_item[week]}")
-            finish()
+            val teacher_list = arrayListOf<String>()
+            val hoge = teacherName_editTextText.text.toString()
+            Log.d(TAG, "period: $period /week: ${week_item[week]}")
+            Log.d(TAG, "授業名: "+ course_name)
+            Log.d(TAG, "教室: "+ class_name)
+            for (item_id in editText_id_list){
+                val tmp_edittext = findViewById<EditText>(item_id)
+                Log.d(TAG, "教師: "+tmp_edittext.text.toString())
+                teacher_list.add(tmp_edittext.text.toString())
+            }
+
+            if (!(teacher_list.isNullOrEmpty()) && !(course_name.isNullOrEmpty()) && !(class_name.isNullOrEmpty()) && hoge != ""){
+                Log.d(TAG, (week_to_day_symbol_list[week] + period).toString())
+                val data = hashMapOf(
+                    "semester_id" to semester!!,
+                    "week_to_day" to (week_to_day_symbol_list[week] + period),
+                    "course" to course_name,
+                    "lecturer" to teacher_list,
+                    "room" to class_name
+                )
+                val hoge = firedb_timetable(this)
+                hoge.create_course_university_timetable(data)
+                finish()
+            }else{
+                Toast.makeText(this, "未入力があります", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
