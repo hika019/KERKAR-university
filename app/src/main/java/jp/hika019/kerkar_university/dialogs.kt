@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.dialog_add_university.view.*
 import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 fun error_college_upload_dialog(context: Context){
     val messege = "ユーザー情報が正しくアップロードされなかった可能性があります。"
@@ -285,17 +286,22 @@ class task_dialog(val context: Context){
             null
     )
 
-    fun course_selecter_dialog(class_name_list: Array<String>,
-                               class_id_list: Array<String>,
-                               class_week_to_day_list: Array<String>,
-                               semester_id: String,
-                               semester_name: String?){
+    fun course_selecter_dialog(class_datas: ArrayList<Any>){
 
-        semester_id_data = semester_id
-        semester = semester_name
+        var class_name_list = arrayOf<String>()
+        var class_id_list = arrayOf<String>()
+        var class_week_to_day_list = arrayOf<String>()
 
-        Log.d(TAG, "これがないとなぜか動かない　semester: $semester_name")
-        Log.d(TAG, "これがないとなぜか動かない　semester: $semester")
+        for(item in class_datas){
+            val item_data = item as Map<String, String>
+            class_name_list += item_data["course"]!!
+            class_id_list += item_data["course_id"]!!
+            class_week_to_day_list += item_data["week_to_day"]!!
+        }
+
+
+        //Log.d(TAG, "これがないとなぜか動かない　semester: $semester_name")
+        //Log.d(TAG, "これがないとなぜか動かない　semester: $semester")
 
         var select_point: Int? = null
 

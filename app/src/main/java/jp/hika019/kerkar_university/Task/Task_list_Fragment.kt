@@ -51,7 +51,7 @@ class Task_list_Fragment(): Fragment() {
 
         view.add_task_fab.setOnClickListener{
             Log.d(TAG, "add_task_fab -> push")
-            context?.let { it1 -> firedb_task(it1).get_course_list() }
+            context?.let { it -> firedb_task(it).get_course_list() }
 
         }
         return view

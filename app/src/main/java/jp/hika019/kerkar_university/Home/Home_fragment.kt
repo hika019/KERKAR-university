@@ -40,7 +40,7 @@ class Home_fragment(): Fragment() {
 
 
         view.floatingActionButton.setOnClickListener {
-            context?.let { it1 -> firedb_task(it1).get_course_list() }
+            context?.let { it -> firedb_task(it).get_course_list() }
         }
 
         return view
