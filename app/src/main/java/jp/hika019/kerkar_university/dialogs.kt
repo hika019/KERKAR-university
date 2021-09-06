@@ -393,7 +393,7 @@ class task_dialog(val context: Context){
                         val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm")
                         //val today = LocalDate.now().toString().split("-")
 
-                        Log.d("hoge", "set day ->${set_day}")
+                        //Log.d("hoge", "set day ->${set_day}")
                         //Log.d("hoge", "today ->${today}")
 
                         //if(day_cheack(today, set_day)){
@@ -409,12 +409,8 @@ class task_dialog(val context: Context){
 
 
                             //追加処理
-                            if(semester_id_data != null){
-                                Toast.makeText(context, "課題を追加しました", Toast.LENGTH_SHORT)
-                                firedb_task(context).create_task(data, semester_id_data!!)
-                            }else{
-                                Toast.makeText(context, "課題が追加されませんでした", Toast.LENGTH_SHORT)
-                            }
+                            Toast.makeText(context, "課題を追加しました", Toast.LENGTH_SHORT)
+                            firedb_task(context).create_task(data)
                         }else{
                             Toast.makeText(context, "締め切り日が無効です", Toast.LENGTH_SHORT)
                         }

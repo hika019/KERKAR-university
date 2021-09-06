@@ -677,7 +677,8 @@ class firedb_task(val context: Context){
 
     }
 
-    fun create_task(task_data: Map<String, Any> , semester_id: String){
+    fun create_task(task_data: Map<String, Any>){
+        Log.d(TAG, "create_task -> call")
         firedb.collection("user")
                 .document(uid!!)
                 .get()
@@ -695,7 +696,7 @@ class firedb_task(val context: Context){
                         val task_doc = firedb.collection("university")
                                 .document(university_id)
                                 .collection("semester")
-                                .document(semester_id)
+                                .document(semester!!)
                                 .collection(week_to_day)
                                 .document(class_id)
                                 .collection("task")
