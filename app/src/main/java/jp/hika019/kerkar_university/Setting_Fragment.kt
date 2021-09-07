@@ -31,9 +31,9 @@ class Setting_Fragment: Fragment() {
             enter_uid(view)
         }
 
-        view.setting_destroy_user.setOnClickListener {
-            destroy_user()
-        }
+//        view.setting_destroy_user.setOnClickListener {
+//            destroy_user()
+//        }
 
         return view
     }
