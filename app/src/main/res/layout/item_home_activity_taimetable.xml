@@ -1,37 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <View
-        android:id="@+id/view3"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="4dp"
-        android:background="@drawable/timetable_item_backgraound_default"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:elevation="3dp"
+    android:orientation="vertical"
+     android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
     <TextView
         android:id="@+id/timetable_title_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="2"
-        android:maxLines="3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:elevation="5dp"
         android:ellipsize="end"
         android:gravity="center"
+        android:maxLength="10"
+        android:maxLines="2"
         android:text="読み込み中"
-        android:textSize="@dimen/home_timetable_textsize"
-        app:layout_constraintBottom_toBottomOf="@id/view3"
+        android:textSize="@dimen/timetable_textsize"
         app:layout_constraintEnd_toEndOf="@id/view3"
         app:layout_constraintStart_toStartOf="@id/view3"
         app:layout_constraintTop_toTopOf="@id/view3" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:gravity="center"
+        android:text="教師" />
+
+</LinearLayout>

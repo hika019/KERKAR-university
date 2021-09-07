@@ -5,14 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-    android:background="@android:color/white">
+    >
 
     <View
         android:id="@+id/today_courses"
         android:layout_width="0dp"
         android:layout_height="150dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/main_info_view_background"
+        android:elevation="5dp"
+        android:background="@android:color/white"
         app:layout_constraintEnd_toEndOf="@+id/main_assignment_info_veiw"
         app:layout_constraintStart_toStartOf="@+id/main_assignment_info_veiw"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:elevation="5dp"
         android:text="@string/timetable_to_day"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/today_courses"
@@ -32,11 +34,12 @@
         android:id="@+id/main_assignment_info_veiw"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/main_info_view_background"
+        android:background="@android:color/white"
+        android:elevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -49,6 +52,7 @@
         android:layout_height="27dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:elevation="5dp"
         android:text="@string/assignment_to_date"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/main_assignment_info_veiw"
@@ -59,17 +63,15 @@
         android:id="@+id/main_assignment_info_recyclerview"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:elevation="5dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="@+id/main_assignment_info_veiw"
         app:layout_constraintEnd_toEndOf="@+id/main_assignment_info_veiw"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/main_assignment_info_veiw"
         app:layout_constraintTop_toBottomOf="@+id/main_assignment_info_textveiw"
-        app:layout_constraintVertical_bias="0.0" >
+        app:layout_constraintVertical_bias="0.0">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -89,6 +91,11 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:elevation="5dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@+id/today_courses"
         app:layout_constraintEnd_toEndOf="@+id/today_courses"
@@ -98,16 +105,16 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:layout_weight="1"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/timetable_1_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_weight="0.6"
                 android:layout_marginTop="4dp"
+                android:layout_weight="0.6"
                 android:text="@string/first_period" />
 
             <include
@@ -118,19 +125,25 @@
                 android:layout_weight="3" />
 
         </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3" />
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:layout_weight="1"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/timetable_2_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_weight="0.6"
                 android:layout_marginTop="4dp"
+                android:layout_weight="0.6"
                 android:text="@string/second_period" />
 
             <include
@@ -140,19 +153,25 @@
                 android:layout_height="0dp"
                 android:layout_weight="3" />
         </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2" />
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:layout_weight="1"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/timetable_3_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_weight="0.6"
                 android:layout_marginTop="4dp"
+                android:layout_weight="0.6"
                 android:text="@string/third_period" />
 
             <include
@@ -162,19 +181,25 @@
                 android:layout_height="0dp"
                 android:layout_weight="3" />
         </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2" />
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:layout_weight="1"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/timetable_4_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_weight="0.6"
                 android:layout_marginTop="4dp"
+                android:layout_weight="0.6"
                 android:text="@string/fourth_period" />
 
             <include
@@ -184,19 +209,25 @@
                 android:layout_height="0dp"
                 android:layout_weight="3" />
         </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2" />
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:layout_weight="1"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/timetable_5_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_weight="0.6"
                 android:layout_marginTop="4dp"
+                android:layout_weight="0.6"
                 android:text="@string/fifth_period" />
 
             <include

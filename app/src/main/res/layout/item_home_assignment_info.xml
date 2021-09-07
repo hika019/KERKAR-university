@@ -1,43 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:layout_margin="4dp"
+
+    android:background="@android:color/white"
     android:gravity="center">
 
     <TextView
         android:id="@+id/item_homeactivity_assignment_day_textview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_weight="1"
-        android:elevation="2dp"
+        android:layout_marginStart="12dp"
+        android:layout_weight="0.9"
         android:text="12/24"
-        android:textSize="@dimen/dialog_add_class_textsize" />
+        android:textSize="@dimen/item_textsize" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2" />
 
     <TextView
         android:id="@+id/item_homeactivity_assignment_title_textview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_weight="2"
-        android:elevation="2dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="創造理工学実験"
-        android:textSize="@dimen/dialog_add_class_textsize" />
+        android:textSize="@dimen/item_textsize" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2" />
 
     <TextView
         android:id="@+id/item_homeactivity_assignment_details_textview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_weight="2"
-        android:elevation="2dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="小レポート"
-        android:textSize="@dimen/dialog_add_class_textsize" />
+        android:textSize="@dimen/item_textsize" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
