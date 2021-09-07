@@ -378,14 +378,13 @@ class task_dialog(val context: Context){
                 .setView(task_dialog_second)
                 .setPositiveButton("確定") { dialog, which ->
 
-
-
-                    val title = task_dialog_second.dialog_assignment_special_notes.text
+                    val title = task_dialog_second.dialog_assignment_special_notes.text.toString()
+                    val note = task_dialog_second.dialog_assignment_special_notes.text.toString()
 
                     if(task_dialog_second.dialog_deadline_day.text.isNotEmpty() &&
                             task_dialog_second.dialog_deadline_time.text.isNotEmpty() &&
 //                            subject_data["class"] != null &&
-                            title != null){
+                            title != ""){
 
                         val set_day = task_dialog_second.dialog_deadline_day.text.toString().split("/")
 
@@ -402,8 +401,8 @@ class task_dialog(val context: Context){
                                     "day" to task_dialog_second.dialog_deadline_day.text.toString(),
                                     "time" to task_dialog_second.dialog_deadline_time.text.toString(),
                                     "class" to subject_data,
-                                    "task_title" to task_dialog_second.dialog_assignment_title.text.toString(),
-                                    "note" to task_dialog_second.dialog_assignment_special_notes.text.toString()
+                                    "task_title" to title,
+                                    "note" to note
                             )
                             Log.d(TAG, "set -> data: ${data}")
 
@@ -414,23 +413,88 @@ class task_dialog(val context: Context){
                         }else{
                             Toast.makeText(context, "締め切り日が無効です", Toast.LENGTH_SHORT)
                         }
-
                     }else{
+                        false
+                        //create_task_dialog(day!!, time!!, title, note)
                         Toast.makeText(context, "空の部分があります", Toast.LENGTH_SHORT).show()
                     }
-//                    Log.d("dialog", "")
                 }
                 .setNegativeButton("破棄") { dialog, which ->
                     false
                 }
-
         dialog.create().show()
-
-
     }
 
-    fun set_deadline_day(){
+    fun create_task_dialog(day: String, time: String, task_name: String, other: String){
+        task_dialog_second.add_task_semester_textView.text = semester
 
+        task_dialog_second.add_day_button.setOnClickListener {
+            set_deadline_day()
+        }
+        task_dialog_second.add_time_button.setOnClickListener {
+            time_picker()
+        }
+        task_dialog_second.dialog_deadline_day.setText(day)
+        task_dialog_second.dialog_deadline_time.setText(time)
+        task_dialog_second.dialog_subject.text = subject_data["class_name"]
+        task_dialog_second.dialog_assignment_special_notes.setText(task_name)
+        task_dialog_second.dialog_assignment_special_notes.setText(other)
+
+        val dialog = AlertDialog.Builder(context)
+            .setTitle("課題追加")
+            .setView(task_dialog_second)
+            .setPositiveButton("確定") { dialog, which ->
+
+                val title = task_dialog_second.dialog_assignment_special_notes.text.toString()
+                val note = task_dialog_second.dialog_assignment_special_notes.text.toString()
+
+                if(task_dialog_second.dialog_deadline_day.text.isNotEmpty() &&
+                    task_dialog_second.dialog_deadline_time.text.isNotEmpty() &&
+//                            subject_data["class"] != null &&
+                    title != ""){
+
+                    val set_day = task_dialog_second.dialog_deadline_day.text.toString().split("/")
+
+                    val d = Date() // 現在時刻
+                    val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm")
+                    //val today = LocalDate.now().toString().split("-")
+
+                    //Log.d("hoge", "set day ->${set_day}")
+                    //Log.d("hoge", "today ->${today}")
+
+                    //if(day_cheack(today, set_day)){
+                    if(true){
+                        val data = hashMapOf(
+                            "day" to task_dialog_second.dialog_deadline_day.text.toString(),
+                            "time" to task_dialog_second.dialog_deadline_time.text.toString(),
+                            "class" to subject_data,
+                            "task_title" to title,
+                            "note" to note
+                        )
+                        Log.d(TAG, "set -> data: ${data}")
+
+
+                        //追加処理
+                        Toast.makeText(context, "課題を追加しました", Toast.LENGTH_SHORT)
+                        firedb_task(context).create_task(data)
+                    }else{
+                        Toast.makeText(context, "締め切り日が無効です", Toast.LENGTH_SHORT)
+                    }
+                }else{
+                    false
+                    create_task_dialog(day!!, time!!, title, note)
+                    Toast.makeText(context, "空の部分があります", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("破棄") { dialog, which ->
+                false
+            }
+        dialog.create().show()
+    }
+
+
+
+    fun set_deadline_day(){
         val calendar = Calendar.getInstance()
 
         val datePickerDialog = DatePickerDialog(context,
