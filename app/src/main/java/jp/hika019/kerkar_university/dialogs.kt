@@ -300,9 +300,6 @@ class task_dialog(val context: Context){
         }
 
 
-        //Log.d(TAG, "これがないとなぜか動かない　semester: $semester_name")
-        //Log.d(TAG, "これがないとなぜか動かない　semester: $semester")
-
         var select_point: Int? = null
 
         val builder = AlertDialog.Builder(context)
