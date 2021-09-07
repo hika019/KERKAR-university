@@ -4,7 +4,7 @@
     <dimen name="home_timetable_textsize">10sp</dimen>
 
     <dimen name="dialog_add_class_textsize">18sp</dimen>
-    <dimen name="item_textsize">18sp</dimen>
+    <dimen name="item_textsize">16sp</dimen>
 
     <dimen name="add_university_activity_textsize">20sp</dimen>
 

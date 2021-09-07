@@ -17,4 +17,6 @@
     <color name="logo_color">#32CD99</color>
     <color name="logo_color2">#339C64</color>
 
+    <color name="test">#f8f8f8</color>
+
 </resources>
