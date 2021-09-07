@@ -19,5 +19,5 @@ var university_id: String? = null
 
 var local_timetable = mutableMapOf<String, String?>()
 
-val developer = false
+val developer = true
 

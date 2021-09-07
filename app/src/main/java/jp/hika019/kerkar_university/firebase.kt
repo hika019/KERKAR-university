@@ -291,11 +291,11 @@ open class firedb_setup(): local_db(){
                     university_id = data["university_id"] as? String
                     if (uid != null) update_local_course_id()
 
-                    if(create_at != null || semester != null || uid != null || university != null || university_id != null){
+                    if(semester != null || uid != null || university != null || university_id != null){
 
                         Log.d(TAG, "画面遷移")
                         val intent = Intent(context, MainActivity::class.java)
-                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            //.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         context.startActivity(intent)
 
                     }else{

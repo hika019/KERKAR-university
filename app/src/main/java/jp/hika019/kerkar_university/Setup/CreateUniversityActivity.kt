@@ -3,11 +3,13 @@ package jp.hika019.kerkar_university.Setup
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import jp.hika019.kerkar_university.R
 import kotlinx.android.synthetic.main.activity_create_university.*
 
@@ -18,6 +20,7 @@ class CreateUniversityActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_university)
 
+        setToolbar()
 
         university_name_edittext.setOnFocusChangeListener { v, hasFocus ->
             if(!hasFocus){
@@ -49,5 +52,16 @@ class CreateUniversityActivity: AppCompatActivity() {
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         create_university_background.requestFocus()
         return super.dispatchTouchEvent(ev)
+    }
+
+    private fun setToolbar(){
+        val toolbar: Toolbar = findViewById(R.id.toolbar3)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        finish()
+        return super.onOptionsItemSelected(item)
     }
 }
