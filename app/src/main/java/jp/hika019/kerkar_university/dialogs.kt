@@ -374,14 +374,14 @@ class task_dialog(val context: Context){
                 .setTitle("課題追加")
                 .setView(task_dialog_second)
                 .setPositiveButton("確定") { dialog, which ->
-
-                    val title = task_dialog_second.dialog_assignment_special_notes.text.toString()
+                    Log.d("hogee", "call")
+                    val title = task_dialog_second.dialog_assignment_title.text.toString()
                     val note = task_dialog_second.dialog_assignment_special_notes.text.toString()
 
-                    if(task_dialog_second.dialog_deadline_day.text.isNotEmpty() &&
-                            task_dialog_second.dialog_deadline_time.text.isNotEmpty() &&
-//                            subject_data["class"] != null &&
-                            title != ""){
+                    Log.d("hogee", "hoge: ${title != ""}")
+
+                    if(title != "" &&
+                        !time.isNullOrEmpty() && !day.isNullOrEmpty()){
 
                         val set_day = task_dialog_second.dialog_deadline_day.text.toString().split("/")
 
@@ -411,7 +411,6 @@ class task_dialog(val context: Context){
                             Toast.makeText(context, "締め切り日が無効です", Toast.LENGTH_SHORT)
                         }
                     }else{
-                        false
                         //create_task_dialog(day!!, time!!, title, note)
                         Toast.makeText(context, "空の部分があります", Toast.LENGTH_SHORT).show()
                     }

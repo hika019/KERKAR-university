@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="timetable_textsize">10sp</dimen>
-    <dimen name="home_timetable_textsize">16sp</dimen>
+    <dimen name="timetable_textsize">14sp</dimen>
+    <dimen name="home_timetable_textsize">10sp</dimen>
 
     <dimen name="dialog_add_class_textsize">18sp</dimen>
     <dimen name="item_textsize">18sp</dimen>

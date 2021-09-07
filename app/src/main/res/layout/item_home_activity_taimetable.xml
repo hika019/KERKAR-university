@@ -20,7 +20,7 @@
         android:maxLength="10"
         android:maxLines="2"
         android:text="読み込み中"
-        android:textSize="@dimen/timetable_textsize"
+        android:textSize="@dimen/home_timetable_textsize"
         app:layout_constraintEnd_toEndOf="@id/view3"
         app:layout_constraintStart_toStartOf="@id/view3"
         app:layout_constraintTop_toTopOf="@id/view3" />
