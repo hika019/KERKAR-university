@@ -20,7 +20,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:minHeight="?attr/actionBarSize"
-            android:elevation="5dp"
+            android:elevation="4dp"
             android:background="@android:color/white"
             android:theme="@style/AppThem"
             app:layout_constraintEnd_toEndOf="parent"

@@ -2,7 +2,7 @@ package jp.hika019.kerkar_university
 
 val week_to_day_jp_list = listOf("日", "月", "火", "水", "木", "金", "土")
 
-val week_to_day_symbol_list_jp_short = listOf("月", "火", "水", "木", "金")
+val week_to_day_symbol_list_jp_short = listOf("月", "火", "水", "木", "金", "土")
 
 val week_to_day_symbol_list = listOf("sun", "mon", "tue", "wed", "thu", "fri", "sat")
 
@@ -20,4 +20,7 @@ var university_id: String? = null
 var local_timetable = mutableMapOf<String, String?>()
 
 val developer = false
+
+val week_num = 6
+val period_num = 6
 

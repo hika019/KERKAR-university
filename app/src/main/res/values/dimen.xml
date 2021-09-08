@@ -11,7 +11,7 @@
 
     <dimen name="create_task_dialog_textview_textsize">18sp</dimen>
 
-    <dimen name="setting_activity_textsize">24sp</dimen>
+    <dimen name="setting_activity_textsize">18sp</dimen>
     <dimen name="setting_title_textsize">18sp</dimen>
 
     <dimen name="dialog_setting_enter_uid">24sp</dimen>

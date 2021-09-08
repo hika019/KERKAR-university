@@ -3,6 +3,8 @@ package jp.hika019.kerkar_university
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import android.view.ViewGroup
+import android.widget.LinearLayout
 import java.security.MessageDigest
 
 fun sha256(str: String): String {
@@ -109,4 +111,3 @@ fun cheack_uid(uid0: String, uid1: String, uid2: String, uid3: String, uid4: Str
 
 
 }
-
