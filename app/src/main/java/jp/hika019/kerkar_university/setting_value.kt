@@ -21,6 +21,7 @@ var local_timetable = mutableMapOf<String, String?>()
 
 val developer = false
 
-val week_num = 6
-val period_num = 6
+var week_num = 6
+var period_num = 6
 
+var timetable_id: MutableMap<String, ArrayList<Int>> = mutableMapOf()

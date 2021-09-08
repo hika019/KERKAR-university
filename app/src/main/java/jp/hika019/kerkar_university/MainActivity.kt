@@ -66,7 +66,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Log.d(TAG, "select: Home_fragment")
             }
             R.id.nav_timetable -> {
-                fragment = Timetable_Fragment()
+                fragment = test()
+                //fragment = Timetable_Fragment()
                 Log.d(TAG, "select: Timetable_fragment")
             }
             R.id.nav_assignment_list -> {

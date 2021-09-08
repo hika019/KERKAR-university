@@ -1,8 +1,8 @@
 package jp.hika019.kerkar_university
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.Gravity.CENTER
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +12,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.test.view.*
 import android.view.ViewGroup.MarginLayoutParams
-
-
+import kotlinx.android.synthetic.main.dialog_timetable_setting.view.*
 
 
 class test: Fragment() {
@@ -68,12 +67,35 @@ class test: Fragment() {
         val view = inflater.inflate(R.layout.test, container, false)
 
 
+        view.setting_ic.setOnClickListener {
+            val dialog_layout =
+                LayoutInflater.from(context).inflate(R.layout.dialog_timetable_setting, null)
+
+            dialog_layout.numberPicker.minValue = 1
+            dialog_layout.numberPicker.maxValue = 6
+
+            val dialog = AlertDialog.Builder(context)
+                .setView(dialog_layout)
+                .setPositiveButton("確定"){ dialog, wich ->
+                    period_num = dialog_layout.numberPicker.value
+                    if(dialog_layout.checkBox.isChecked){
+                        week_num = 6
+                    }else{
+                        week_num = 5
+                    }
+
+                }
+
+            dialog.create().show()
+        }
+
+
         //曜日
         view.hogee.addView(week_title(week_num))
 
-        for(i in 1..period_num){
+        for(period in 1..period_num){
             view.hogee.addView(row_spacer())
-            view.hogee.addView(row_courses(i))
+            view.hogee.addView(row_courses(period))
         }
 
 
@@ -114,11 +136,11 @@ class test: Fragment() {
 
     }
 
-    private fun course(): LinearLayout {
-        return course("読み込み中", "読み込み中")
+    private fun course(week_and_period: String): LinearLayout {
+        return course(week_and_period, "読み込み中", "読み込み中")
     }
 
-    private fun course(course_name: String, teacher_name: String): LinearLayout {
+    private fun course(week_and_period: String, course_name: String, teacher_name: String): LinearLayout {
 
         var course_name = course_name
         var teacher_name = teacher_name
@@ -170,6 +192,11 @@ class test: Fragment() {
 
         val couse_name_textview_id = couse_name_textview.id
         val teacher_name_textview_id = teacher_name_textview.id
+        val tmp = arrayListOf(couse_name_textview_id, teacher_name_textview_id)
+
+        timetable_id.put(week_and_period, tmp)
+
+        //Log.d("hogee", "na: $week_and_period")
 
         course.addView(couse_name_textview)
         course.addView(teacher_name_textview)
@@ -191,8 +218,8 @@ class test: Fragment() {
         Linear.layoutParams = set_timetable_Column_layout
 
 
-        for (i in 0..week_num){
-            if (i == 0){
+        for (week in 0..week_num){
+            if (week == 0){
 
                 val textView = TextView(context)
                 textView.text = "${period}限"
@@ -205,7 +232,7 @@ class test: Fragment() {
                 val hoge = View(context)
                 hoge.layoutParams = set_timetable_Column_space_layout
                 Linear.addView(hoge)
-                Linear.addView(course())
+                Linear.addView(course(week_to_day_symbol_list[week]+period.toString()))
             }
         }
         return Linear
