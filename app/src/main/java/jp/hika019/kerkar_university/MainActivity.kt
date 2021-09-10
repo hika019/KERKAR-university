@@ -1,6 +1,5 @@
 package jp.hika019.kerkar_university
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +14,7 @@ import jp.hika019.kerkar_university.Home.Home_fragment
 import jp.hika019.kerkar_university.Message.MessageFragment
 import jp.hika019.kerkar_university.Task.Task_list_Fragment
 import com.google.android.material.navigation.NavigationView
+import jp.hika019.kerkar_university.test.test
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {

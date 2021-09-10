@@ -39,6 +39,10 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    dataBinding{
+        enabled = true
+    }
 }
 
 dependencies {
@@ -89,8 +93,12 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version" //Kotlin coroutines用ライブラリ(async, await)
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version" //Kotlin coroutines用ライブラリ(async, await)
 
-    //時間割: https://androidexample365.com/customizable-timetableview-for-android/
-    //implementation 'com.github.islandparadise14:Mintable:x.y.z'
+    //viewmodel-ktx viewModelScopeを使うため
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0"
+
+    //Kotlin Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0"
 
 }
 

@@ -1,4 +1,4 @@
-package jp.hika019.kerkar_university
+package jp.hika019.kerkar_university.test
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -12,10 +12,17 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.test.view.*
 import android.view.ViewGroup.MarginLayoutParams
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import jp.hika019.kerkar_university.*
 import kotlinx.android.synthetic.main.dialog_timetable_setting.view.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 
 class test: Fragment() {
+
+    private val viewmodel by viewModels<testviewmodel>()
 
     private val set_timetable_row_layout = LinearLayout.LayoutParams(
         0,
@@ -65,6 +72,30 @@ class test: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.test, container, false)
+
+
+        //firebase_test.get_course_id()
+
+        /*
+        lifecycleScope.launch {
+            test_course_id.collect {
+                Log.d("hogee", "aiu: $it")
+                //view.test_textview.text = it?.get("wed2") ?: ""
+                viewmodel.set()
+                Log.d("hogee", "text: ${viewmodel.wed2}")
+                view.test_textview.text = viewmodel.wed2.toString()
+            }
+        }
+
+         */
+        lifecycleScope.launch{
+            test_course_id.collect {
+                Log.d("hogee", "text: ${viewmodel.wed2}")
+            }
+        }
+
+
+
 
 
         view.setting_ic.setOnClickListener {

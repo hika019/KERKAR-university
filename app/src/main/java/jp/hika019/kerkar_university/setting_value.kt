@@ -1,5 +1,9 @@
 package jp.hika019.kerkar_university
 
+import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+
 val week_to_day_jp_list = listOf("日", "月", "火", "水", "木", "金", "土")
 
 val week_to_day_symbol_list_jp_short = listOf("月", "火", "水", "木", "金", "土")
@@ -25,3 +29,5 @@ var week_num = 6
 var period_num = 6
 
 var timetable_id: MutableMap<String, ArrayList<Int>> = mutableMapOf()
+
+var test_course_id = MutableStateFlow<Map<String, String?>?>(null)
