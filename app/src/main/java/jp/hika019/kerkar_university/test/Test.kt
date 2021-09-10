@@ -13,14 +13,13 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.test.view.*
 import android.view.ViewGroup.MarginLayoutParams
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import jp.hika019.kerkar_university.*
 import kotlinx.android.synthetic.main.dialog_timetable_setting.view.*
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 
 class test: Fragment() {
+
+    private val TAG = "test"
 
     private val viewmodel by viewModels<testviewmodel>()
 
@@ -88,11 +87,17 @@ class test: Fragment() {
         }
 
          */
+        //firebase_test.get_all_course_data()
+
+        /*
         lifecycleScope.launch{
             test_course_id.collect {
-                Log.d("hogee", "text: ${viewmodel.wed2}")
+
+                Log.d("hogee", "text: ${it}")
             }
         }
+
+         */
 
 
 
@@ -176,13 +181,14 @@ class test: Fragment() {
         var course_name = course_name
         var teacher_name = teacher_name
 
-
+        /*
         if (course_name == "" || course_name.isNullOrEmpty()){
             course_name = "読み込み中"
         }
         if (teacher_name == "" || teacher_name.isNullOrEmpty()){
             teacher_name = "読み込み中"
         }
+         */
 
         val course = LinearLayout(context)
         //course.setBackgroundResource(R.color.black)
@@ -260,12 +266,40 @@ class test: Fragment() {
 
 
             }else{
+                val week_and_period = week_to_day_symbol_list[week]+period.toString()
                 val hoge = View(context)
                 hoge.layoutParams = set_timetable_Column_space_layout
                 Linear.addView(hoge)
-                Linear.addView(course(week_to_day_symbol_list[week]+period.toString()))
+                Linear.addView(course(week_and_period, get_course_name(week_and_period), get_lecturer(week_and_period)))
             }
         }
         return Linear
     }
+
+    private fun get_course_name(week_period: String): String {
+        Log.d(TAG, "get_course_id -> call")
+        val tmp =  test_course_data_map?.get(week_period)
+
+        var course_name = ""
+
+        if (tmp != null){
+            val data = tmp as Map<String, Any>
+            course_name = data["course"] as String
+        }
+        return course_name
+    }
+
+    private fun get_lecturer(week_period: String): String {
+        Log.d(TAG, "get_lecturer -> call")
+        val tmp =  test_course_data_map?.get(week_period)
+
+        var lecturer = arrayListOf<String>("")
+
+        if (tmp != null){
+            val data = tmp as Map<String, Any>
+            lecturer = data["lecturer"] as ArrayList<String>
+        }
+        return lecturer[0]
+    }
+
 }

@@ -14,6 +14,7 @@ import jp.hika019.kerkar_university.Home.Home_fragment
 import jp.hika019.kerkar_university.Message.MessageFragment
 import jp.hika019.kerkar_university.Task.Task_list_Fragment
 import com.google.android.material.navigation.NavigationView
+import jp.hika019.kerkar_university.firebase_test.get_all_course_data
 import jp.hika019.kerkar_university.test.test
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -25,6 +26,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var toolbar: Toolbar
     lateinit var drawerLayout: DrawerLayout
     lateinit var navView: NavigationView
+
+    init {
+        get_all_course_data()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

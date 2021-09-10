@@ -10,7 +10,7 @@ val week_to_day_symbol_list_jp_short = listOf("月", "火", "水", "木", "金",
 
 val week_to_day_symbol_list = listOf("sun", "mon", "tue", "wed", "thu", "fri", "sat")
 
-val period_list:List<Int> = List(5){it +1}
+val period_list:List<Int> = List(6){it +1}
 
 var uid: String? = null
 
@@ -30,4 +30,6 @@ var period_num = 6
 
 var timetable_id: MutableMap<String, ArrayList<Int>> = mutableMapOf()
 
-var test_course_id = MutableStateFlow<Map<String, String?>?>(null)
+var test_course_id = MutableStateFlow<Map<String, Any?>?>(null)
+
+var test_course_data_map = mutableMapOf<String, Any?>()

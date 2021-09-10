@@ -4,13 +4,27 @@ package jp.hika019.kerkar_university
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import jp.hika019.kerkar_university.*
+import java.time.DayOfWeek
 
 object firebase_test{
+
+    private val TAG = "firebase_test"
     val firedb = FirebaseFirestore.getInstance()
 
-    fun get_course_id(){
+    private val user_course_doc =
+        firedb.collection("user")
+            .document(uid!!)
+            .collection("semester")
+            .document(semester!!)
 
-        Log.d("hogee", "call")
+    private  val uni_course_doc =
+        firedb.collection("university")
+            .document(university_id!!)
+            .collection("semester")
+            .document(semester!!)
+
+    fun get_all_course_data(){
+        Log.d(TAG, "get_all_course_data -> call")
 
         firedb.collection("user")
             .document(uid!!)
@@ -22,33 +36,61 @@ object firebase_test{
                 }
 
                 val hoge = value?.data
-
-                Log.d("hogee", "hoge: $hoge")
+                //Log.d("hogee", "hoge: $hoge")
 
                 if (hoge != null){
+                    var data = mutableMapOf<String, String?>()
                     for (week in week_to_day_symbol_list){
                         for(period in period_list){
                             val week_period = week+period.toString()
                             val tmp = hoge.get(week_period) as? Map<String, String>
                             //Log.d("hogee", "aaa$tmp")
 
-                            var data = mutableMapOf<String, String?>(week_period to null)
                             if (tmp != null){
-                                data = mutableMapOf(week_period to tmp["course_id"])
-                                test_course_id.value = data
+                                get_course_data(week_period, tmp["course_id"]!!)
+
+                                //data[week_period] = tmp["course_id"]
+                                //test_course_id.value = data
                                 Log.d("hogee", "data: ${test_course_id.value}")
+                                //Log.d("hogee", "data2: ${data}")
+
                             }
-
-
                         }
                     }
                 }
-
             }
-
-
-
     }
 
 
+    fun get_course_data(week_period: String, course_id: String){
+        Log.d(TAG, "get_course_data -> call")
+        uni_course_doc
+            .collection(week_period)
+            .document(course_id)
+            .get()
+            .addOnSuccessListener {
+                val data = it.data
+
+                if (data != null) {
+                    val course_name = data["course"] as String
+                    val lecturer = data["lecturer"] as ArrayList<String>
+
+                    val in_data = mapOf<String, Any?>(
+                        "course" to course_name,
+                        "lecturer" to lecturer,
+                        "course_id" to course_id
+                    )
+
+                    //Log.d(TAG, "wee: $week_period")
+                    //Log.d(TAG, "hoge: $hoge")
+
+                    test_course_data_map.put(week_period, in_data)
+                    Log.d(TAG, "course data map: ${test_course_data_map}")
+                }
+
+            }
+            .addOnFailureListener {
+
+            }
+    }
 }
