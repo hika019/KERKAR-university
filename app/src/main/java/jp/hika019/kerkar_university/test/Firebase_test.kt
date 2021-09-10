@@ -23,8 +23,8 @@ object firebase_test{
             .collection("semester")
             .document(semester!!)
 
-    fun get_all_course_data(){
-        Log.d(TAG, "get_all_course_data -> call")
+    fun get_all_course_id(){
+        Log.d(TAG, "get_all_course_id -> call")
 
         firedb.collection("user")
             .document(uid!!)
@@ -64,6 +64,8 @@ object firebase_test{
 
     fun get_course_data(week_period: String, course_id: String){
         Log.d(TAG, "get_course_data -> call")
+        Log.d(TAG, "week_period: $week_period, id: $course_id")
+
         uni_course_doc
             .collection(week_period)
             .document(course_id)
@@ -87,10 +89,9 @@ object firebase_test{
                     test_course_data_map.put(week_period, in_data)
                     Log.d(TAG, "course data map: ${test_course_data_map}")
                 }
-
             }
             .addOnFailureListener {
-
+                Log.w(TAG, "get_course_data -> failure: $week_period /$course_id: ", it)
             }
     }
 }

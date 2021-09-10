@@ -12,9 +12,14 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.test.view.*
 import android.view.ViewGroup.MarginLayoutParams
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import jp.hika019.kerkar_university.*
 import kotlinx.android.synthetic.main.dialog_timetable_setting.view.*
+
+
+
+
 
 
 class test: Fragment() {
@@ -73,32 +78,7 @@ class test: Fragment() {
         val view = inflater.inflate(R.layout.test, container, false)
 
 
-        //firebase_test.get_course_id()
-
-        /*
-        lifecycleScope.launch {
-            test_course_id.collect {
-                Log.d("hogee", "aiu: $it")
-                //view.test_textview.text = it?.get("wed2") ?: ""
-                viewmodel.set()
-                Log.d("hogee", "text: ${viewmodel.wed2}")
-                view.test_textview.text = viewmodel.wed2.toString()
-            }
-        }
-
-         */
-        //firebase_test.get_all_course_data()
-
-        /*
-        lifecycleScope.launch{
-            test_course_id.collect {
-
-                Log.d("hogee", "text: ${it}")
-            }
-        }
-
-         */
-
+        Log.d("hoge", "aaa: ${R.id.test_textview}")
 
 
 
@@ -200,11 +180,15 @@ class test: Fragment() {
         mlp.setMargins(4, 4, 4, 4)
         course.layoutParams = mlp;
 
+        val couse_name_textview_id = View.generateViewId()
+        val teacher_name_textview_id = View.generateViewId()
+
+        Log.d("hoge", "da: ${couse_name_textview_id}")
 
 
         val couse_name_textview = TextView(context)
         couse_name_textview.text = course_name
-        couse_name_textview.id = View.generateViewId()
+        couse_name_textview.id = couse_name_textview_id
         couse_name_textview.gravity = CENTER
         couse_name_textview.textSize = 10f
         couse_name_textview.maxLines = 2
@@ -215,9 +199,13 @@ class test: Fragment() {
             2f
         )
 
+        couse_name_textview.setOnClickListener {
+            firedb_timetable(requireContext()).get_course_data(week_and_period.substring(0, 3), week_and_period.substring(3).toInt())
+        }
+
         val teacher_name_textview = TextView(context)
         teacher_name_textview.text = teacher_name
-        teacher_name_textview.id = View.generateViewId()
+        teacher_name_textview.id = teacher_name_textview_id
         teacher_name_textview.gravity = CENTER
         teacher_name_textview.textSize = 10f
         teacher_name_textview.maxLines = 1
@@ -227,11 +215,10 @@ class test: Fragment() {
             0.5f
         )
 
-        val couse_name_textview_id = couse_name_textview.id
-        val teacher_name_textview_id = teacher_name_textview.id
+
         val tmp = arrayListOf(couse_name_textview_id, teacher_name_textview_id)
 
-        timetable_id.put(week_and_period, tmp)
+        timetable_id[week_and_period] = tmp
 
         //Log.d("hogee", "na: $week_and_period")
 
