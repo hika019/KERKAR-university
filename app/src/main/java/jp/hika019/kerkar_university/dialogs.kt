@@ -8,10 +8,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.google.firebase.firestore.FieldValue
+import jp.hika019.kerkar_university.Timetable.Create_timetableActivity
 import kotlinx.android.synthetic.main.dialog_add_class_editer.view.*
 import kotlinx.android.synthetic.main.dialog_add_task.view.*
 import kotlinx.android.synthetic.main.dialog_add_university.view.*
 import kotlinx.coroutines.runBlocking
+import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -35,7 +38,8 @@ fun none_Timetable(context: Context){
         .setTitle(message)
         .setMessage("時間割画面から授業を追加してください")
         .setPositiveButton("OK"){ dialog, which ->
-
+            val i = Intent(context, Create_timetableActivity::class.java)
+            //context?.startActivity(i)
         }
 
     dialog.show()
@@ -190,7 +194,7 @@ class timetable_dialog(override val context: Context): firedb_timetable(context)
                     }
                 }
                 .setNegativeButton("空き授業"){dialog, which ->
-                    delete_user_timetable(semester_id, week_to_day+period,)
+                    delete_user_timetable(semester_id, week_to_day + period)
                 }
                 .setNeutralButton("授業をつくる"){dialog, which ->
                     val i = Intent(context, Create_courceActivity::class.java)
@@ -275,7 +279,12 @@ class task_dialog(val context: Context){
 
     val TAG = "task_dialog"
 
-    var day: String? = null
+    var year: Int? = null
+    var month: Int? = null
+    var day: Int? = null
+    var hour: Int? = null
+    var minute: Int? = null
+
     var time: String? = null
     var subject_data: MutableMap<String, String> = mutableMapOf()
     var semester_id_data: String? = null
@@ -366,8 +375,8 @@ class task_dialog(val context: Context){
         task_dialog_second.add_time_button.setOnClickListener {
             time_picker()
         }
-        task_dialog_second.dialog_deadline_day.text = day
-        task_dialog_second.dialog_deadline_time.text = time
+        task_dialog_second.dialog_deadline_day.text = ""
+        task_dialog_second.dialog_deadline_time.text = ""
         task_dialog_second.dialog_subject.text = subject_data["class_name"]
 
         val dialog = AlertDialog.Builder(context)
@@ -380,10 +389,17 @@ class task_dialog(val context: Context){
 
                     Log.d("hogee", "hoge: ${title != ""}")
 
-                    if(title != "" &&
-                        !time.isNullOrEmpty() && !day.isNullOrEmpty()){
 
-                        val set_day = task_dialog_second.dialog_deadline_day.text.toString().split("/")
+                    if(title != "" && year != null && month != null && day != null && hour != null && minute != null){
+                        val calendar = Calendar.getInstance()
+                        calendar.timeZone = TimeZone.getTimeZone("Asia/Tokyo")
+                        calendar.set(year!!, month!!, day!!, hour!!, minute!!)
+                        val date = calendar.time
+                        val timestamp = com.google.firebase.Timestamp(date)
+                        Log.d("hoge", "day: $calendar")
+                        Log.d("hoge", "day: $date")
+                        Log.d("hoge", "day: $timestamp")
+
 
                         val d = Date() // 現在時刻
                         val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm")
@@ -395,8 +411,7 @@ class task_dialog(val context: Context){
                         //if(day_cheack(today, set_day)){
                         if(true){
                             val data = hashMapOf(
-                                    "day" to task_dialog_second.dialog_deadline_day.text.toString(),
-                                    "time" to task_dialog_second.dialog_deadline_time.text.toString(),
+                                    "time_limit" to timestamp,
                                     "class" to subject_data,
                                     "task_title" to title,
                                     "note" to note
@@ -494,14 +509,17 @@ class task_dialog(val context: Context){
         val calendar = Calendar.getInstance()
 
         val datePickerDialog = DatePickerDialog(context,
-                { view, year, month, dayOfMonth -> //setした日付を取得して表示
-                    calendar.set(year, month, dayOfMonth)
-                    val dfInputeDate = SimpleDateFormat("yyyy/MM/dd", Locale.US)
-                    val strInputDate = dfInputeDate.format(calendar.time)
+                { view, _year, _month, _day -> //setした日付を取得して表示
+                    calendar.set(_year, _month, _day)
+                    //val dfInputeDate = SimpleDateFormat("yyyy/MM/dd")
+                    //val strInputDate = dfInputeDate.format(calendar.time)
 //                    Log.d("hoge", "time: ${calendar.time} -> show")
-                    day = strInputDate
-                    Log.d(TAG, "day: ${day} -> set")
-                    task_dialog_second.dialog_deadline_day.text = day
+                    //day = strInputDate
+                    Log.d(TAG, "day: $year/$month/$day -> set")
+                    year = _year
+                    month = _month
+                    day = _day
+                    task_dialog_second.dialog_deadline_day.text = "$year/$month/$day"
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
@@ -514,17 +532,23 @@ class task_dialog(val context: Context){
         val calender = Calendar.getInstance()
 
         val timePicker = TimePickerDialog(context,
-                { view, hour, minute ->
+                { view, _hour, _minute ->
 //                    Log.d("hoge", "time: ${hour} -> get")
-                    calender.set(2000,1,5,hour, minute)
+
+                    calender.set(2000,1,5,_hour, _minute)
                     val dfInputdata = SimpleDateFormat("HH:mm")
                     val strInputDate = dfInputdata.format(calender.time)
 //                    Log.d("hoge", "time: ${strInputDate} -> show")
                     time = strInputDate
 //                    time = ("%2:${minute}").format(hour)
 //                    time = "${hour}:${minute}"
+
+
+                    hour = _hour
+                    minute = _minute
+                    time = "$hour:$minute"
                     Log.d(TAG, "time: ${time} -> set")
-                    task_dialog_second.dialog_deadline_time.text = time
+                    task_dialog_second.dialog_deadline_time.text = "$hour:$minute"
                 },
                 calender.get(Calendar.HOUR_OF_DAY),
                 calender.get(Calendar.MINUTE),

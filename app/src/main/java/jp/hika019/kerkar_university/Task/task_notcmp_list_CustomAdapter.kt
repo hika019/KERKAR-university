@@ -7,14 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.Timestamp
 import jp.hika019.kerkar_university.R
 import jp.hika019.kerkar_university.firedb_task
 import kotlinx.android.synthetic.main.item_assignment_activity.view.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class task_notcmp_list_CustomAdapter(
         private val list: ArrayList<Map<String, Any>>,
-        private val context: Context?, private val semester: String)
+        private val context: Context?)
     : RecyclerView.Adapter<task_notcmp_list_CustomAdapter.CustomViewHolder>() {
 
     lateinit var listener: OnItemClickListener
@@ -41,13 +45,17 @@ class task_notcmp_list_CustomAdapter(
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
 
         val task_data = list[position]
-        val class_data = task_data["class_data"] as Map<String, Any>
+        val class_data = task_data["class_data"] as Map<String, Any?>
 
-        val day = task_data["time_limit"] as String
+        val time_limit = task_data.get("time_limit") as Timestamp
         val couse = class_data["course"] as String
 
+        //Log.d("hogee", "time: $timestamp")
 
-        holder.day.text = day.substring(5,10)
+        val df = SimpleDateFormat("MM/dd")
+
+
+        holder.day.text = "df.format()"
         holder.lecture_title.text = "${couse}"
         holder.assignment_details.text = "${task_data["task_name"]}"
         //タップ

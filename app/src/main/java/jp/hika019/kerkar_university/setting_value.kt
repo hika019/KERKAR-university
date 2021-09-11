@@ -20,6 +20,7 @@ val UserData_SharedPreferences_name = "UserDataStore"
 
 var semester: String? = null
 var university_id: String? = null
+var timetable_id: String? = null
 
 var local_timetable = mutableMapOf<String, String?>()
 
@@ -28,7 +29,6 @@ val developer = false
 var week_num = 6
 var period_num = 6
 
-var timetable_id: MutableMap<String, ArrayList<Int>> = mutableMapOf()
 
 var test_course_id = MutableStateFlow<Map<String, Any?>?>(null)
 

@@ -1,6 +1,9 @@
 package jp.hika019.kerkar_university.test
 
 import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity.CENTER
@@ -15,6 +18,7 @@ import android.view.ViewGroup.MarginLayoutParams
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import jp.hika019.kerkar_university.*
+import jp.hika019.kerkar_university.Timetable.Create_timetableActivity
 import kotlinx.android.synthetic.main.dialog_timetable_setting.view.*
 
 
@@ -25,8 +29,6 @@ import kotlinx.android.synthetic.main.dialog_timetable_setting.view.*
 class test: Fragment() {
 
     private val TAG = "test"
-
-    private val viewmodel by viewModels<testviewmodel>()
 
     private val set_timetable_row_layout = LinearLayout.LayoutParams(
         0,
@@ -78,31 +80,14 @@ class test: Fragment() {
         val view = inflater.inflate(R.layout.test, container, false)
 
 
-        Log.d("hoge", "aaa: ${R.id.test_textview}")
-
-
+        if (get_timetable_id(requireContext()) == null){
+            none_Timetable(requireContext())
+        }
 
 
         view.setting_ic.setOnClickListener {
-            val dialog_layout =
-                LayoutInflater.from(context).inflate(R.layout.dialog_timetable_setting, null)
-
-            dialog_layout.numberPicker.minValue = 1
-            dialog_layout.numberPicker.maxValue = 6
-
-            val dialog = AlertDialog.Builder(context)
-                .setView(dialog_layout)
-                .setPositiveButton("確定"){ dialog, wich ->
-                    period_num = dialog_layout.numberPicker.value
-                    if(dialog_layout.checkBox.isChecked){
-                        week_num = 6
-                    }else{
-                        week_num = 5
-                    }
-
-                }
-
-            dialog.create().show()
+            val i = Intent(context, Create_timetableActivity::class.java)
+            context?.startActivity(i)
         }
 
 
@@ -180,15 +165,10 @@ class test: Fragment() {
         mlp.setMargins(4, 4, 4, 4)
         course.layoutParams = mlp;
 
-        val couse_name_textview_id = View.generateViewId()
-        val teacher_name_textview_id = View.generateViewId()
-
-        Log.d("hoge", "da: ${couse_name_textview_id}")
 
 
         val couse_name_textview = TextView(context)
         couse_name_textview.text = course_name
-        couse_name_textview.id = couse_name_textview_id
         couse_name_textview.gravity = CENTER
         couse_name_textview.textSize = 10f
         couse_name_textview.maxLines = 2
@@ -200,12 +180,11 @@ class test: Fragment() {
         )
 
         couse_name_textview.setOnClickListener {
-            firedb_timetable(requireContext()).get_course_data(week_and_period.substring(0, 3), week_and_period.substring(3).toInt())
+            firedb_timetable(requireContext()).get_course_data(week_and_period)
         }
 
         val teacher_name_textview = TextView(context)
         teacher_name_textview.text = teacher_name
-        teacher_name_textview.id = teacher_name_textview_id
         teacher_name_textview.gravity = CENTER
         teacher_name_textview.textSize = 10f
         teacher_name_textview.maxLines = 1
@@ -216,9 +195,6 @@ class test: Fragment() {
         )
 
 
-        val tmp = arrayListOf(couse_name_textview_id, teacher_name_textview_id)
-
-        timetable_id[week_and_period] = tmp
 
         //Log.d("hogee", "na: $week_and_period")
 

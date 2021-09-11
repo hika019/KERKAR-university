@@ -287,6 +287,9 @@ open class firedb_setup(): local_db(){
                     val create_at = data["create_at"] as? com.google.firebase.Timestamp
                     val university = data["university"] as? String
                     semester = data["semester"] as? String
+                    timetable_id = data["timetable_id"] as? String
+
+
                     uid = Firebase.auth.uid
                     university_id = data["university_id"] as? String
                     if (uid != null) update_local_course_id()
@@ -294,7 +297,6 @@ open class firedb_setup(): local_db(){
                     if(semester != null || uid != null || university != null || university_id != null){
 
                         Log.d(TAG, "画面遷移")
-
 
 
                         val intent = Intent(context, MainActivity::class.java)
@@ -480,6 +482,10 @@ open class firedb_timetable(context: Context){
         }
     }
 
+    fun get_course_data(week_and_period: String){
+        get_course_data(week_and_period.substring(0, 3), week_and_period.substring(3).toInt())
+    }
+
     fun get_course_data(week_to_day: String, period: Int){
         var str = "授業が登録されていません"
         Log.d(TAG, "get_course_data -> call")
@@ -658,41 +664,6 @@ class firedb_task(val context: Context){
                     }
                 }
 
-
-                /*
-                for(index in 0..class_data_array.size){
-                    val course_data = class_data_array[index] as MutableMap<String, String>
-                    val week_to_day = course_data["week_to_day"]!!
-                    val course_id = course_data["course_id"]!!
-
-                    university_doc
-                        .collection(week_to_day)
-                        .document(course_id)
-                        .get()
-                        .addOnSuccessListener {
-                            val course_name = it.getString("course")!!
-                            course_data.put("course", course_name)
-                            class_data_array[index] = course_data
-                            //Log.d("hogee", "index: $index")
-                            //Log.d("hogee", "size: ${class_data_array.size}")
-
-                            Log.d("aaaaaaaaa", "If this log remove, this program dead (asynchronous processing). : $course_name")
-                            if (class_data_array.size-1 == index){
-                                //Log.d("hogee", "iiiiiii")
-                                if (class_data_array.isEmpty()){
-                                    none_Timetable(context)
-                                }else{
-                                    task_dialog(context).course_selecter_dialog(class_data_array)
-                                }
-                            }
-
-                        }
-                        .addOnFailureListener {
-                            Log.w(TAG, "firedb_task.get_course_list: get user data -> failure")
-                        }
-                }
-
-                 */
             }
             .addOnFailureListener {
                 Log.w(TAG, "firedb_task.get_course_list: get user data -> failure")
@@ -730,7 +701,7 @@ class firedb_task(val context: Context){
 
                         val set_data = hashMapOf(
                                 "task_id" to task_doc.id,
-                                "time_limit" to time_limit,
+                                "time_limit" to task_data["time_limit"],
                                 "task_name" to task_data["task_title"],
                                 "note" to task_data["note"]
                         )
@@ -803,7 +774,7 @@ class firedb_task(val context: Context){
                                             .addOnSuccessListener {
                                                 //課題取得
                                                 for (task_item in it!!.documentChanges) {
-                                                    val task_data = task_item.document.getData() as MutableMap<String, Any>
+                                                    val task_data = task_item.document.data
                                                     val task_id = task_data["task_id"] as? String
 
                                                     task_data["class_data"] = class_data
@@ -814,7 +785,7 @@ class firedb_task(val context: Context){
 
                                                     //表示
                                                     Log.d(TAG, "tasks show to recyclerview")
-                                                    val adapter = task_notcmp_list_CustomAdapter(task_list, context, semester!!)
+                                                    val adapter = task_notcmp_list_CustomAdapter(task_list, context)
                                                     val layoutManager = LinearLayoutManager(context)
 
                                                     view.AssignmentActivity_assignment_recyclerView.layoutManager = layoutManager

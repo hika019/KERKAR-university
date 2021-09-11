@@ -111,3 +111,8 @@ fun cheack_uid(uid0: String, uid1: String, uid2: String, uid3: String, uid4: Str
 
 
 }
+
+fun get_timetable_id(context: Context): String? {
+    val datastore: SharedPreferences = context.getSharedPreferences("user_db", Context.MODE_PRIVATE)
+    return datastore.getString("timetable_id", null)
+}

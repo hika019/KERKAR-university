@@ -49,15 +49,6 @@
             app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@android:drawable/ic_menu_preferences" />
 
-        <TextView
-            android:id="@+id/test_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            app:layout_constraintEnd_toStartOf="@+id/semester_textView"
-            app:layout_constraintStart_toEndOf="@+id/setting_ic"
-            app:layout_constraintTop_toTopOf="@+id/setting_ic" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
     
 </layout>

@@ -38,6 +38,8 @@
 
         <activity android:name=".Create_courceActivity"/>
 
+        <activity android:name=".Timetable.Create_timetableActivity"/>
+
         <receiver android:name=".Uninstall">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />

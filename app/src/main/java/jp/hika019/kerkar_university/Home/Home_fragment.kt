@@ -55,33 +55,7 @@ class Home_fragment(): Fragment() {
         Log.d(TAG, "load_timetable -> call")
         val user_doc = firedb.collection("user")
                 .document(uid!!)
-        /*
-        for (period in period_list) {
-            val week_to_day = now_week_to_day + period.toString()
-            val course_id = local_timetable[week_to_day]
-            Log.d("hoge", "$week_to_day: $course_id")
-            if (course_id != null) {
-                firedb.collection("university")
-                    .document(university_id!!)
-                    .collection("semester")
-                    .document(semester!!)
-                    .collection(week_to_day)
-                    .document(course_id)
-                    .addSnapshotListener { value, error ->
-                        if (error != null) {
-                            Log.w(TAG, "Listen failed.", error)
-                            return@addSnapshotListener
-                        }
-                        Log.d(TAG, "get_course_symbol -> success")
 
-                        val data = value?.data
-                        val course_name = data?.get("course").toString()
-                        Log.d(TAG, week_to_day + ": " + course_name)
-                        show_timetable(view, period, course_name)
-                    }
-            }
-        }
-        */
         user_doc.
             get()
             .addOnSuccessListener {

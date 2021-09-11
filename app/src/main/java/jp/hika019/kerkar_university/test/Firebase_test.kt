@@ -1,12 +1,13 @@
 package jp.hika019.kerkar_university
 
 
+import android.content.Context
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import jp.hika019.kerkar_university.*
 import java.time.DayOfWeek
 
-object firebase_test{
+open class firebase_test(){
 
     private val TAG = "firebase_test"
     val firedb = FirebaseFirestore.getInstance()
@@ -23,13 +24,15 @@ object firebase_test{
             .collection("semester")
             .document(semester!!)
 
-    fun get_all_course_id(){
+    fun get_all_course_id(context: Context){
         Log.d(TAG, "get_all_course_id -> call")
+
+        val tt_id = get_timetable_id(context)
 
         firedb.collection("user")
             .document(uid!!)
-            .collection("semester")
-            .document(semester!!)
+            .collection("timetable")
+            .document(tt_id!!)
             .addSnapshotListener{ value, error ->
                 if (error != null){
                     return@addSnapshotListener
