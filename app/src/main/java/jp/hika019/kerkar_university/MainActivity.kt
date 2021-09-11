@@ -25,20 +25,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val TAG = "MainActivity"
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private val firebaseTest = firebase_test()
     private lateinit var toolbar: Toolbar
     lateinit var drawerLayout: DrawerLayout
     lateinit var navView: NavigationView
 
-    init {
-        if(get_timetable_id(this) != null)
-            firebaseTest.get_all_course_id(this)
 
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        cheack_timetable(this)
 
         setContentView(R.layout.activity_main)
         this.setToolbar()
@@ -49,6 +45,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         ft.commit()
 
     }
+
+
 
     private fun setToolbar(){
         toolbar = findViewById(R.id.toolbar)

@@ -1,16 +1,23 @@
 package jp.hika019.kerkar_university
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View.generateViewId
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_create_courcet.*
+import kotlinx.android.synthetic.main.activity_create_university.*
 
 class Create_courceActivity: AppCompatActivity() {
+
     private val TAG = "Create_courceActivity"
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_courcet)
@@ -34,6 +41,21 @@ class Create_courceActivity: AppCompatActivity() {
         var editText_id_list = arrayListOf<Int>()
         editText_id_list.add(R.id.teacherName_editTextText)
 
+        class_edittext.setOnFocusChangeListener { v, hasFocus ->
+            if(!hasFocus){
+                val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputManager.hideSoftInputFromWindow(v.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+            }
+        }
+
+        teacherName_editTextText.setOnFocusChangeListener { v, hasFocus ->
+            if(!hasFocus){
+                val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputManager.hideSoftInputFromWindow(v.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+            }
+        }
+
+
 
         Add_button.setOnClickListener {
             if (teacher_num <3){
@@ -47,6 +69,14 @@ class Create_courceActivity: AppCompatActivity() {
                 edittext.id = generateViewId()
                 editText_id_list.add(edittext.id)
                 linearLayout.addView(edittext)
+
+                edittext.setOnFocusChangeListener { v, hasFocus ->
+                    if(!hasFocus){
+                        val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        inputManager.hideSoftInputFromWindow(v.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                    }
+                }
+
             }else{
                 Toast.makeText(this, "上限に達しました", Toast.LENGTH_SHORT).show()
             }
@@ -60,6 +90,7 @@ class Create_courceActivity: AppCompatActivity() {
          */
 
         CreateButton.setOnClickListener {
+            /*
             Log.d(TAG, "call")
             val course_name = course_name_edittext.text.toString()
             val class_name = class_edittext.text.toString()
@@ -91,6 +122,8 @@ class Create_courceActivity: AppCompatActivity() {
             }else{
                 Toast.makeText(this, "未入力があります", Toast.LENGTH_SHORT).show()
             }
+
+             */
         }
     }
 
@@ -112,4 +145,6 @@ class Create_courceActivity: AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
+
+
 }

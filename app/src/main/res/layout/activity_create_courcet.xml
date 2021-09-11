@@ -2,9 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@android:color/white"
+    android:id="@+id/create_course_bg"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:focusableInTouchMode="true">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar2"
@@ -76,33 +78,32 @@
 
     <EditText
         android:id="@+id/course_name_edittext"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint=" 授業名"
         android:inputType="textPersonName"
-        android:maxLines="1"
         android:maxLength="10"
+        android:maxLines="1"
         android:textSize="@dimen/class_edit_textsize"
-        app:layout_constraintEnd_toEndOf="@+id/textView5"
-        app:layout_constraintStart_toStartOf="@+id/periodPicker"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/weekPicker" />
 
     <EditText
         android:id="@+id/class_edittext"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint=" 教室"
         android:inputType="textPersonName"
+        android:maxLength="20"
         android:maxLines="1"
-        android:maxLength="10"
         android:textSize="@dimen/class_edit_textsize"
-        app:layout_constraintEnd_toEndOf="@+id/textView5"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/periodPicker"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/course_name_edittext" />
 
     <LinearLayout
@@ -111,8 +112,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="@+id/textView5"
-        app:layout_constraintStart_toStartOf="@+id/periodPicker"
+        app:layout_constraintEnd_toEndOf="@+id/class_edittext"
+        app:layout_constraintStart_toStartOf="@+id/class_edittext"
         app:layout_constraintTop_toBottomOf="@+id/class_edittext">
 
         <EditText

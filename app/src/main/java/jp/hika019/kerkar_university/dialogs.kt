@@ -30,7 +30,7 @@ fun error_college_upload_dialog(context: Context){
 
 
 
-fun none_Timetable(context: Context){
+fun none_course(context: Context){
 
     val message = "授業がまだありません\n新しく授業を登録しましょう"
 
@@ -40,6 +40,21 @@ fun none_Timetable(context: Context){
         .setPositiveButton("OK"){ dialog, which ->
             val i = Intent(context, Create_timetableActivity::class.java)
             //context?.startActivity(i)
+        }
+
+    dialog.show()
+}
+
+fun none_Timetable(context: Context){
+
+    val message = "時間割がまだありません\n新しく時間割を登録しましょう"
+
+    val dialog = AlertDialog.Builder(context)
+        .setTitle(message)
+        .setMessage("時間割を追加してください")
+        .setPositiveButton("OK"){ dialog, which ->
+            val i = Intent(context, Create_timetableActivity::class.java)
+            context?.startActivity(i)
         }
 
     dialog.show()
@@ -181,7 +196,7 @@ class timetable_dialog(override val context: Context): firedb_timetable(context)
         var index = 0
 
         val dialog = AlertDialog.Builder(context)
-                .setTitle(week_jp + "曜日 " + period + "限 で検索されています")
+                .setTitle(week_jp + "曜日 " + period + "限 での検索結果")
                 .setSingleChoiceItems(selecter_list, -1){ dialog, which ->
                     index = which
                 }

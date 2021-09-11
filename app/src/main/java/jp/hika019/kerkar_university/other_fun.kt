@@ -3,7 +3,6 @@ package jp.hika019.kerkar_university
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import java.security.MessageDigest
 
@@ -115,4 +114,49 @@ fun cheack_uid(uid0: String, uid1: String, uid2: String, uid3: String, uid4: Str
 fun get_timetable_id(context: Context): String? {
     val datastore: SharedPreferences = context.getSharedPreferences("user_db", Context.MODE_PRIVATE)
     return datastore.getString("timetable_id", null)
+}
+
+fun set_timetable_id(context: Context, id: String) {
+    val datastore: SharedPreferences = context.getSharedPreferences("user_db", Context.MODE_PRIVATE)
+    val editer = datastore.edit()
+    editer.putString("timetable_id", id)
+    editer.commit()
+}
+
+fun set_semester(context: Context, timetableId: String){
+    Log.d("hogee", "get_semester -> call")
+
+    if (get_timetable_id(context) !=null){
+        firedb
+            .collection("user")
+            .document(uid!!)
+            .collection("timetable")
+            .document(timetableId)
+            .get()
+            .addOnSuccessListener {
+                val data = it.data
+                if(data != null){
+                    Log.d("hoge", "aa: ${data}")
+                    val year = data["year"]
+                    val term = data["term"]
+                    semester = "$year-$term"
+                    timetable_name = data["timetable_name"] as? String
+
+                    val firebaseTest = firebase_test()
+                    firebaseTest.get_all_course_id(context)
+                }
+            }
+    }
+}
+
+fun cheack_timetable(context: Context){
+
+    Log.d("hoge", "aa${get_timetable_id(context)}")
+    val timetableId = get_timetable_id(context)
+    if(timetableId != null)
+        set_semester(context, timetableId)
+    else{
+        //TODO idがなかった時
+        //cheack_timetable_flag = true
+    }
 }

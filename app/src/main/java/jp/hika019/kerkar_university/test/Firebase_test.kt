@@ -43,6 +43,7 @@ open class firebase_test(){
 
                 if (hoge != null){
                     var data = mutableMapOf<String, String?>()
+                    test_course_data_map = mutableMapOf()
                     for (week in week_to_day_symbol_list){
                         for(period in period_list){
                             val week_period = week+period.toString()

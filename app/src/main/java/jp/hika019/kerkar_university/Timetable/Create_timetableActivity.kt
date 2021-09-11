@@ -1,18 +1,17 @@
 package jp.hika019.kerkar_university.Timetable
 
+import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FieldValue
-import jp.hika019.kerkar_university.R
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.firebase.firestore.SetOptions
-import jp.hika019.kerkar_university.firedb
-import jp.hika019.kerkar_university.period_num
-import jp.hika019.kerkar_university.uid
+import jp.hika019.kerkar_university.*
 
 import kotlinx.android.synthetic.main.activity_create_timetable.*
 import kotlinx.android.synthetic.main.activity_create_university.*
@@ -35,6 +34,14 @@ class Create_timetableActivity : AppCompatActivity() {
 
 
         val now_year = SimpleDateFormat("yyyy").format(Date()).toInt()
+
+        timetablse_title_textview.setOnFocusChangeListener { v, hasFocus ->
+            if(!hasFocus){
+                val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputManager.hideSoftInputFromWindow(v.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+            }
+        }
+
 
         year_textview.setOnClickListener {
 
@@ -98,17 +105,25 @@ class Create_timetableActivity : AppCompatActivity() {
                     .addOnSuccessListener {
                         Toast.makeText(this, "作成が成功しました", Toast.LENGTH_SHORT).show()
 
+                        set_timetable_id(this, doc_id)
+                        set_semester(this, doc_id)
+                        finish()
+
+                        /*
                         firedb
                             .collection("user")
                             .document(uid!!)
                             .set(hashMapOf("timetable_id" to doc_id), SetOptions.merge())
                             .addOnSuccessListener {
+
                                 finish()
                             }
                             .addOnFailureListener {
                                 Toast.makeText(this, "データの更新に失敗しました", Toast.LENGTH_SHORT).show()
                                 Log.w(TAG, "update user field to timetable -> failure", it)
                             }
+
+                         */
                     }
                     .addOnFailureListener {
                         Toast.makeText(this, "作成が失敗しました", Toast.LENGTH_SHORT).show()

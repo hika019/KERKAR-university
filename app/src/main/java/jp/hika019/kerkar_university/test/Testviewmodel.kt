@@ -3,7 +3,6 @@ package jp.hika019.kerkar_university.test
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import jp.hika019.kerkar_university.firebase_test.get_all_course_id
 import jp.hika019.kerkar_university.test_course_id
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
@@ -20,7 +19,6 @@ class testviewmodel: ViewModel() {
             .launchIn(viewModelScope)
 
          */
-        get_all_course_id()
 
         viewModelScope.launch {
             test_course_id.collect {

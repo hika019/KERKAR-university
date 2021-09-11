@@ -1,9 +1,6 @@
 package jp.hika019.kerkar_university.test
 
-import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity.CENTER
@@ -15,20 +12,14 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.test.view.*
 import android.view.ViewGroup.MarginLayoutParams
-import android.widget.Toast
-import androidx.fragment.app.viewModels
 import jp.hika019.kerkar_university.*
 import jp.hika019.kerkar_university.Timetable.Create_timetableActivity
-import kotlinx.android.synthetic.main.dialog_timetable_setting.view.*
-
-
-
-
 
 
 class test: Fragment() {
 
     private val TAG = "test"
+
 
     private val set_timetable_row_layout = LinearLayout.LayoutParams(
         0,
@@ -79,11 +70,7 @@ class test: Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.test, container, false)
 
-
-        if (get_timetable_id(requireContext()) == null){
-            none_Timetable(requireContext())
-        }
-
+        view.semester_textView.text = timetable_name
 
         view.setting_ic.setOnClickListener {
             val i = Intent(context, Create_timetableActivity::class.java)
