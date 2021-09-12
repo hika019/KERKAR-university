@@ -7,9 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.Timestamp
 import jp.hika019.kerkar_university.R
 import jp.hika019.kerkar_university.firedb_task
+import jp.hika019.kerkar_university.zisa
 import kotlinx.android.synthetic.main.item_assignment_activity.view.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class task_cmp_list_CustomAdapter(
@@ -43,11 +48,17 @@ class task_cmp_list_CustomAdapter(
         val task_data = list[position]
         val class_data = task_data["class_data"] as Map<String, Any>
 
-        val day = task_data["time_limit"] as String
+        val time_limit_timestamp = task_data.get("time_limit") as Timestamp
         val couse = class_data["course"] as String
 
+        val timelimit_date = time_limit_timestamp.toDate()
+        val cal = Calendar.getInstance()
+        cal.time = timelimit_date
+        cal.add(Calendar.HOUR, zisa)
+        val df = SimpleDateFormat("MM/dd")
 
-        holder.day.text = day.substring(5,10)
+
+        holder.day.text = df.format(cal.time)
         holder.lecture_title.text = "${couse}"
         holder.assignment_details.text = "${task_data["task_name"]}"
         //タップ
@@ -57,7 +68,7 @@ class task_cmp_list_CustomAdapter(
             //表示する内容
             val class_data = list[position] as Map<String, Any>
 
-            assigmenment_comp_ditail_dialog(context!!, class_data, position)
+            task_comp_ditail_dialog(context!!, class_data, position)
 //            Log.d("assignment_list", list.toString())
 
         }
@@ -85,11 +96,18 @@ class task_cmp_list_CustomAdapter(
         notifyDataSetChanged() // これを忘れるとRecyclerViewにItemが反映されない
     }
 
-    fun assigmenment_comp_ditail_dialog(context: Context, task_data: Map<String, Any>, position: Int){
+    fun task_comp_ditail_dialog(context: Context, task_data: Map<String, Any>, position: Int){
+        val cal = Calendar.getInstance()
 
         val class_data = task_data["class_data"] as Map<String, Any>
+        val time_limit_timestamp = task_data["time_limit"] as Timestamp
 
-        val str = "　期限: ${task_data["time_limit"]}\n" +
+        cal.time = time_limit_timestamp.toDate()
+        cal.add(Calendar.HOUR, zisa)
+        val df = SimpleDateFormat("MM/dd HH:mm")
+
+
+        val str = "　期限: ${df.format(cal.time)}\n" +
                 "　教科: ${class_data["course"]}\n" +
                 "　詳細: ${task_data["task_name"]}\n" +
                 "その他: ${task_data["note"]}"

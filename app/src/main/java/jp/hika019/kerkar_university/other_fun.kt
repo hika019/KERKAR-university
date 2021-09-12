@@ -121,6 +121,7 @@ fun set_timetable_id(context: Context, id: String) {
     val editer = datastore.edit()
     editer.putString("timetable_id", id)
     editer.commit()
+    timetable_id = id
 }
 
 fun set_semester(context: Context, timetableId: String){
