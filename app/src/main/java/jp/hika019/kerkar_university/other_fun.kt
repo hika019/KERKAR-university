@@ -1,9 +1,11 @@
 package jp.hika019.kerkar_university
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import android.widget.LinearLayout
+import android.widget.Toast
 import java.security.MessageDigest
 
 fun sha256(str: String): String {
@@ -152,14 +154,57 @@ fun set_semester(context: Context, timetableId: String){
 
 fun cheack_timetable(context: Context){
 
-    Log.d("hogee", "aa${get_timetable_id(context)}")
+    Log.d("cheack_timetable", "cheack_timetable -> call")
     val timetableId = get_timetable_id(context)
     if(timetableId != null)
         set_semester(context, timetableId)
     else{
-        none_Timetable(context)
-        //TODO idがなかった時
-        //cheack_timetable_flag = true
+        firedb
+            .collection("user")
+            .document(uid!!)
+            .collection("timetable")
+            .get()
+            .addOnSuccessListener {
+                Log.d("cheack_timetable", "get user timetables -> success")
+                if(it.documents.size == 0){
+                    none_Timetable(context)
+                }else{
+                    var timetableId_ArrayList = arrayOf<String>()
+                    var timetableName_ArrayList = arrayOf<String>()
+                    var select_point: Int? = null
+
+                    for (i in it){
+                        val tmp_data = i.data
+                        timetableId_ArrayList.plus(tmp_data["course_id"] as String)
+                        timetableName_ArrayList.plus(tmp_data["timetable_name"] as String)
+                        if (timetableId_ArrayList.size == it.documents.size){
+                            val dialog = AlertDialog.Builder(context)
+                                .setTitle("時間割の選択")
+                                .setSingleChoiceItems(timetableName_ArrayList, -1){ dialog, which ->
+                                    select_point = which
+                                }
+                                .setPositiveButton("確定"){dialog, which ->
+                                    if (select_point != null){
+                                        set_timetable_id(context, timetableId_ArrayList[select_point!!])
+                                    }else{
+                                        cheack_timetable(context)
+                                    }
+                                }
+                            dialog.create().show()
+                        }
+
+                    }
+
+
+                    //時間割選択
+                    Toast.makeText(context, "時間割選択", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener {
+                Log.d("cheack_timetable", "get user timetables -> failure")
+                none_Timetable(context)
+            }
+
     }
 }
 
