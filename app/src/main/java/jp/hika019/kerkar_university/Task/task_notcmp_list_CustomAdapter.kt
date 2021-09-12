@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
 import jp.hika019.kerkar_university.R
 import jp.hika019.kerkar_university.firedb_task
+import jp.hika019.kerkar_university.zisa
 import kotlinx.android.synthetic.main.item_assignment_activity.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -47,15 +48,18 @@ class task_notcmp_list_CustomAdapter(
         val task_data = list[position]
         val class_data = task_data["class_data"] as Map<String, Any?>
 
-        val time_limit = task_data.get("time_limit") as Timestamp
+        val time_limit_timestamp = task_data.get("time_limit") as Timestamp
         val couse = class_data["course"] as String
 
         //Log.d("hogee", "time: $timestamp")
-
+        val timelimit_date = time_limit_timestamp.toDate()
+        val cal = Calendar.getInstance()
+        cal.time = timelimit_date
+        cal.add(Calendar.HOUR, zisa)
         val df = SimpleDateFormat("MM/dd")
 
 
-        holder.day.text = "df.format()"
+        holder.day.text = df.format(cal.time)
         holder.lecture_title.text = "${couse}"
         holder.assignment_details.text = "${task_data["task_name"]}"
         //タップ
@@ -96,9 +100,18 @@ class task_notcmp_list_CustomAdapter(
 
     fun task_nocomp_ditail_dialog(context: Context, task_data: Map<String, Any>, position: Int){
 
-        val class_data = task_data["class_data"] as Map<String, Any>
+        val cal = Calendar.getInstance()
 
-        val str = "　期限: ${task_data["time_limit"]}\n" +
+        val class_data = task_data["class_data"] as Map<String, Any>
+        val time_limit_timestamp = task_data["time_limit"] as Timestamp
+
+        cal.time = time_limit_timestamp.toDate()
+        cal.add(Calendar.HOUR, zisa)
+        val df = SimpleDateFormat("MM/dd HH:mm")
+
+
+
+        val str = "　期限: ${df.format(cal.time)}\n" +
                 "　教科: ${class_data["course"]}\n" +
                 "　詳細: ${task_data["task_name"]}\n" +
                 "その他: ${task_data["note"]}"

@@ -35,3 +35,5 @@ var period_num = 6
 var test_course_id = MutableStateFlow<Map<String, Any?>?>(null)
 
 var test_course_data_map = mutableMapOf<String, Any?>()
+
+var zisa = 9

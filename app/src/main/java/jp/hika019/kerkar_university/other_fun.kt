@@ -151,11 +151,12 @@ fun set_semester(context: Context, timetableId: String){
 
 fun cheack_timetable(context: Context){
 
-    Log.d("hoge", "aa${get_timetable_id(context)}")
+    Log.d("hogee", "aa${get_timetable_id(context)}")
     val timetableId = get_timetable_id(context)
     if(timetableId != null)
         set_semester(context, timetableId)
     else{
+        none_Timetable(context)
         //TODO idがなかった時
         //cheack_timetable_flag = true
     }

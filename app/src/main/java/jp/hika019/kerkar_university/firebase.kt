@@ -586,6 +586,7 @@ open class firedb_timetable(context: Context){
             .addOnSuccessListener {
                 Log.d(TAG, "add course to user: ${classId} -> success")
                 local_timetable[week_to_day] = classId
+
             }
             .addOnFailureListener{
                 Log.d(TAG, "add course to user: ${classId} -> failure")
@@ -627,6 +628,35 @@ class firedb_task(val context: Context){
             .collection("semester")
             .document(semester!!)
 
+        var class_data_array = arrayListOf<Any>()
+
+        for( week in week_to_day_symbol_list) {
+            for (period in period_list) {
+
+                val course_data = test_course_data_map[week+period] as? Map<String, Any>
+                if (course_data != null){
+                    val tmp = hashMapOf(
+                        "course_id" to course_data["course_id"],
+                        "week_to_day" to week+period,
+                        "course" to course_data["course"]
+                    )
+                    class_data_array.add(tmp)
+                }
+
+
+
+                Log.d("hoge", "da: $class_data_array")
+                if (week+period == "sat6"){
+                    if (class_data_array.isEmpty()){
+                        none_course(context)
+                    }else{
+                        Log.d("hoge", "call")
+                        task_dialog(context).course_selecter_dialog(class_data_array)
+                    }
+                }
+            }
+        }
+        /*
         user_doc
             .get()
             .addOnSuccessListener {
@@ -676,6 +706,8 @@ class firedb_task(val context: Context){
             .addOnFailureListener {
                 Log.w(TAG, "firedb_task.get_course_list: get user data -> failure")
             }
+
+         */
 
 
     }
@@ -736,8 +768,8 @@ class firedb_task(val context: Context){
         Log.d(TAG, "get_not_comp_task_list -> call")
         val user_doc = firedb.collection("user")
                 .document(uid!!)
-                .collection("semester")
-                .document(semester!!)
+                .collection("timetable")
+                .document(get_timetable_id(context)!!)
 
         user_doc
             .addSnapshotListener { value, error ->
@@ -769,7 +801,8 @@ class firedb_task(val context: Context){
                                 .document(course_id)
 
                             //授業の詳細の取得
-                            class_db.get()
+                            class_db
+                                .get()
                                 .addOnSuccessListener {
                                     Log.d(TAG, "get 授業のデータ -> success")
                                     val class_data = it.data
@@ -778,10 +811,13 @@ class firedb_task(val context: Context){
                                         class_db
                                             .collection("task")
                                             .orderBy("time_limit")
-                                            .get()
-                                            .addOnSuccessListener {
+                                            .addSnapshotListener { value, error ->
+                                                if(error != null){
+                                                    Log.w(TAG, "get_not_comp_task_list -> error", error)
+                                                    return@addSnapshotListener
+                                                }
                                                 //課題取得
-                                                for (task_item in it!!.documentChanges) {
+                                                for (task_item in value!!.documentChanges) {
                                                     val task_data = task_item.document.data
                                                     val task_id = task_data["task_id"] as? String
 
@@ -801,18 +837,13 @@ class firedb_task(val context: Context){
                                                     view.AssignmentActivity_assignment_recyclerView.setHasFixedSize(true)
                                                 }
                                             }
-                                            .addOnFailureListener {
-                                                Log.w(TAG, "get_comp_task_list -> get task_data (course_id:${course_id}) -> failure", error)
-                                            }
+
 
                                     } else {
                                         Log.d(TAG, "get_not_comp_task_list: class_data is null")
                                     }
                                 }
-
                         }
-
-
                     }
                 }
             }

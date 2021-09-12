@@ -90,8 +90,8 @@ class Create_courceActivity: AppCompatActivity() {
          */
 
         CreateButton.setOnClickListener {
-            /*
-            Log.d(TAG, "call")
+
+            Log.d(TAG, "CreateButton -> push")
             val course_name = course_name_edittext.text.toString()
             val class_name = class_edittext.text.toString()
             val period = periodPicker.value
@@ -123,7 +123,7 @@ class Create_courceActivity: AppCompatActivity() {
                 Toast.makeText(this, "未入力があります", Toast.LENGTH_SHORT).show()
             }
 
-             */
+
         }
     }
 

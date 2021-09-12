@@ -5,7 +5,6 @@ import android.content.Context
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import jp.hika019.kerkar_university.*
-import java.time.DayOfWeek
 
 open class firebase_test(){
 
@@ -42,7 +41,15 @@ open class firebase_test(){
                 //Log.d("hogee", "hoge: $hoge")
 
                 if (hoge != null){
-                    var data = mutableMapOf<String, String?>()
+
+                    val wtd = hoge["wtd"] as Long
+                    week_num = wtd.toInt()
+
+                    val period = hoge["wtd"] as Long
+                    period_num = period.toInt()
+
+
+
                     test_course_data_map = mutableMapOf()
                     for (week in week_to_day_symbol_list){
                         for(period in period_list){
@@ -51,11 +58,12 @@ open class firebase_test(){
                             //Log.d("hogee", "aaa$tmp")
 
                             if (tmp != null){
+                                //test_course_id_map[week_period!!] = tmp["course_id"]
                                 get_course_data(week_period, tmp["course_id"]!!)
 
                                 //data[week_period] = tmp["course_id"]
                                 //test_course_id.value = data
-                                Log.d("hogee", "data: ${test_course_id.value}")
+                                //Log.d("hogee", "data: ${test_course_id.value}")
                                 //Log.d("hogee", "data2: ${data}")
 
                             }

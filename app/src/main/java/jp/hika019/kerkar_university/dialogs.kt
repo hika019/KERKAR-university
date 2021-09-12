@@ -142,6 +142,7 @@ class timetable_dialog(override val context: Context): firedb_timetable(context)
     private val TAG = "timetable_dialog"
 
     fun timetable_data_dialog(week: String, time: Int, message: String?){
+        Log.d(TAG, "timetable_data_dialog -> call")
 
         val week_jp = week_to_day_jp_chenger(week)
 
@@ -149,7 +150,7 @@ class timetable_dialog(override val context: Context): firedb_timetable(context)
                 .setTitle("${week_jp}曜日 ${time}限の授業")
                 .setMessage(message)
                 .setPositiveButton("授業登録") { dialog, which ->
-
+                    Log.d(TAG, "授業登録 -> push")
                     //登録画面
                     get_course_list(week, time)
                 }
@@ -409,6 +410,7 @@ class task_dialog(val context: Context){
                         val calendar = Calendar.getInstance()
                         calendar.timeZone = TimeZone.getTimeZone("Asia/Tokyo")
                         calendar.set(year!!, month!!, day!!, hour!!, minute!!)
+                        calendar.add(Calendar.HOUR, -9)
                         val date = calendar.time
                         val timestamp = com.google.firebase.Timestamp(date)
                         Log.d("hoge", "day: $calendar")
