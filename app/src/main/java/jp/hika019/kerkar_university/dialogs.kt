@@ -141,6 +141,17 @@ open class register_dialog(open val context: Context){
 class timetable_dialog(override val context: Context): firedb_timetable(context){
     private val TAG = "timetable_dialog"
 
+    fun sun_timetable_dialog(week: String){
+        val week_jp = week_to_day_jp_chenger(week)
+        val dialog = AlertDialog.Builder(context)
+            .setTitle("${week_jp}曜日")
+            .setMessage("日曜日です")
+            .setPositiveButton("戻る") { dialog, which ->
+            }
+
+        dialog.show()
+    }
+
     fun timetable_data_dialog(week: String, time: Int, message: String?){
         Log.d(TAG, "timetable_data_dialog -> call")
 

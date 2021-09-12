@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import android.widget.LinearLayout
 import android.widget.Toast
 import java.security.MessageDigest
 
@@ -126,8 +125,8 @@ fun set_timetable_id(context: Context, id: String) {
     timetable_id = id
 }
 
-fun set_semester(context: Context, timetableId: String){
-    Log.d("hogee", "get_semester -> call")
+fun set_timetable_semester(context: Context, timetableId: String){
+    Log.d("semester_timetable_setup", "get_semester -> call")
 
     if (get_timetable_id(context) !=null){
         firedb
@@ -153,11 +152,12 @@ fun set_semester(context: Context, timetableId: String){
 }
 
 fun cheack_timetable(context: Context){
-
-    Log.d("cheack_timetable", "cheack_timetable -> call")
+    Log.d("timetable_cheak_setup", "cheack_timetable -> call")
     val timetableId = get_timetable_id(context)
-    if(timetableId != null)
-        set_semester(context, timetableId)
+    Log.d("timetable_cheak_setup", "tiemtableId: $timetableId")
+    if(timetableId != null){
+        set_timetable_semester(context, timetableId)
+    }
     else{
         firedb
             .collection("user")
@@ -178,6 +178,7 @@ fun cheack_timetable(context: Context){
                         timetableId_ArrayList.plus(tmp_data["course_id"] as String)
                         timetableName_ArrayList.plus(tmp_data["timetable_name"] as String)
                         if (timetableId_ArrayList.size == it.documents.size){
+
                             val dialog = AlertDialog.Builder(context)
                                 .setTitle("時間割の選択")
                                 .setSingleChoiceItems(timetableName_ArrayList, -1){ dialog, which ->

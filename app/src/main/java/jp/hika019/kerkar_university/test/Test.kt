@@ -18,7 +18,7 @@ import jp.hika019.kerkar_university.Timetable.Create_timetableActivity
 
 class test: Fragment() {
 
-    private val TAG = "test"
+    private val TAG = "test_timetable"
 
 
     private val set_timetable_row_layout = LinearLayout.LayoutParams(
@@ -80,7 +80,7 @@ class test: Fragment() {
 
         //曜日
         view.hogee.addView(week_title(week_num))
-
+        Log.d(TAG, "period: $period_num")
         for(period in 1..period_num){
             view.hogee.addView(row_spacer())
             view.hogee.addView(row_courses(period))

@@ -6,32 +6,17 @@ import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import jp.hika019.kerkar_university.*
 
-open class firebase_test(){
+open class firebase_test(): firedb_col_doc(){
 
     private val TAG = "firebase_test"
     val firedb = FirebaseFirestore.getInstance()
-
-    private val user_course_doc =
-        firedb.collection("user")
-            .document(uid!!)
-            .collection("semester")
-            .document(semester!!)
-
-    private  val uni_course_doc =
-        firedb.collection("university")
-            .document(university_id!!)
-            .collection("semester")
-            .document(semester!!)
 
     fun get_all_course_id(context: Context){
         Log.d(TAG, "get_all_course_id -> call")
 
         val tt_id = get_timetable_id(context)
 
-        firedb.collection("user")
-            .document(uid!!)
-            .collection("timetable")
-            .document(tt_id!!)
+        user_doc_tt(tt_id!!)
             .addSnapshotListener{ value, error ->
                 if (error != null){
                     return@addSnapshotListener
@@ -45,7 +30,7 @@ open class firebase_test(){
                     val wtd = hoge["wtd"] as Long
                     week_num = wtd.toInt()
 
-                    val period = hoge["wtd"] as Long
+                    val period = hoge["period"] as Long
                     period_num = period.toInt()
 
 
@@ -78,9 +63,7 @@ open class firebase_test(){
         Log.d(TAG, "get_course_data -> call")
         Log.d(TAG, "week_period: $week_period, id: $course_id")
 
-        uni_course_doc
-            .collection(week_period)
-            .document(course_id)
+        uni_course_doc(week_period, course_id)
             .get()
             .addOnSuccessListener {
                 val data = it.data

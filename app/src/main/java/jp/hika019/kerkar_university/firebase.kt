@@ -13,10 +13,7 @@ import jp.hika019.kerkar_university.Home.Home_task_list_CustomAdapter
 import jp.hika019.kerkar_university.Task.task_cmp_list_CustomAdapter
 import jp.hika019.kerkar_university.Task.task_notcmp_list_CustomAdapter
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
-import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
 import jp.hika019.kerkar_university.Setup.SetupActivity
 import kotlinx.android.synthetic.main.activity_home.view.*
@@ -46,8 +43,8 @@ fun login_cheack(): Boolean {
     return cheack_user != null
 }
 
-class firedb_semester(val context: Context, val view: View): local_db(){
-    override val TAG = "firedb_semester"
+class firedb_semester(val context: Context, val view: View): firedb_col_doc(){
+    val TAG = "firedb_semester"
 
 
     fun get_semester_list(){
@@ -71,8 +68,7 @@ class firedb_semester(val context: Context, val view: View): local_db(){
 
     fun change_user_semester(semester_id: String){
         Log.d(TAG, "change_user_semester -> call")
-        firedb.collection("user")
-                .document(uid!!)
+        user_doc()
                 .update("semester", semester_id)
                 .addOnSuccessListener {
                     semester = semester_id
@@ -114,8 +110,8 @@ class firedb_semester(val context: Context, val view: View): local_db(){
     }
 }
 
-open class firedb_setup(): local_db(){
-    override val TAG = "firedb_setup"
+open class firedb_setup(): firedb_col_doc(){
+    val TAG = "firedb_setup"
 
     fun start(context: Context) {
         Log.d(TAG, "start() -> call")
@@ -123,9 +119,8 @@ open class firedb_setup(): local_db(){
 
 
         val auth = Firebase.auth
-
+        Log.d(TAG, "uid: ${auth.uid}")
         if (auth.uid != null){
-            Log.d(TAG, "uid: "+auth.uid)
             uid = auth.uid
             cheak_user_data(context)
         }else{
@@ -218,66 +213,35 @@ open class firedb_setup(): local_db(){
     fun create_user_data(context: Context,  university: String, university_id: String){
         Log.d(TAG, "create_user_data -> call")
 
-        var semester_list: Array<Int> = arrayOf()
-        var nowsemester: String? = null
-        runBlocking {
-            firedb.collection("semester")
-                .get()
-                .addOnSuccessListener {
-                    for(item in it){
-                        semester_list += item.id.toInt()
-//                        Log.d("hoge", "semester: ${item.id}")
+        //val time = SimpleDateFormat("yyyy/MM/dd HH:mm").format(Date())
+        val time = FieldValue.serverTimestamp()
 
+        val data = hashMapOf(
+            "uid" to uid,
+            "university" to university,
+            "create_at" to time,
+            "university_id" to university_id,
+        )
+        if (developer)
+            data["developer"] = true
 
-                    }
-                    //Log.d(TAG, "semester: ${semester}")
-                    nowsemester = semester_list.maxOrNull().toString()
+        user_doc()
+            .set(data)
+            .addOnCompleteListener {
+                Log.d(TAG, "create user_data -> Complete")
 
-                    //val time = SimpleDateFormat("yyyy/MM/dd HH:mm").format(Date())
-                    val time = FieldValue.serverTimestamp()
-
-                    if(nowsemester != null){
-                        semester = nowsemester
-
-                        val data = hashMapOf(
-                            "uid" to uid,
-                            "university" to university,
-                            "create_at" to time,
-                            "university_id" to university_id,
-                            "semester" to semester
-                        )
-                        if (developer)
-                            data["developer"] = true
-
-                        firedb.collection("user")
-                            .document(uid!!)
-                            .set(data)
-                            .addOnCompleteListener {
-                                Log.d(TAG, "create user_data -> Complete")
-
-                                university
-                                val intent = Intent(context, MainActivity::class.java)
-                                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                                context.startActivity(intent)
-                            }
-
-                    }else{
-                        Log.w(TAG, "nowsemester is null!")
-                    }
-
-                }
-                .addOnFailureListener {
-
-                }
-        }
+                university
+                val intent = Intent(context, MainActivity::class.java)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                context.startActivity(intent)
+            }
 
     }
 
     fun cheak_user_data(context: Context){
 
         Log.d(TAG, "cheak_user_data -> call")
-        firedb.collection("user")
-            .document(uid!!)
+        user_doc()
             .get()
             .addOnSuccessListener {
                 val data = it.data
@@ -292,14 +256,24 @@ open class firedb_setup(): local_db(){
 
                     //val local_timetableId = get_timetable_id(context)
 
-                    if (get_timetable_id(context) != null)
-                        if (uid != null)
-                            update_local_course_id(get_timetable_id(context)!!)
 
-                    if(uid != null || university != null || university_id != null){
+                    if(uid != null && university != null && university_id != null){
+
+                        if(get_timetable_id(context) != null){
+                            user_doc_tt(get_timetable_id(context)!!)
+                                .get()
+                                .addOnSuccessListener {
+                                    val data = it.data
+                                    val year = data?.get("year")
+                                    val term = data?.get("term")
+                                    semester = "$year-$term"
+                                    Log.d(TAG, "semester: $semester")
+                                }
+                            local_db().update_local_course_id(get_timetable_id(context)!!)
+                        }
+
 
                         Log.d(TAG, "画面遷移")
-
 
                         val intent = Intent(context, MainActivity::class.java)
                             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -327,6 +301,64 @@ open class firedb_setup(): local_db(){
 
 }
 
+open class firedb_col_doc(){
+
+    fun user_doc(): DocumentReference {
+        val tmp = firedb.collection("user")
+            .document(uid!!)
+        return tmp
+    }
+
+    fun user_collection_tt(): CollectionReference {
+        return user_doc().collection("timetable")
+    }
+
+    fun user_doc_tt(timetableId: String): DocumentReference {
+        val tmp = user_collection_tt()
+        return tmp.document(timetableId)
+    }
+
+    fun uni_semester_collection(): CollectionReference {
+        val tmp = firedb.collection("university")
+            .document(university_id!!)
+            .collection("semester")
+        return tmp
+    }
+
+    fun uni_semester_doc(): DocumentReference {
+        val tmp = uni_semester_collection()
+        return tmp.document(semester!!)
+    }
+
+    fun uni_course_collerction(week:String, period: Int): CollectionReference {
+        return uni_course_collerction(week+period)
+    }
+
+    fun uni_course_collerction(week_and_period: String): CollectionReference {
+        val tmp = uni_semester_doc()
+        return tmp.collection(week_and_period)
+    }
+
+    fun uni_course_doc(week_to_day: String, course_id: String): DocumentReference {
+        val tmp = uni_course_collerction(week_to_day)
+        return tmp.document(course_id)
+    }
+
+    fun uni_course_doc(week:String, period: Int, course_id: String): DocumentReference {
+        val tmp = uni_course_collerction(week, period)
+        return tmp.document(course_id)
+    }
+
+    fun uni_task_col(week_to_day: String, course_id: String): CollectionReference {
+        val tmp =uni_course_doc(week_to_day, course_id)
+        return tmp.collection("task")
+    }
+
+    fun uni_task_col(week:String, period: Int, course_id: String): CollectionReference {
+        val tmp =uni_course_doc(week, period, course_id)
+        return tmp.collection("task")
+    }
+}
 
 class firedb_register_login(override val context: Context): register_dialog(context){
     override val TAG = "MainActivity_firedb_register_login"
@@ -494,7 +526,12 @@ open class firedb_timetable(context: Context){
         val user_doc = firedb.collection("user")
                 .document(uid!!)
 
+        val dialog_class = timetable_dialog(context)
         val tt_id = get_timetable_id(context)
+
+        if (week_to_day == "sun"){
+            dialog_class.sun_timetable_dialog(week_to_day)
+        }else
 
         if (tt_id != null) {
             user_doc.collection("timetable")
@@ -521,14 +558,14 @@ open class firedb_timetable(context: Context){
                                 if (data != null){
                                     str = course_data_map_to_str(data as Map<String, Any>)
                                 }
-                                timetable_dialog(context).timetable_data_dialog(week_to_day, period, str)
+                                dialog_class.timetable_data_dialog(week_to_day, period, str)
                             }
                             .addOnFailureListener {
                                 Log.w(TAG, "get_course_data(university)${week_to_day + period} -> failure")
                                 Toast.makeText(context, "通信エラー", Toast.LENGTH_SHORT).show()
                             }
                     }else{
-                        timetable_dialog(context).timetable_data_dialog(week_to_day, period, str)
+                        dialog_class.timetable_data_dialog(week_to_day, period, str)
                     }
                 }
                 .addOnFailureListener {
@@ -612,21 +649,11 @@ open class firedb_timetable(context: Context){
 
 }
 
-class firedb_task(val context: Context){
+class firedb_task(val context: Context): firedb_col_doc(){
     private val TAG = "firedb_task"
 
 
     fun get_course_list(){
-        val user_doc = firedb.collection("user")
-                .document(uid!!)
-                .collection("semester")
-                .document(semester!!)
-
-        val university_doc = firedb
-            .collection("university")
-            .document(university_id!!)
-            .collection("semester")
-            .document(semester!!)
 
         var class_data_array = arrayListOf<Any>()
 
@@ -712,97 +739,87 @@ class firedb_task(val context: Context){
 
     fun get_not_comp_task_list(view: View){
         Log.d(TAG, "get_not_comp_task_list -> call")
-        val user_doc = firedb.collection("user")
-                .document(uid!!)
-                .collection("timetable")
-                .document(get_timetable_id(context)!!)
-
-        user_doc
-            .addSnapshotListener { value, error ->
-                if (error != null) {
-                    Log.w(TAG, "get_comp_task_list -> get user class_data -> failure", error)
-                    return@addSnapshotListener
-                }
-
-                Log.d(TAG, "get_not_comp_task_list -> get user class_data -> success")
-
-                var all_comp_task: Array<String> = arrayOf()
-                //履修中の授業取得
-                var task_list: ArrayList<Map<String, Any>> = arrayListOf()
-                val user_data = value?.data
-
-                for (week in week_to_day_symbol_list) {
-                    for (period in period_list) {
-
-                        val user_class_data = user_data?.get(week + period) as? MutableMap<String, Any>
-
-                        if (user_class_data != null){
-                            val course_id = user_class_data["course_id"] as String
-                            val comp_task = user_class_data["comp_task"] as? ArrayList<String?>
-                            all_comp_task = add_array_to_array(all_comp_task, comp_task)
-                            Log.d(TAG, "user_class_data: $user_class_data")
-
-                            val class_db = firedb.collection("university")
-                                .document(university_id!!)
-                                .collection("semester")
-                                .document(semester!!)
 
 
-                            //授業の詳細の取得
-                            Log.d(TAG, "course_id: $course_id")
-                            class_db
-                                .collection(week + period)
-                                .document(course_id)
-                                .get()
-                                .addOnSuccessListener {
-                                    Log.d(TAG, "get 授業のデータ -> success")
-                                    val class_data = it.data
-                                    Log.d(TAG, "class: $class_data")
-                                    if (class_data != null) {
-                                        class_db
-                                            .collection(week + period)
-                                            .document(course_id)
-                                            .collection("task")
-                                            .orderBy("time_limit")
-                                            .addSnapshotListener { value, error ->
-                                                if(error != null){
-                                                    Log.w(TAG, "get_not_comp_task_list -> error", error)
-                                                    return@addSnapshotListener
-                                                }
+        get_timetable_id(context)?.let {
+            user_doc_tt(it)
+                .addSnapshotListener { value, error ->
+                    if (error != null) {
+                        Log.w(TAG, "get_comp_task_list -> get user class_data -> failure", error)
+                        return@addSnapshotListener
+                    }
 
-                                                //課題取得
-                                                for (task_item in value!!) {
-                                                    val task_data = task_item.data
-                                                    val task_id = task_data["task_id"] as? String
+                    Log.d(TAG, "get_not_comp_task_list -> get user class_data -> success")
 
-                                                    task_data["class_data"] = class_data
+                    var all_comp_task: Array<String> = arrayOf()
+                    //履修中の授業取得
+                    var task_list: ArrayList<Map<String, Any>> = arrayListOf()
+                    val user_data = value?.data
 
-                                                    if (!(all_comp_task.contains(task_id))) {
-                                                        task_list.add(task_data)
+                    for (week in week_to_day_symbol_list) {
+                        for (period in period_list) {
+
+                            val user_class_data = user_data?.get(week + period) as? MutableMap<String, Any>
+
+                            if (user_class_data != null){
+                                val course_id = user_class_data["course_id"] as String
+                                val comp_task = user_class_data["comp_task"] as? ArrayList<String?>
+                                all_comp_task = add_array_to_array(all_comp_task, comp_task)
+                                Log.d(TAG, "user_class_data: $user_class_data")
+
+
+                                //授業の詳細の取得
+                                Log.d(TAG, "course_id: $course_id")
+
+                                uni_course_doc(week, period, course_id)
+                                    .get()
+                                    .addOnSuccessListener {
+                                        Log.d(TAG, "get 授業のデータ -> success")
+                                        val class_data = it.data
+                                        Log.d(TAG, "class: $class_data")
+                                        if (class_data != null) {
+                                            uni_task_col(week, period, course_id)
+                                                .orderBy("time_limit")
+                                                .addSnapshotListener { value, error ->
+                                                    if(error != null){
+                                                        Log.w(TAG, "get_not_comp_task_list -> error", error)
+                                                        return@addSnapshotListener
                                                     }
-                                                    Log.d(TAG, "datas: $task_data")
-                                                    //Log.d(TAG, "datas: $task_list")
 
-                                                    //表示
-                                                    //Log.d(TAG, "tasks show to recyclerview")
-                                                    val adapter = task_notcmp_list_CustomAdapter(task_list, context)
-                                                    val layoutManager = LinearLayoutManager(context)
+                                                    //課題取得
+                                                    for (task_item in value!!) {
+                                                        val task_data = task_item.data
+                                                        val task_id = task_data["task_id"] as? String
 
-                                                    view.AssignmentActivity_assignment_recyclerView.layoutManager = layoutManager
-                                                    view.AssignmentActivity_assignment_recyclerView.adapter = adapter
-                                                    view.AssignmentActivity_assignment_recyclerView.setHasFixedSize(true)
+                                                        task_data["class_data"] = class_data
+
+                                                        if (!(all_comp_task.contains(task_id))) {
+                                                            task_list.add(task_data)
+                                                        }
+                                                        Log.d(TAG, "datas: $task_data")
+                                                        //Log.d(TAG, "datas: $task_list")
+
+                                                        //表示
+                                                        //Log.d(TAG, "tasks show to recyclerview")
+                                                        val adapter = task_notcmp_list_CustomAdapter(task_list, context)
+                                                        val layoutManager = LinearLayoutManager(context)
+
+                                                        view.AssignmentActivity_assignment_recyclerView.layoutManager = layoutManager
+                                                        view.AssignmentActivity_assignment_recyclerView.adapter = adapter
+                                                        view.AssignmentActivity_assignment_recyclerView.setHasFixedSize(true)
+                                                    }
                                                 }
-                                            }
 
 
-                                    } else {
-                                        Log.d(TAG, "get_not_comp_task_list: class_data is null")
+                                        } else {
+                                            Log.d(TAG, "get_not_comp_task_list: class_data is null")
+                                        }
                                     }
-                                }
+                            }
                         }
                     }
                 }
-            }
+        }
 
 
     }
@@ -812,8 +829,7 @@ class firedb_task(val context: Context){
         val user_doc = firedb.collection("user")
                 .document(uid!!)
 
-        user_doc.collection("timetable")
-            .document(get_timetable_id(context)!!)
+        user_doc_tt(get_timetable_id(context)!!)
             .addSnapshotListener { value, error ->
                 if (error != null) {
                     Log.w(TAG, "get_comp_task_list -> get user class_data -> failure", error)
@@ -836,14 +852,7 @@ class firedb_task(val context: Context){
                             val course_id = user_class_data["course_id"] as String
                             all_comp_task = add_array_to_array(all_comp_task, comp_task)
 
-                            val class_db = firedb.collection("university")
-                                            .document(university_id!!)
-                                            .collection("semester")
-                                            .document(semester!!)
-                                            .collection(week + period)
-                                            .document(course_id)
-
-                            class_db
+                            uni_course_doc(week, period, course_id)
                                 .get()
                                 .addOnSuccessListener {
                                     Log.d(TAG, "get 授業のデータ -> success")
@@ -851,8 +860,7 @@ class firedb_task(val context: Context){
                                     //履修中の授業取得
                                     if (class_data != null) {
 
-                                        class_db
-                                            .collection("task")
+                                        uni_task_col(week, period, course_id)
                                             .orderBy("time_limit")
                                             .addSnapshotListener { value, error ->
                                                 if (error != null){
@@ -910,8 +918,7 @@ class firedb_task(val context: Context){
         val user_doc = firedb.collection("user")
             .document(uid!!)
 
-        user_doc.collection("timetable")
-            .document(get_timetable_id(context)!!)
+        user_doc_tt(get_timetable_id(context)!!)
             .addSnapshotListener { value, error ->
                 if (error != null) {
                     Log.w(TAG, "get_tomorrow_not_comp_task_list -> get user class_data -> failure", error)
@@ -941,14 +948,14 @@ class firedb_task(val context: Context){
                                 .document(course_id)
 
                             //履修中の授業取得
-                            class_db.get()
+                            uni_course_doc(week, period, course_id)
+                                .get()
                                 .addOnSuccessListener {
                                     Log.d(TAG, "get 授業のデータ -> success")
                                     val class_data = it.data
 
                                     if (class_data != null){
-                                        class_db
-                                            .collection("task")
+                                        uni_task_col(week, period, course_id)
                                             .orderBy("time_limit")
                                             .addSnapshotListener { value, error ->
                                                 if (error != null){
@@ -999,9 +1006,7 @@ class firedb_task(val context: Context){
                         }
                     }
                 }
-
             }
-
     }
 
     fun task_to_comp(class_and_task_data: Map<String, Any>){
@@ -1010,12 +1015,9 @@ class firedb_task(val context: Context){
         val task_id = class_and_task_data["task_id"] as String
         val week_to_day = class_data["week_to_day"] as String
 
-        val timetable = firedb.collection("user")
-                            .document(uid!!)
-                            .collection("timetable")
-                            .document(get_timetable_id(context)!!)
 
-        timetable.get()
+        user_doc_tt(get_timetable_id(context)!!)
+            .get()
             .addOnSuccessListener {
                 Log.w(TAG, "get course data -> success")
                 val online_class_data = it.get(week_to_day) as MutableMap<String, Any?>
@@ -1030,7 +1032,8 @@ class firedb_task(val context: Context){
 
                 online_class_data["comp_task"] = comp_task
 
-                timetable.update(week_to_day, online_class_data)
+                user_doc_tt(get_timetable_id(context)!!)
+                    .update(week_to_day, online_class_data)
                     .addOnSuccessListener {
                         Log.d(TAG, "task_to_compe -> success")
                         Toast.makeText(context, "提出済みにしました",Toast.LENGTH_SHORT).show()
@@ -1055,12 +1058,10 @@ class firedb_task(val context: Context){
         val task_id = class_and_task_data["task_id"] as String
         val week_to_day = class_data["week_to_day"] as String
 
-        val timetable = firedb.collection("user")
-            .document(uid!!)
-            .collection("timetable")
-            .document(get_timetable_id(context)!!)
 
-        timetable.get()
+
+        user_doc_tt(get_timetable_id(context)!!)
+            .get()
             .addOnSuccessListener {
                 Log.w(TAG, "get course data -> success")
                 val online_class_data = it.get(week_to_day) as MutableMap<String, Any?>
@@ -1069,7 +1070,8 @@ class firedb_task(val context: Context){
                 comp_task -= task_id
                 online_class_data["comp_task"] = comp_task
 
-                timetable.update(week_to_day, online_class_data)
+                user_doc_tt(get_timetable_id(context)!!)
+                    .update(week_to_day, online_class_data)
                     .addOnSuccessListener {
                         Log.d(TAG, "task_to_notcomp -> success")
                         Toast.makeText(context, "未提出にしました",Toast.LENGTH_SHORT).show()

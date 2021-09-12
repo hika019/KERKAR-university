@@ -46,6 +46,10 @@ class SetupActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Toast.makeText(this, "未実装機能です", Toast.LENGTH_SHORT).show()
         }
 
+        button2.setOnClickListener {
+            Toast.makeText(this, "未実装機能です", Toast.LENGTH_SHORT).show()
+        }
+
 
     }
 
@@ -56,7 +60,4 @@ class SetupActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 }
 
 class setup(): firedb_setup(){
-    fun hoge(context: Context){
-
-    }
 }

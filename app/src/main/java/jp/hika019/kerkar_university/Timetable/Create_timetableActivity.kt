@@ -5,16 +5,13 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.firestore.FieldValue
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import com.google.firebase.firestore.SetOptions
 import jp.hika019.kerkar_university.*
 
 import kotlinx.android.synthetic.main.activity_create_timetable.*
-import kotlinx.android.synthetic.main.activity_create_university.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -83,6 +80,12 @@ class Create_timetableActivity : AppCompatActivity() {
             val period = period_picer.value
 
             if (timetable_title != "" && select_year != null && term != -1){
+
+                semester = "$select_year-$term"
+                week_num = week
+                period_num = period
+                Log.d(TAG, "semester: $semester")
+
                 val user_tt_doc = firedb.collection("user")
                     .document(uid!!)
                     .collection("timetable")
@@ -106,7 +109,7 @@ class Create_timetableActivity : AppCompatActivity() {
                         Toast.makeText(this, "作成が成功しました", Toast.LENGTH_SHORT).show()
 
                         set_timetable_id(this, doc_id)
-                        set_semester(this, doc_id)
+                        set_timetable_semester(this, doc_id)
                         finish()
 
                         /*
@@ -143,7 +146,12 @@ class Create_timetableActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        finish()
+
+        if (semester != null) {
+            finish()
+        }else{
+            Toast.makeText(this, "時間割を作成してください", Toast.LENGTH_SHORT).show()
+        }
         return super.onOptionsItemSelected(item)
     }
 }
