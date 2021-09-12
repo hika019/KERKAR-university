@@ -60,7 +60,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/main_assignment_info_recyclerview"
+        android:id="@+id/main_task_info_recyclerview"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"

@@ -7,9 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.Timestamp
 import jp.hika019.kerkar_university.R
 import jp.hika019.kerkar_university.firedb_task
+import jp.hika019.kerkar_university.zisa
 import kotlinx.android.synthetic.main.item_home_assignment_info.view.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class Home_task_list_CustomAdapter(private val task_List: ArrayList<Map<String, Any>>,
@@ -51,12 +56,17 @@ class Home_task_list_CustomAdapter(private val task_List: ArrayList<Map<String, 
         Log.d(TAG, "class_data: ${class_data}")
         Log.d(TAG, "task_data: ${task_data}")
 
-        val day = task_data["time_limit"] as String
+        val time_limit_timestamp = task_data["time_limit"] as Timestamp
         val couse = class_data["course"] as String
-//        Log.d("hoge", "couse: ${couse}")
+
+        val timelimit_date = time_limit_timestamp.toDate()
+        val cal = Calendar.getInstance()
+        cal.time = timelimit_date
+        cal.add(Calendar.HOUR, zisa)
+        val df = SimpleDateFormat("MM/dd")
 
 
-        holder.day.text = day.substring(5,10)
+        holder.day.text = df.format(cal.time)
         holder.lecture_title.text = "${couse}"
         holder.assignment_details.text = "${task_data["task_name"]}"
         //タップ

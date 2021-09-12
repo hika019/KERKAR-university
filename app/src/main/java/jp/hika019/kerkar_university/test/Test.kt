@@ -226,30 +226,6 @@ class test: Fragment() {
         return Linear
     }
 
-    private fun get_course_name(week_period: String): String {
-        Log.d(TAG, "get_course_id -> call")
-        val tmp =  test_course_data_map?.get(week_period)
 
-        var course_name = ""
-
-        if (tmp != null){
-            val data = tmp as Map<String, Any>
-            course_name = data["course"] as String
-        }
-        return course_name
-    }
-
-    private fun get_lecturer(week_period: String): String {
-        Log.d(TAG, "get_lecturer -> call")
-        val tmp =  test_course_data_map?.get(week_period)
-
-        var lecturer = arrayListOf<String>("")
-
-        if (tmp != null){
-            val data = tmp as Map<String, Any>
-            lecturer = data["lecturer"] as ArrayList<String>
-        }
-        return lecturer[0]
-    }
 
 }

@@ -28,7 +28,7 @@ class Home_fragment(): Fragment() {
         val view = inflater.inflate(R.layout.activity_home, container, false)
         runBlocking {
             try{
-                load_timetable(view)
+                load_timetable(view, requireContext())
                 timetable_onclick_event(view)
                 load_task(view)
                 firedb_timetable(view.context).courses_is_none()
@@ -51,66 +51,71 @@ class Home_fragment(): Fragment() {
 
 
 
-    private fun load_timetable(view: View){
+    private fun load_timetable(view: View, context: Context){
         Log.d(TAG, "load_timetable -> call")
+
+        for (period in 1..period_num){
+            show_timetable(view, period, get_course_name("${now_week_to_day+period}"))
+        }
+
+
         val user_doc = firedb.collection("user")
                 .document(uid!!)
 
-        user_doc.
-            get()
-            .addOnSuccessListener {
-                semester = it.getString("semester")
-
-                if (semester != null) {
-                    user_doc.collection("semester")
-                        .document(semester!!)
-                        .addSnapshotListener { value, error ->
-                            if (error != null) {
-                                Log.w(TAG, "Listen failed.", error)
-                                return@addSnapshotListener
-                            }
-                            Log.d(TAG, "get_course_symbol -> success")
-
-                            //取得
-                            for (period in period_list) {
-
-                                val week_to_day = now_week_to_day + period.toString()
-                                val tmp_data = value?.get(week_to_day) as Map<String?, Any?>?
-                                val course_id = tmp_data?.get("course_id") as? String
-                                var course_name = ""
-                                //Log.d(TAG, period.toString()+" "+course_id.toString())
-                                show_timetable(view, period, course_name)
-                                if (course_id != null) {
-                                    firedb.collection("university")
-                                        .document(university_id!!)
-                                        .collection("semester")
-                                        .document(semester!!)
-                                        .collection(week_to_day)
-                                        .document(course_id)
-                                        .addSnapshotListener { value, error ->
-                                            if (error != null) {
-                                                Log.w(TAG, "Listen failed.", error)
-                                                return@addSnapshotListener
-                                            }
-                                            Log.d(TAG, "get_course_symbol -> success")
-
-                                            val data = value?.data
-                                            course_name = data?.get("course").toString()
-                                            Log.d(TAG, week_to_day + ": " + course_name)
-                                            show_timetable(view, period, course_name)
-                                        }
-                                }
-                                //Log.d(TAG, "show: "+week_to_day)
-                                show_timetable(view, period, course_name)
-
-                            }
-
-                        }
-                } else Log.w(TAG, "semester is null")
-            }
-            .addOnFailureListener {
-                Log.w(TAG, "Listen failed.", it)
-            }
+//        user_doc.
+//            get()
+//            .addOnSuccessListener {
+//
+//                if (get_timetable_id(context) != null) {
+//                    user_doc.collection("semester")
+//                        .document(semester!!)
+//                        .addSnapshotListener { value, error ->
+//                            if (error != null) {
+//                                Log.w(TAG, "Listen failed.", error)
+//                                return@addSnapshotListener
+//                            }
+//                            Log.d(TAG, "get_course_symbol -> success")
+//
+//                            //取得
+//                            for (period in period_list) {
+//
+//                                val week_to_day = now_week_to_day + period.toString()
+//                                val tmp_data = value?.get(week_to_day) as Map<String?, Any?>?
+//                                val course_id = tmp_data?.get("course_id") as? String
+//                                var course_name = ""
+//                                //Log.d(TAG, period.toString()+" "+course_id.toString())
+//                                show_timetable(view, period, course_name)
+//                                if (course_id != null) {
+//                                    firedb.collection("university")
+//                                        .document(university_id!!)
+//                                        .collection("semester")
+//                                        .document(semester!!)
+//                                        .collection(week_to_day)
+//                                        .document(course_id)
+//                                        .addSnapshotListener { value, error ->
+//                                            if (error != null) {
+//                                                Log.w(TAG, "Listen failed.", error)
+//                                                return@addSnapshotListener
+//                                            }
+//                                            Log.d(TAG, "get_course_symbol -> success")
+//
+//                                            val data = value?.data
+//                                            course_name = data?.get("course").toString()
+//                                            Log.d(TAG, week_to_day + ": " + course_name)
+//                                            show_timetable(view, period, course_name)
+//                                        }
+//                                }
+//                                //Log.d(TAG, "show: "+week_to_day)
+//                                show_timetable(view, period, course_name)
+//
+//                            }
+//
+//                        }
+//                } else Log.w(TAG, "semester is null")
+//            }
+//            .addOnFailureListener {
+//                Log.w(TAG, "Listen failed.", it)
+//            }
 
     }
 

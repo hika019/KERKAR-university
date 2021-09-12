@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.Timestamp
 import jp.hika019.kerkar_university.Home.Home_task_list_CustomAdapter
 import jp.hika019.kerkar_university.Task.task_cmp_list_CustomAdapter
 import jp.hika019.kerkar_university.Task.task_notcmp_list_CustomAdapter
@@ -23,7 +24,6 @@ import kotlinx.android.synthetic.main.activity_task_list.view.*
 import kotlinx.android.synthetic.main.activity_timetable.view.*
 import kotlinx.coroutines.runBlocking
 import java.lang.Exception
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -593,7 +593,7 @@ open class firedb_timetable(context: Context){
             }
     }
 
-    fun delete_user_timetable(semester_id: String, week_to_day: String){
+    fun delete_user_timetable(week_to_day: String){
 
         val updates = hashMapOf<String, Any>(
                 week_to_day to FieldValue.delete()
@@ -601,8 +601,8 @@ open class firedb_timetable(context: Context){
 
         firedb.collection("user")
                 .document(uid!!)
-                .collection("semester")
-                .document(semester_id)
+                .collection("timetable")
+                .document(get_timetable_id(context!!)!!)
                 .update(updates).addOnCanceledListener {
                     local_timetable.remove(week_to_day)
                     Log.d(TAG, "delete_user_timetable: $week_to_day -> complete")
@@ -656,60 +656,6 @@ class firedb_task(val context: Context){
                 }
             }
         }
-        /*
-        user_doc
-            .get()
-            .addOnSuccessListener {
-                Log.d(TAG, "firedb_task.get_course_list: get user data -> success")
-                val user_data = it.data
-
-                var class_data_array = arrayListOf<Any>()
-
-                for( week in week_to_day_symbol_list) {
-                    for (period in period_list) {
-                        val week_period = week + period
-                        val class_data = user_data?.get(week_period) as? Map<*, *>
-                        if (class_data != null){
-                            val class_id = class_data.get("course_id") as String
-                            Log.d("hogee", "class_id: $class_id")
-                            //class_week_to_day_array += week_period
-                            //class_id_array += class_id
-
-                            university_doc
-                                .collection(week_period)
-                                .document(class_id)
-                                .get()
-                                .addOnSuccessListener {
-                                    val course_name = it.getString("course")!!
-
-                                    val tmp = hashMapOf(
-                                        "course_id" to class_id,
-                                        "week_to_day" to week_period,
-                                        "course" to course_name
-                                    )
-
-                                    class_data_array.add(tmp)
-
-                                    if (local_timetable.size == class_data_array.size){
-                                        if (class_data_array.isEmpty()){
-                                            none_course(context)
-                                        }else{
-                                            task_dialog(context).course_selecter_dialog(class_data_array)
-                                        }
-                                    }
-                                }
-                        }
-                    }
-                }
-
-            }
-            .addOnFailureListener {
-                Log.w(TAG, "firedb_task.get_course_list: get user data -> failure")
-            }
-
-         */
-
-
     }
 
     fun create_task(task_data: Map<String, Any>){
@@ -794,23 +740,28 @@ class firedb_task(val context: Context){
                             val course_id = user_class_data["course_id"] as String
                             val comp_task = user_class_data["comp_task"] as? ArrayList<String?>
                             all_comp_task = add_array_to_array(all_comp_task, comp_task)
+                            Log.d(TAG, "user_class_data: $user_class_data")
 
                             val class_db = firedb.collection("university")
                                 .document(university_id!!)
                                 .collection("semester")
                                 .document(semester!!)
-                                .collection(week + period)
-                                .document(course_id)
+
 
                             //授業の詳細の取得
+                            Log.d(TAG, "course_id: $course_id")
                             class_db
+                                .collection(week + period)
+                                .document(course_id)
                                 .get()
                                 .addOnSuccessListener {
                                     Log.d(TAG, "get 授業のデータ -> success")
                                     val class_data = it.data
-
+                                    Log.d(TAG, "class: $class_data")
                                     if (class_data != null) {
                                         class_db
+                                            .collection(week + period)
+                                            .document(course_id)
                                             .collection("task")
                                             .orderBy("time_limit")
                                             .addSnapshotListener { value, error ->
@@ -818,9 +769,10 @@ class firedb_task(val context: Context){
                                                     Log.w(TAG, "get_not_comp_task_list -> error", error)
                                                     return@addSnapshotListener
                                                 }
+
                                                 //課題取得
-                                                for (task_item in value!!.documentChanges) {
-                                                    val task_data = task_item.document.data
+                                                for (task_item in value!!) {
+                                                    val task_data = task_item.data
                                                     val task_id = task_data["task_id"] as? String
 
                                                     task_data["class_data"] = class_data
@@ -828,9 +780,11 @@ class firedb_task(val context: Context){
                                                     if (!(all_comp_task.contains(task_id))) {
                                                         task_list.add(task_data)
                                                     }
+                                                    Log.d(TAG, "datas: $task_data")
+                                                    //Log.d(TAG, "datas: $task_list")
 
                                                     //表示
-                                                    Log.d(TAG, "tasks show to recyclerview")
+                                                    //Log.d(TAG, "tasks show to recyclerview")
                                                     val adapter = task_notcmp_list_CustomAdapter(task_list, context)
                                                     val layoutManager = LinearLayoutManager(context)
 
@@ -945,23 +899,19 @@ class firedb_task(val context: Context){
 
         val cal = Calendar.getInstance()
         cal.time = Date()
-        val df : DateFormat = SimpleDateFormat("yyyy/MM/dd")
         cal.add(Calendar.DATE, 1)
-        var tomorrow = df.format(cal.time)
+        var tomorrow = cal.time
 
-        tomorrow = tomorrow.substring(0,10).replace("/", "")
-
-        val tomorrow_int = tomorrow.toInt()
 
 //            Log.d("hoge", "to_int:${time_limit_int}")
 
-        view.main_assignment_info_recyclerview.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        view.main_task_info_recyclerview.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
 
         val user_doc = firedb.collection("user")
             .document(uid!!)
 
-        user_doc.collection("semester")
-            .document(semester!!)
+        user_doc.collection("timetable")
+            .document(get_timetable_id(context)!!)
             .addSnapshotListener { value, error ->
                 if (error != null) {
                     Log.w(TAG, "get_tomorrow_not_comp_task_list -> get user class_data -> failure", error)
@@ -1000,23 +950,31 @@ class firedb_task(val context: Context){
                                         class_db
                                             .collection("task")
                                             .orderBy("time_limit")
-                                            .get()
-                                            .addOnSuccessListener {
-                                                //課題取得
-                                                for (task_item in it!!.documentChanges) {
+                                            .addSnapshotListener { value, error ->
+                                                if (error != null){
+                                                    Log.w(TAG, "get_tomorrow_not_comp_task_list -> error", error)
+                                                    return@addSnapshotListener
+                                                }
+
+                                                for (task_item in value!!.documentChanges) {
                                                     var task_data = task_item.document.getData() as MutableMap<String, Any>
                                                     val task_id = task_data["task_id"] as? String
                                                     task_data["class_data"] = class_data
 
-                                                    var time_limit = task_data["time_limit"] as String
-                                                    time_limit = time_limit.substring(0,10).replace("/", "")
+                                                    Log.d(TAG, "data: $task_data")
 
-                                                    val time_limit_int = time_limit.toInt()
+                                                    val time_limit = task_data["time_limit"] as Timestamp
 
-                                                    if (!(all_comp_task.contains(task_id)) && time_limit_int <= tomorrow_int) {
+                                                    cal.time = time_limit.toDate()
+                                                    cal.add(Calendar.HOUR, zisa)
+
+                                                    val task_timelimit = cal.time
+
+
+
+                                                    if (!(all_comp_task.contains(task_id)) && task_timelimit.before(tomorrow)) {
                                                         task_list.add(task_data)
                                                     }
-
 
 
                                                     //表示
@@ -1024,20 +982,16 @@ class firedb_task(val context: Context){
                                                     val adapter = Home_task_list_CustomAdapter(task_list, context, semester!!)
                                                     val layoutManager = LinearLayoutManager(context)
 
-                                                    view.main_assignment_info_recyclerview.layoutManager = layoutManager
-                                                    view.main_assignment_info_recyclerview.adapter = adapter
-                                                    view.main_assignment_info_recyclerview.setHasFixedSize(true)
-
+                                                    view.main_task_info_recyclerview.layoutManager = layoutManager
+                                                    view.main_task_info_recyclerview.adapter = adapter
+                                                    view.main_task_info_recyclerview.setHasFixedSize(true)
                                                 }
-                                            }
-                                            .addOnFailureListener {
-                                                Log.w(TAG, "get_tomorrow_not_comp_task_list -> get task_data (course_id:${course_id}) -> failure", error)
                                             }
                                     }
 
                                 }
                                 .addOnFailureListener {
-
+                                    Log.w(TAG, "get 授業のデータ -> failure")
                                 }
 
                         } else {
