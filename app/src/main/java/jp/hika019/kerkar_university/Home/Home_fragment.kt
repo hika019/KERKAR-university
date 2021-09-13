@@ -31,7 +31,7 @@ class Home_fragment(): Fragment() {
                 load_timetable(view, requireContext())
                 timetable_onclick_event(view)
                 load_task(view)
-                firedb_timetable(view.context).courses_is_none()
+                //firedb_timetable(view.context).courses_is_none()
             }catch (e: Exception){
                 Log.w(TAG, "start -> error")
             }

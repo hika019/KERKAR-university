@@ -352,7 +352,7 @@ class task_dialog(val context: Context){
                         val calendar = Calendar.getInstance()
                         calendar.timeZone = TimeZone.getTimeZone("Asia/Tokyo")
                         calendar.set(year!!, month!!, day!!, hour!!, minute!!)
-                        calendar.add(Calendar.HOUR, -9)
+                        //calendar.add(Calendar.HOUR, -9)
                         val date = calendar.time
                         val timestamp = com.google.firebase.Timestamp(date)
                         Log.d("hoge", "day: $calendar")

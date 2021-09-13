@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.test.view.*
+import kotlinx.android.synthetic.main.timetable.view.*
 import android.view.ViewGroup.MarginLayoutParams
 import jp.hika019.kerkar_university.*
 import jp.hika019.kerkar_university.Timetable.Create_timetableActivity
@@ -68,7 +68,7 @@ class test: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.test, container, false)
+        val view = inflater.inflate(R.layout.timetable, container, false)
 
         view.semester_textView.text = timetable_name
 

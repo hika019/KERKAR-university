@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
 import jp.hika019.kerkar_university.R
 import jp.hika019.kerkar_university.firedb_task
-import jp.hika019.kerkar_university.zisa
 import kotlinx.android.synthetic.main.item_home_assignment_info.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -62,7 +61,6 @@ class Home_task_list_CustomAdapter(private val task_List: ArrayList<Map<String, 
         val timelimit_date = time_limit_timestamp.toDate()
         val cal = Calendar.getInstance()
         cal.time = timelimit_date
-        cal.add(Calendar.HOUR, zisa)
         val df = SimpleDateFormat("MM/dd")
 
 

@@ -973,7 +973,6 @@ class firedb_task(val context: Context): firedb_col_doc(){
                                                     val time_limit = task_data["time_limit"] as Timestamp
 
                                                     cal.time = time_limit.toDate()
-                                                    cal.add(Calendar.HOUR, zisa)
 
                                                     val task_timelimit = cal.time
 
