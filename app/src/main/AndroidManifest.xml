@@ -40,6 +40,8 @@
 
         <activity android:name=".Timetable.Create_timetableActivity"/>
 
+        <activity android:name=".test.Test_activity"/>
+
         <receiver android:name=".Uninstall">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />

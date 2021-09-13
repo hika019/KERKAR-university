@@ -1,7 +1,7 @@
 package jp.hika019.kerkar_university.Home
 
 import android.content.Context
-import android.content.SharedPreferences
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import jp.hika019.kerkar_university.*
+import jp.hika019.kerkar_university.test.Test_activity
 import kotlinx.android.synthetic.main.activity_home.view.*
 import kotlinx.android.synthetic.main.item_home_activity_taimetable.view.*
 import kotlinx.coroutines.runBlocking
@@ -40,7 +41,7 @@ class Home_fragment(): Fragment() {
 
 
         view.floatingActionButton.setOnClickListener {
-            val hoge = context?.let { it1 -> firedb_task(it1) }
+            val hoge = context?.let { it -> firedb_task(it) }
             if (hoge != null) {
                 hoge.get_course_list()
             }

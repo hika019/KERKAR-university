@@ -17,6 +17,7 @@ import jp.hika019.kerkar_university.Home.Home_fragment
 import jp.hika019.kerkar_university.Message.MessageFragment
 import jp.hika019.kerkar_university.Task.Task_list_Fragment
 import com.google.android.material.navigation.NavigationView
+import jp.hika019.kerkar_university.test.Test_activity
 import jp.hika019.kerkar_university.test.test
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -71,7 +72,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         when (item.itemId){
             R.id.nav_home ->{
-                fragment = Home_fragment()
+                fragment = Test_activity()
+                //fragment = Home_fragment()
                 Log.d(TAG, "select: Home_fragment")
             }
             R.id.nav_timetable -> {
