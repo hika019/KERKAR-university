@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 
-class Test_activity: Fragment() {
+class Test_fragment: Fragment() {
     private val viewModel by viewModels<Test_viewmodel>()
     private lateinit var binding: TestFragmentBinding
 

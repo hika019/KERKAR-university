@@ -1,23 +1,19 @@
 package jp.hika019.kerkar_university
 
-import android.content.Context
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.ui.AppBarConfiguration
-import jp.hika019.kerkar_university.Home.Home_fragment
 import jp.hika019.kerkar_university.Message.MessageFragment
 import jp.hika019.kerkar_university.Task.Task_list_Fragment
 import com.google.android.material.navigation.NavigationView
-import jp.hika019.kerkar_university.test.Test_activity
+import jp.hika019.kerkar_university.test.Test_fragment
 import jp.hika019.kerkar_university.test.test
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -72,7 +68,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         when (item.itemId){
             R.id.nav_home ->{
-                fragment = Test_activity()
+                fragment = Test_fragment()
                 //fragment = Home_fragment()
                 Log.d(TAG, "select: Home_fragment")
             }

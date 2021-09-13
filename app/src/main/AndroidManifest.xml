@@ -40,7 +40,7 @@
 
         <activity android:name=".Timetable.Create_timetableActivity"/>
 
-        <activity android:name=".test.Test_activity"/>
+        <activity android:name=".test.Test_fragment"/>
 
         <receiver android:name=".Uninstall">
             <intent-filter>
