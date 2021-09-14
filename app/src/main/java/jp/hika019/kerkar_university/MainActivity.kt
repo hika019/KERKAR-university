@@ -9,11 +9,12 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.ui.AppBarConfiguration
 import jp.hika019.kerkar_university.Message.MessageFragment
 import jp.hika019.kerkar_university.Task.Task_list_Fragment
 import com.google.android.material.navigation.NavigationView
-import jp.hika019.kerkar_university.test.Test_fragment
+import jp.hika019.kerkar_university.Home.Home_fragment
 import jp.hika019.kerkar_university.test.test
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -27,19 +28,31 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var navView: NavigationView
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        cheack_timetable(this)
+        //cheack_timetable(this)
+        val firedb_tt_class = firedb_timetable_new()
+        firedb_tt_class.get_user_timetable_all_data(this)
+
+
+        user_timetable_data_live.observe(this, Observer {
+            for (week in week_to_day_symbol_list){
+                for (period in period_list){
+                    firedb_tt_class.get_user_course_data(week, period)
+                }
+            }
+
+        })
 
         setContentView(R.layout.activity_main)
         this.setToolbar()
         this.setDrawerLayout()
         val ft = supportFragmentManager.beginTransaction()
-        ft.replace(R.id.main_host_fragment, test())
-        //ft.replace(R.id.main_host_fragment, Home_fragment())
+        //ft.replace(R.id.main_host_fragment, test())
+        ft.replace(R.id.main_host_fragment, Home_fragment())
         ft.commit()
+
 
     }
 
@@ -68,8 +81,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         when (item.itemId){
             R.id.nav_home ->{
-                fragment = Test_fragment()
-                //fragment = Home_fragment()
+                //fragment = Test_fragment()
+                fragment = Home_fragment()
                 Log.d(TAG, "select: Home_fragment")
             }
             R.id.nav_timetable -> {

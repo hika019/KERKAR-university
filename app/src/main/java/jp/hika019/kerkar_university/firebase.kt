@@ -16,6 +16,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
 import jp.hika019.kerkar_university.Setup.SetupActivity
+import jp.hika019.kerkar_university.Timetable.Create_timetableActivity
 import kotlinx.android.synthetic.main.activity_home.view.*
 import kotlinx.android.synthetic.main.activity_task_list.view.*
 import kotlinx.android.synthetic.main.activity_timetable.view.*
@@ -258,26 +259,32 @@ open class firedb_setup(): firedb_col_doc(){
 
 
                     if(uid != null && university != null && university_id != null){
+                        val timetableId = get_timetable_id(context)
 
-                        if(get_timetable_id(context) != null){
-                            user_doc_tt(get_timetable_id(context)!!)
+                        if(timetableId != null){
+                            user_doc_tt(timetableId)
                                 .get()
                                 .addOnSuccessListener {
                                     val data = it.data
                                     val year = data?.get("year")
                                     val term = data?.get("term")
                                     semester = "$year-$term"
+                                    timetable_id = timetableId
                                     Log.d(TAG, "semester: $semester")
+
+                                    Log.d(TAG, "画面遷移")
+
+                                    val intent = Intent(context, MainActivity::class.java)
+                                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                    context.startActivity(intent)
                                 }
-                            local_db().update_local_course_id(get_timetable_id(context)!!)
+                                .addOnFailureListener {
+                                    uid = Firebase.auth.uid
+                                    val intent = Intent(context, Create_timetableActivity::class.java)
+                                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                    context.startActivity(intent)
+                                }
                         }
-
-
-                        Log.d(TAG, "画面遷移")
-
-                        val intent = Intent(context, MainActivity::class.java)
-                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        context.startActivity(intent)
 
                     }else{
                         uid = Firebase.auth.uid
@@ -648,6 +655,74 @@ open class firedb_timetable(context: Context){
 
 
 }
+
+
+//新規
+class firedb_timetable_new(): firedb_col_doc(){
+    private val TAG = "firedb_timetable_new"
+
+    fun get_user_timetable_all_data(context: Context){
+        user_doc_tt(timetable_id!!)
+            .addSnapshotListener { value, error ->
+
+                if (error != null){
+                    Log.w(TAG, "get_timetable_all_data -> error")
+                    AlertDialog.Builder(context)
+                        .setTitle("エラー")
+                        .setMessage("通信エラーが発生しました\n再起動してください")
+                        .setPositiveButton("OK"){_, _ ->
+
+                        }.show()
+                    return@addSnapshotListener
+                }
+                user_timetable_data_live.value = value?.data
+
+
+                week_num = value?.getLong("wtd")!!.toInt()
+            }
+    }
+
+    fun get_user_course_data(week: String, period: Int){
+        val week_and_period = "$week$period"
+        val user_timetable = user_timetable_data_live.value
+        val course_data = user_timetable?.get(week_and_period) as? Map<String, Any?>
+        Log.d("hoge", "dataa: ${course_data}")
+        if (course_data != null){
+            val course_id = course_data["course_id"] as String
+            uni_course_doc(week_and_period, course_id)
+                .get()
+                .addOnSuccessListener {
+                    val online_data = it.data
+                    Log.d("hoge", "$online_data")
+                    if (online_data != null){
+                        val course_name = online_data["course"] as String
+                        val lecturer = online_data["lecturer"] as List<String>
+                        val room = online_data["room"] as String
+
+                        val tmp_data = mapOf(
+                            "course" to course_name,
+                            "lecturer" to lecturer,
+                            "room" to room
+                        )
+                        var tmp = course_data_live.value
+                        if (tmp != null) {
+                            tmp.put(week_and_period, tmp_data)
+                        }else{
+                            tmp = mutableMapOf(week_and_period to tmp_data)
+                        }
+                        course_data_live.value = tmp
+
+                        Log.d("hoge", "tmp: ${course_data_live.value}")
+                    }
+
+                }
+                .addOnFailureListener {
+
+                }
+        }
+    }
+}
+
 
 class firedb_task(val context: Context): firedb_col_doc(){
     private val TAG = "firedb_task"

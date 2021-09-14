@@ -8,7 +8,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="jp.hika019.kerkar_university.Create_courceVM" />
+            type="jp.hika019.kerkar_university.viewmodels.Create_courceVM" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,6 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:ems="10"
+            android:focusable="auto"
             android:hint=" 授業名"
             android:inputType="textPersonName"
             android:maxLength="10"

@@ -16,11 +16,10 @@ var uid: String? = null
 
 var check_position = -1
 
-val UserData_SharedPreferences_name = "UserDataStore"
+
 
 var semester: String? = null
 var university_id: String? = null
-var cheack_timetable_flag = false
 var timetable_name: String? = ""
 var timetable_id: String? = null
 
@@ -35,5 +34,10 @@ var period_num = 6
 
 var test_course_data_map = mutableMapOf<String, Any?>()
 
+//Create_course
 var createcource_period = -1
 var createcource_wtd = ""
+
+var user_timetable_data_live = MutableLiveData<Map<String, Any?>>()
+
+var course_data_live = MutableLiveData<MutableMap<String, Any?>>()

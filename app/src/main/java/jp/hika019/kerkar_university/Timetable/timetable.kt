@@ -12,13 +12,18 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.timetable.view.*
 import android.view.ViewGroup.MarginLayoutParams
+import androidx.fragment.app.viewModels
 import jp.hika019.kerkar_university.*
 import jp.hika019.kerkar_university.Timetable.Create_timetableActivity
+import jp.hika019.kerkar_university.viewmodels.Timetable_VM
+import jp.hika019.kerkar_university.databinding.TimetableBinding
 
 
 class test: Fragment() {
 
     private val TAG = "test_timetable"
+
+    private val viewmodel by viewModels<Timetable_VM>()
 
 
     private val set_timetable_row_layout = LinearLayout.LayoutParams(
@@ -68,27 +73,33 @@ class test: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.timetable, container, false)
-
-        view.semester_textView.text = timetable_name
-
-        view.setting_ic.setOnClickListener {
-            val i = Intent(context, Create_timetableActivity::class.java)
-            context?.startActivity(i)
-        }
+        val view = TimetableBinding.inflate(inflater, container, false)
+        view.viewmodel = viewmodel
+        view.lifecycleOwner = viewLifecycleOwner
 
 
-        //曜日
-        view.hogee.addView(week_title(week_num))
-        Log.d(TAG, "period: $period_num")
-        for(period in 1..period_num){
+        view.hogee.addView(week_title(5))
+        for (period in 1..4){
             view.hogee.addView(row_spacer())
             view.hogee.addView(row_courses(period))
         }
 
-
-
-        return view
+        return view.root
+//        view.semester_textView.text = timetable_name
+//        view.setting_ic.setOnClickListener {
+//            val i = Intent(context, Create_timetableActivity::class.java)
+//            context?.startActivity(i)
+//        }
+//
+//        //曜日
+//        view.hogee.addView(week_title(week_num))
+//        Log.d(TAG, "period: $period_num")
+//        for(period in 1..period_num){
+//            view.hogee.addView(row_spacer())
+//            view.hogee.addView(row_courses(period))
+//        }
+//
+//        return view
     }
 
     private fun week_title(size: Int): LinearLayout {
@@ -124,23 +135,13 @@ class test: Fragment() {
 
     }
 
-    private fun course(week_and_period: String): LinearLayout {
-        return course(week_and_period, "読み込み中", "読み込み中")
-    }
 
-    private fun course(week_and_period: String, course_name: String, teacher_name: String): LinearLayout {
+    private fun course(week: String, period: Int, course_name: String, teacher_name: String): LinearLayout {
 
         var course_name = course_name
         var teacher_name = teacher_name
 
-        /*
-        if (course_name == "" || course_name.isNullOrEmpty()){
-            course_name = "読み込み中"
-        }
-        if (teacher_name == "" || teacher_name.isNullOrEmpty()){
-            teacher_name = "読み込み中"
-        }
-         */
+
 
         val course = LinearLayout(context)
         //course.setBackgroundResource(R.color.black)
@@ -167,7 +168,7 @@ class test: Fragment() {
         )
 
         couse_name_textview.setOnClickListener {
-            firedb_timetable(requireContext()).get_course_data(week_and_period)
+            viewmodel.get_course_data(week, period, requireContext())
         }
 
         val teacher_name_textview = TextView(context)
@@ -220,7 +221,7 @@ class test: Fragment() {
                 val hoge = View(context)
                 hoge.layoutParams = set_timetable_Column_space_layout
                 Linear.addView(hoge)
-                Linear.addView(course(week_and_period, get_course_name(week_and_period), get_lecturer(week_and_period)))
+                Linear.addView(course(week_to_day_symbol_list[week], period, get_course_name(week_and_period), get_lecturer(week_and_period)))
             }
         }
         return Linear

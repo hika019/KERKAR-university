@@ -1,4 +1,4 @@
-package jp.hika019.kerkar_university
+package jp.hika019.kerkar_university.viewmodels
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import android.util.*
+import jp.hika019.kerkar_university.*
 
 class Create_courceVM: ViewModel() {
     private val TAG = "Create_courceVM"
