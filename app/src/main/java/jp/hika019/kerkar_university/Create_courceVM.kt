@@ -10,10 +10,12 @@ import kotlinx.coroutines.flow.onEach
 import android.util.*
 
 class Create_courceVM: ViewModel() {
+    private val TAG = "Create_courceVM"
+
     var week_and_period = MutableLiveData("")
     val course_name = MutableLiveData<String>("")
     val course_room = MutableLiveData<String>("")
-    val course_lecture = MutableLiveData<String>()
+    val course_lecture = MutableLiveData<String>("")
     var course_lecture_list = MutableLiveData<ArrayList<String>>()
     val _course_lecture_list = arrayListOf<String>()
 
@@ -27,7 +29,7 @@ class Create_courceVM: ViewModel() {
 
         week_and_period.value = "${week_jp}曜日 ${createcource_period}限"
 
-        listOf(course_name, course_room, course_lecture_list).forEach {
+        listOf(course_name, course_room, course_lecture_list, course_lecture).forEach {
             it.asFlow()
                 .onEach {
                     CreateButton_to_true()
@@ -50,12 +52,12 @@ class Create_courceVM: ViewModel() {
             course_lecture.value = ""
         }
         course_lecture_list.value = _course_lecture_list
-        Log.d("hoge", "${_course_lecture_list}")
+        Log.d(TAG, "${_course_lecture_list}")
     }
 
     fun create_couce(context: Context){
         add_lecturer()
-        finish_event.value = true
+        finish()
 
         val data = mapOf<String, Any>(
             "semester_id" to semester!!,
@@ -66,5 +68,9 @@ class Create_courceVM: ViewModel() {
         )
         val hoge = firedb_timetable(context)
         hoge.create_course_university_timetable(data)
+    }
+
+    fun finish(){
+        finish_event.value = true
     }
 }

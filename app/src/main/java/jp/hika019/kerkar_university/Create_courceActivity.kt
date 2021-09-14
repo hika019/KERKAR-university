@@ -3,6 +3,7 @@ package jp.hika019.kerkar_university
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View.generateViewId
@@ -26,11 +27,17 @@ class Create_courceActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_create_courcet)
 
-        //setToolbar()
+
 
         val binding = DataBindingUtil.setContentView<ActivityCreateCourcetBinding>(this, R.layout.activity_create_courcet)
         binding.viewmodel = viewmodel
         binding.lifecycleOwner = this
+
+
+        val toolbar = binding.toolbar2
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
 
         viewmodel.finish_event.observe(this, androidx.lifecycle.Observer {
             if (viewmodel.finish_event.value == true)
@@ -43,27 +50,15 @@ class Create_courceActivity: AppCompatActivity() {
 
     }
 
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.toolbar_menu, menu)
+//        return true
+//    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         finish()
-        /*
-        // android.R.id.home に戻るボタンを押した時のidが取得できる
-        if (item.itemId == android.R.id.home) {
-            // 今回はActivityを終了させている
-            finish()
-        }
-
-         */
         return super.onOptionsItemSelected(item)
     }
 
-    private fun setToolbar(){
-        val toolbar: Toolbar = findViewById(R.id.toolbar2)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    }
-
-    public fun setOnFinish(callback: () -> Unit){
-
-    }
 
 }
