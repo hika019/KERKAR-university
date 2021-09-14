@@ -8,13 +8,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import com.google.firebase.firestore.FieldValue
 import jp.hika019.kerkar_university.Timetable.Create_timetableActivity
-import kotlinx.android.synthetic.main.dialog_add_class_editer.view.*
 import kotlinx.android.synthetic.main.dialog_add_task.view.*
 import kotlinx.android.synthetic.main.dialog_add_university.view.*
 import kotlinx.coroutines.runBlocking
-import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -224,6 +221,10 @@ class timetable_dialog(override val context: Context): firedb_timetable(context)
                     delete_user_timetable(week_to_day + period)
                 }
                 .setNeutralButton("授業をつくる"){dialog, which ->
+
+                    createcource_wtd = week_to_day
+                    createcource_period = period
+
                     val i = Intent(context, Create_courceActivity::class.java)
                     context.startActivity(i)
                     //create_course_dialog()

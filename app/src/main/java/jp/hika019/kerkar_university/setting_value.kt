@@ -33,6 +33,7 @@ var week_num = 6
 var period_num = 6
 
 
-var test_course_id = MutableStateFlow<Map<String, Any?>?>(null)
-
 var test_course_data_map = mutableMapOf<String, Any?>()
+
+var createcource_period = -1
+var createcource_wtd = ""
