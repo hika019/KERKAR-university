@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_main2.*
 
 
 class MainActivity : AppCompatActivity() {
-    private val TAG = "MainActivity"
+    private val TAG = "MainActivity"+ TAG_hoge
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var toolbar: Toolbar
@@ -36,7 +36,10 @@ class MainActivity : AppCompatActivity() {
 
         //cheack_timetable(this)
         val firedb_tt_class = firedb_timetable_new()
-        firedb_tt_class.get_user_timetable_all_data(this)
+
+
+
+        firedb_tt_class.check_user_timetable(this)
 
         setContentView(R.layout.activity_main2)
         //this.setToolbar()
@@ -72,7 +75,6 @@ class MainActivity : AppCompatActivity() {
 //    }
 
     private val bottomNav = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        var fragment : Fragment? = null
         val ft = supportFragmentManager.beginTransaction()
 
         when (item.itemId) {
@@ -90,6 +92,11 @@ class MainActivity : AppCompatActivity() {
             R.id.nav_task -> {
 
                 ft.replace(R.id.main_host_fragment, Task_list_Fragment())
+                ft.commit()
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.nav_setting -> {
+                ft.replace(R.id.main_host_fragment, Setting_Fragment())
                 ft.commit()
                 return@OnNavigationItemSelectedListener true
             }

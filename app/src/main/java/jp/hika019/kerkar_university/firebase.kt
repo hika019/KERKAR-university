@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.Timestamp
@@ -26,6 +25,10 @@ import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import android.content.DialogInterface
+
+
+
 
 //要リファクタリング
 
@@ -46,7 +49,7 @@ fun login_cheack(): Boolean {
 }
 
 class firedb_semester(val context: Context, val view: View): firedb_col_doc(){
-    val TAG = "firedb_semester"
+    val TAG = "firedb_semester" +TAG_hoge
 
 
     fun get_semester_list(){
@@ -113,7 +116,7 @@ class firedb_semester(val context: Context, val view: View): firedb_col_doc(){
 }
 
 open class firedb_setup(): firedb_col_doc(){
-    val TAG = "firedb_setup"
+    val TAG = "firedb_setup" +TAG_hoge
 
     fun start(context: Context) {
         Log.d(TAG, "start() -> call")
@@ -124,7 +127,7 @@ open class firedb_setup(): firedb_col_doc(){
         Log.d(TAG, "uid: ${auth.uid}")
         if (auth.uid != null){
             uid = auth.uid
-            cheak_user_data(context)
+            check_user_data(context)
         }else{
 
             runBlocking {
@@ -172,7 +175,7 @@ open class firedb_setup(): firedb_col_doc(){
                         try{
                             uid = auth.uid
                             Log.d(TAG, "create_user -> end")
-                            cheak_user_data(context)
+                            check_user_data(context)
                             return@addOnCompleteListener
 
                         }catch (e: Exception){
@@ -232,15 +235,14 @@ open class firedb_setup(): firedb_col_doc(){
             .addOnCompleteListener {
                 Log.d(TAG, "create user_data -> Complete")
 
-                university
+
                 val intent = Intent(context, MainActivity::class.java)
                     .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 context.startActivity(intent)
             }
-
     }
 
-    fun cheak_user_data(context: Context){
+    fun check_user_data(context: Context){
 
         Log.d(TAG, "cheak_user_data -> call")
         user_doc()
@@ -369,7 +371,7 @@ open class firedb_col_doc(){
 }
 
 class firedb_register_login(override val context: Context): register_dialog(context){
-    override val TAG = "MainActivity_firedb_register_login"
+    override val TAG = "MainActivity_firedb_register_login" + TAG_hoge
 
     fun get_university_list_LoadActivity(){
         var university_name_list: Array<String> = arrayOf()
@@ -468,7 +470,7 @@ class firedb_register_login(override val context: Context): register_dialog(cont
 }
 
 open class firedb_timetable(context: Context){
-    private val TAG = "firedb_timetable"
+    private val TAG = "firedb_timetable"+ TAG_hoge
     open val context: Context = context
 
     fun courses_is_none(){
@@ -660,7 +662,7 @@ open class firedb_timetable(context: Context){
 
 //新規
 class firedb_timetable_new(): firedb_col_doc(){
-    private val TAG = "firedb_timetable_new"
+    private val TAG = "firedb_timetable_new" + TAG_hoge
 
     fun get_user_timetable_all_data(context: Context){
         user_doc_tt(timetable_id!!)
@@ -756,11 +758,55 @@ class firedb_timetable_new(): firedb_col_doc(){
                 }
         }
     }
+
+    fun check_user_timetable(context: Context){
+
+        if (get_timetable_id(context) != null){
+            timetable_id = get_timetable_id(context)
+            get_user_timetable_all_data(context)
+        }else{
+            user_collection_tt()
+                .get()
+                .addOnSuccessListener {
+                    val user_timetable_nume = it.documents.size
+
+                    val dialog = AlertDialog.Builder(context)
+                        .setTitle("時間割の追加")
+                        .setMessage("時間割を作成してください")
+
+                        .setPositiveButton("作成"){ _, _ ->
+                            val i = Intent(context, Create_timetableActivity::class.java)
+                            context.startActivity(i)
+                            false
+                        }
+                    dialog.create()
+                        .setCanceledOnTouchOutside(false)
+                    dialog.setCancelable(false)
+
+
+                    if (user_timetable_nume == 0){
+
+                        dialog.show()
+
+
+                    }else{
+                        dialog.setMessage("時間割選択画面がないので新たに作ってください")
+                            .show()
+                    }
+                }
+                .addOnFailureListener {
+
+                }
+
+
+
+        }
+    }
 }
 
 
 class firedb_task(val context: Context): firedb_col_doc(){
-    private val TAG = "firedb_task"
+    private val TAG = "firedb_task" +TAG_hoge
 
 
     fun get_course_list(){
@@ -1196,37 +1242,4 @@ class firedb_task(val context: Context): firedb_col_doc(){
             }
 
     }
-}
-
-open class local_db(){
-    open val TAG = "local_db"
-
-    fun update_local_course_id(timetableId: String){
-        Log.d(TAG, "update_local_course_id -> call")
-
-        local_timetable = mutableMapOf()
-        firedb.collection("user")
-            .document(Firebase.auth.uid!!)
-            .collection("timetable")
-            .document(timetableId!!)
-            .get()
-            .addOnSuccessListener {
-                val user_data = it.data
-                for( week in week_to_day_symbol_list) {
-                    for (period in period_list) {
-                        val tmp = user_data?.get(week+period) as? Map<String, Any>
-                        val course_id = tmp?.get("course_id") as? String
-                        //Log.d(TAG, "${week+period}: $course_id")
-                        if (course_id != null) {
-                            Log.d(TAG, "${week+period}: $course_id -> success")
-                            local_timetable[week + period] = course_id
-                        }
-                    }
-                }
-            }
-            .addOnFailureListener {
-                Log.d(TAG, "get data -> failure")
-            }
-    }
-
 }

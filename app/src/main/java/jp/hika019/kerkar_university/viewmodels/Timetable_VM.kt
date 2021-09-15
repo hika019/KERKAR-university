@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.onEach
 import android.util.*
 
 class Timetable_VM: ViewModel() {
+    private val TAG = "Timetable_VM"+ TAG_hoge
     val timetable = MutableLiveData<Map<String, Any>>()
 
     val timetable_name = MutableLiveData("")
@@ -22,6 +23,10 @@ class Timetable_VM: ViewModel() {
     private val firedb_tt_class = firedb_timetable_new()
 
     init {
+        Log.d(TAG, "Timetable_VM / init -> call")
+        Log.d(TAG, "user_timetable_data_live: ${user_timetable_data_live.value}")
+
+
         user_timetable_data_live.asFlow()
             .onEach {
                 get_timetable_name()
@@ -42,12 +47,14 @@ class Timetable_VM: ViewModel() {
     }
 
     fun get_timetable_name(){
+        Log.d(TAG, "get_timetable_name -> call")
         timetable_name.value = user_timetable_data_live.value?.get("timetable_name") as String
     }
 
     fun course_data_live_to_course_data(){
+        Log.d(TAG, "course_data_live_to_course_data -> call")
         course_data.value = course_data_live.value as MutableMap<String, Map<String, Any>?>
-        Log.d("hoge", "data: ${course_data.value}")
+        Log.d(TAG, "course_data: ${course_data.value}")
     }
 
     fun get_course_data(week: String, period: Int, _context: Context){

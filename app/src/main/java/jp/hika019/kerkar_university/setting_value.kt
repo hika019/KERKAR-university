@@ -22,6 +22,7 @@ var semester: String? = null
 var university_id: String? = null
 var timetable_name: String? = ""
 var timetable_id: String? = null
+var timetable_live = MutableLiveData<String?>(null)
 
 
 var local_timetable = mutableMapOf<String, String?>()
@@ -41,3 +42,6 @@ var createcource_wtd = ""
 var user_timetable_data_live = MutableLiveData<Map<String, Any?>>()
 
 var course_data_live = MutableLiveData<MutableMap<String, Any?>>()
+
+
+val TAG_hoge = "Logs"

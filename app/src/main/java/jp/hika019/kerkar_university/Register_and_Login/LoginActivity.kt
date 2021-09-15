@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import jp.hika019.kerkar_university.R
-import jp.hika019.kerkar_university.firedb_register_login
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import jp.hika019.kerkar_university.Setup.setup
@@ -37,7 +36,7 @@ class LoginActivity: AppCompatActivity() {
                     if(it.isSuccessful){
                         val uid = auth.currentUser!!.uid
                         val setup_class = setup()
-                        setup_class.cheak_user_data(this)
+                        setup_class.check_user_data(this)
 
                     }else{
                         Toast.makeText(this, "ログインに失敗しました", Toast.LENGTH_SHORT).show()
