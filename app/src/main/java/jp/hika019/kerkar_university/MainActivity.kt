@@ -36,14 +36,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         firedb_tt_class.get_user_timetable_all_data(this)
 
 
-        user_timetable_data_live.observe(this, Observer {
-            for (week in week_to_day_symbol_list){
-                for (period in period_list){
-                    firedb_tt_class.get_user_course_data(week, period)
-                }
-            }
 
-        })
 
         setContentView(R.layout.activity_main)
         this.setToolbar()

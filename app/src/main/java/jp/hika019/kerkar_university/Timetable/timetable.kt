@@ -12,11 +12,16 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.timetable.view.*
 import android.view.ViewGroup.MarginLayoutParams
+import androidx.core.view.ViewCompat.generateViewId
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.asFlow
 import jp.hika019.kerkar_university.*
 import jp.hika019.kerkar_university.Timetable.Create_timetableActivity
 import jp.hika019.kerkar_university.viewmodels.Timetable_VM
 import jp.hika019.kerkar_university.databinding.TimetableBinding
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 
 class test: Fragment() {
@@ -24,6 +29,8 @@ class test: Fragment() {
     private val TAG = "test_timetable"
 
     private val viewmodel by viewModels<Timetable_VM>()
+
+
 
 
     private val set_timetable_row_layout = LinearLayout.LayoutParams(
@@ -68,6 +75,9 @@ class test: Fragment() {
         1f
     )
 
+    var id: Int? = null
+    private var id_map = mutableMapOf<String, Int>()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -83,6 +93,8 @@ class test: Fragment() {
             view.hogee.addView(row_spacer())
             view.hogee.addView(row_courses(period))
         }
+
+
 
         return view.root
 //        view.semester_textView.text = timetable_name
@@ -100,6 +112,27 @@ class test: Fragment() {
 //        }
 //
 //        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        viewmodel.course_data.observe(viewLifecycleOwner, Observer {
+
+            for (week in week_to_day_symbol_list){
+                for (period in period_list){
+                    val week_period = "$week$period"
+                    val id = id_map[week_period]
+                    if (id != null){
+                        val hoge = view.findViewById<TextView>(id!!)
+                        val course_name = viewmodel.course_data.value?.get(week_period)?.get("course")
+                        if (course_name == null)
+                            hoge.text = ""
+                        else
+                            hoge.text = course_name.toString()
+                    }
+                }
+            }
+        })
+
     }
 
     private fun week_title(size: Int): LinearLayout {
@@ -154,9 +187,12 @@ class test: Fragment() {
         course.layoutParams = mlp;
 
 
+        val hoge = viewmodel.course_data.value?.get("mon1")
+        //Log.d("hoge", "dha: $hoge")
 
         val couse_name_textview = TextView(context)
-        couse_name_textview.text = course_name
+        couse_name_textview.id = generateViewId()
+        couse_name_textview.text = "@={viewmodel.course_data.value?.get('mon1')?.get('course')}"
         couse_name_textview.gravity = CENTER
         couse_name_textview.textSize = 10f
         couse_name_textview.maxLines = 2
@@ -166,6 +202,10 @@ class test: Fragment() {
             0,
             2f
         )
+
+        id_map["$week$period"] = couse_name_textview.id
+        //Log.d("hoge", "id: $id_map")
+
 
         couse_name_textview.setOnClickListener {
             viewmodel.get_course_data(week, period, requireContext())

@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.Timestamp
@@ -676,13 +677,16 @@ class firedb_timetable_new(): firedb_col_doc(){
                     return@addSnapshotListener
                 }
                 user_timetable_data_live.value = value?.data
-
-
                 week_num = value?.getLong("wtd")!!.toInt()
+                period_num = value?.getLong("period")!!.toInt()
+                Log.d("hoge", "aacaca")
             }
     }
 
-    fun get_user_course_data(week: String, period: Int){
+    fun get_user_course_data(
+        week: String,
+        period: Int
+    ){
         val week_and_period = "$week$period"
         val user_timetable = user_timetable_data_live.value
         val course_data = user_timetable?.get(week_and_period) as? Map<String, Any?>
@@ -690,7 +694,38 @@ class firedb_timetable_new(): firedb_col_doc(){
         if (course_data != null){
             val course_id = course_data["course_id"] as String
             uni_course_doc(week_and_period, course_id)
-                .get()
+                    /*
+                .addSnapshotListener { value, error ->
+                    if (error != null ){
+                        Log.w("hoge", "get_user_course_data -> error", error)
+                        return@addSnapshotListener
+                    }
+                    val online_data = value?.data
+                    Log.d("hoge", "$online_data")
+                    if (online_data != null){
+                        val course_name = online_data["course"] as String
+                        val lecturer = online_data["lecturer"] as List<String>
+                        val room = online_data["room"] as String
+
+                        val tmp_data = mapOf(
+                            "course" to course_name,
+                            "lecturer" to lecturer,
+                            "room" to room
+                        )
+                        var tmp = course_data_live.value
+                        if (tmp != null) {
+                            tmp.put(week_and_period, tmp_data)
+                        }else{
+                            tmp = mutableMapOf(week_and_period to tmp_data)
+                        }
+                        course_data_live.value = tmp
+
+                        Log.d("hoge", "tmp: ${course_data_live.value}")
+                    }
+                }
+                    */
+
+                    .get()
                 .addOnSuccessListener {
                     val online_data = it.data
                     Log.d("hoge", "$online_data")
