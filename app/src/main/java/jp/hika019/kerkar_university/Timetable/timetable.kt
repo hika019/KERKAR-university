@@ -12,7 +12,9 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.timetable.view.*
 import android.view.ViewGroup.MarginLayoutParams
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.ViewCompat.generateViewId
+import androidx.core.view.marginTop
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.asFlow
@@ -48,13 +50,13 @@ class test: Fragment() {
     private val set_timetable_row_space_layout = LinearLayout.LayoutParams(
         ViewGroup.LayoutParams.MATCH_PARENT,
         0,
-        0.1f
+        0.025f
     )
 
     private val set_timetable_Column_space_layout = LinearLayout.LayoutParams(
         0,
         ViewGroup.LayoutParams.WRAP_CONTENT,
-        0.2f
+        0.05f
     )
 
     private val set_timetable_period_layout = LinearLayout.LayoutParams(
@@ -88,9 +90,11 @@ class test: Fragment() {
         view.lifecycleOwner = viewLifecycleOwner
 
 
-        view.hogee.addView(week_title(5))
-        for (period in 1..4){
-            view.hogee.addView(row_spacer())
+        view.hogee.addView(week_title(week_num))
+        for (period in 1..period_num){
+//            if (period != 1)
+//                view.hogee.addView(row_spacer())
+
             view.hogee.addView(row_courses(period))
         }
 
@@ -143,12 +147,13 @@ class test: Fragment() {
         //曜日
         for(index in 0..size){
             val textView = TextView(context)
-            textView.textSize = 14f
+            textView.textSize = 18f
             if(index != 0){
                 textView.text = week_to_day_symbol_list_jp_short[index-1]
                 textView.layoutParams = set_timetable_row_layout
             }else{
                 textView.text = ""
+                //textView.background = R.color.black.toDrawable()
                 textView.layoutParams = set_timetable_period_layout
             }
             textView.gravity = CENTER
@@ -180,6 +185,8 @@ class test: Fragment() {
         //course.setBackgroundResource(R.color.black)
         course.orientation = LinearLayout.VERTICAL
         course.layoutParams = set_timetable_course_layout
+        course.setBackgroundResource(R.color.white)
+        course.elevation = 2f
 
         val lp: ViewGroup.LayoutParams = course.layoutParams
         val mlp = lp as MarginLayoutParams
@@ -200,7 +207,7 @@ class test: Fragment() {
         couse_name_textview.layoutParams = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             0,
-            2f
+            8f
         )
 
         id_map["$week$period"] = couse_name_textview.id
@@ -260,7 +267,7 @@ class test: Fragment() {
                 val week_and_period = week_to_day_symbol_list[week]+period.toString()
                 val hoge = View(context)
                 hoge.layoutParams = set_timetable_Column_space_layout
-                Linear.addView(hoge)
+                //Linear.addView(hoge)
                 Linear.addView(course(week_to_day_symbol_list[week], period, get_course_name(week_and_period), get_lecturer(week_and_period)))
             }
         }

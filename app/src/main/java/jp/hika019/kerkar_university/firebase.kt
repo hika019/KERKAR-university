@@ -679,7 +679,7 @@ class firedb_timetable_new(): firedb_col_doc(){
                 user_timetable_data_live.value = value?.data
                 week_num = value?.getLong("wtd")!!.toInt()
                 period_num = value?.getLong("period")!!.toInt()
-                Log.d("hoge", "aacaca")
+                Log.d("hoge", "wtd $week_num")
             }
     }
 

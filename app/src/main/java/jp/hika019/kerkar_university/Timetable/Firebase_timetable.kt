@@ -29,7 +29,6 @@ open class firebase_test(): firedb_col_doc(){
 
                     val wtd = hoge["wtd"] as Long
                     week_num = wtd.toInt()
-
                     val period = hoge["period"] as Long
                     period_num = period.toInt()
 

@@ -111,7 +111,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{() -> viewmodel.add_lecturer()}"
-            android:text="Add"
+            android:text="教員追加"
             app:layout_constraintEnd_toEndOf="@+id/teacherName_editTextText"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/teacherName_editTextText"

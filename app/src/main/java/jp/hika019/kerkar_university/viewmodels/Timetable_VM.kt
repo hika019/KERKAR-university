@@ -1,6 +1,7 @@
 package jp.hika019.kerkar_university.viewmodels
 
 import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.MutableLiveData
@@ -81,6 +82,10 @@ class Timetable_VM: ViewModel() {
 //
 //                }
         dialog.show()
+    }
+
+    fun create_timetable(){
+        //val i = Intent(context, Create)
     }
 
 
