@@ -24,7 +24,7 @@ class Timetable_VM: ViewModel() {
 
     init {
         Log.d(TAG, "Timetable_VM / init -> call")
-        Log.d(TAG, "user_timetable_data_live: ${user_timetable_data_live.value}")
+        //Log.d(TAG, "user_timetable_data_live: ${user_timetable_data_live.value}")
 
 
         user_timetable_data_live.asFlow()
@@ -49,6 +49,7 @@ class Timetable_VM: ViewModel() {
     fun get_timetable_name(){
         Log.d(TAG, "get_timetable_name -> call")
         timetable_name.value = user_timetable_data_live.value?.get("timetable_name") as String
+        Log.d(TAG, "timetable_name.value: ${timetable_name.value}")
     }
 
     fun course_data_live_to_course_data(){
@@ -62,7 +63,8 @@ class Timetable_VM: ViewModel() {
         context = _context
         var message = ""
 
-        val data = timetable_map?.get("$week+$period")
+        val data = course_data.value?.get("$week$period")
+        Log.d(TAG, "data: ${data}")
         if (data != null) {
             message = course_data_map_to_str(data as Map<String, Any>)
 

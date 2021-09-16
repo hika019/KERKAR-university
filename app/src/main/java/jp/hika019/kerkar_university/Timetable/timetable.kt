@@ -214,7 +214,7 @@ class test: Fragment() {
         couse_name_textview.id = generateViewId()
         couse_name_textview.text = "読み込み中"
         couse_name_textview.gravity = CENTER
-        couse_name_textview.textSize = 10f
+        couse_name_textview.textSize = 12f
         couse_name_textview.maxLines = 2
         couse_name_textview.maxEms = 10
         couse_name_textview.layoutParams = LinearLayout.LayoutParams(
