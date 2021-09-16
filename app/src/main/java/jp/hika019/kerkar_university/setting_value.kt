@@ -39,9 +39,8 @@ var test_course_data_map = mutableMapOf<String, Any?>()
 var createcource_period = -1
 var createcource_wtd = ""
 
+//使ってる
 var user_timetable_data_live = MutableLiveData<Map<String, Any?>>()
-
 var course_data_live = MutableLiveData<MutableMap<String, Any?>>()
-
 
 val TAG_hoge = "Logs"

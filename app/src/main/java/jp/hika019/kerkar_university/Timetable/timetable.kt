@@ -60,7 +60,7 @@ class test: Fragment() {
     private val set_timetable_title_layout = LinearLayout.LayoutParams(
         ViewGroup.LayoutParams.MATCH_PARENT,
         0,
-        0.4f
+        0.3f
     )
 
     private val set_timetable_course_layout = LinearLayout.LayoutParams(
@@ -115,7 +115,7 @@ class test: Fragment() {
         Log.d(TAG, "show_course(${week_period})")
         val title_id = course_id_map[week_period]
 
-        Log.d(TAG, "title_id: $title_id")
+        //Log.d(TAG, "title_id: $title_id")
 
         val course_textview = requireView().findViewById<TextView>(title_id!!)
         if (title_id != null){

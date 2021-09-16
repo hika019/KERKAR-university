@@ -11,9 +11,10 @@
 
     <item
         android:id="@+id/nav_task"
+        android:icon="@drawable/app_icon"
         android:title="課題" />
 
-    <item
-        android:id="@+id/nav_setting"
-        android:title="設定"/>
+<!--    <item-->
+<!--        android:id="@+id/nav_setting"-->
+<!--        android:title="設定"/>-->
 </menu>

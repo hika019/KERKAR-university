@@ -111,22 +111,6 @@ class Create_timetableActivity : AppCompatActivity() {
                         set_timetable_id(this, doc_id)
                         set_timetable_semester(this, doc_id)
                         finish()
-
-                        /*
-                        firedb
-                            .collection("user")
-                            .document(uid!!)
-                            .set(hashMapOf("timetable_id" to doc_id), SetOptions.merge())
-                            .addOnSuccessListener {
-
-                                finish()
-                            }
-                            .addOnFailureListener {
-                                Toast.makeText(this, "データの更新に失敗しました", Toast.LENGTH_SHORT).show()
-                                Log.w(TAG, "update user field to timetable -> failure", it)
-                            }
-
-                         */
                     }
                     .addOnFailureListener {
                         Toast.makeText(this, "作成が失敗しました", Toast.LENGTH_SHORT).show()

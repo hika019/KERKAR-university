@@ -696,37 +696,6 @@ class firedb_timetable_new(): firedb_col_doc(){
         if (course_data != null){
             val course_id = course_data["course_id"] as String
             uni_course_doc(week_and_period, course_id)
-                    /*
-                .addSnapshotListener { value, error ->
-                    if (error != null ){
-                        Log.w("hoge", "get_user_course_data -> error", error)
-                        return@addSnapshotListener
-                    }
-                    val online_data = value?.data
-                    Log.d("hoge", "$online_data")
-                    if (online_data != null){
-                        val course_name = online_data["course"] as String
-                        val lecturer = online_data["lecturer"] as List<String>
-                        val room = online_data["room"] as String
-
-                        val tmp_data = mapOf(
-                            "course" to course_name,
-                            "lecturer" to lecturer,
-                            "room" to room
-                        )
-                        var tmp = course_data_live.value
-                        if (tmp != null) {
-                            tmp.put(week_and_period, tmp_data)
-                        }else{
-                            tmp = mutableMapOf(week_and_period to tmp_data)
-                        }
-                        course_data_live.value = tmp
-
-                        Log.d("hoge", "tmp: ${course_data_live.value}")
-                    }
-                }
-                    */
-
                     .get()
                 .addOnSuccessListener {
                     val online_data = it.data
@@ -810,35 +779,63 @@ class firedb_task(val context: Context): firedb_col_doc(){
 
 
     fun get_course_list(){
+        Log.d(TAG, "get_course_list -> call")
 
-        var class_data_array = arrayListOf<Any>()
+        user_doc_tt(timetable_id!!)
+            .get()
+            .addOnSuccessListener {
+                Log.d(TAG, "firedb_task.get_course_list: get user data -> success")
+                val user_data = it.data
 
-        for( week in week_to_day_symbol_list) {
-            for (period in period_list) {
+                var class_data_array = arrayListOf<Any>()
 
-                val course_data = test_course_data_map[week+period] as? Map<String, Any>
-                if (course_data != null){
-                    val tmp = hashMapOf(
-                        "course_id" to course_data["course_id"],
-                        "week_to_day" to week+period,
-                        "course" to course_data["course"]
-                    )
-                    class_data_array.add(tmp)
-                }
+                var course_num = 0
 
+                for (week in week_to_day_symbol_list){
+                    for (period in period_list){
+                        val week_and_period = week + period
+                        val class_data = user_data?.get(week_and_period) as? Map<*, *>
+                        if(user_timetable_data_live.value?.get(week_and_period) != null){
+                            course_num += 1
+                        }
 
+                        if (class_data != null){
+                            val class_id = class_data.get("course_id") as String
+                            //Log.d("hogee", "class_id: $class_id")
 
-                Log.d("hoge", "da: $class_data_array")
-                if (week+period == "sat6"){
-                    if (class_data_array.isEmpty()){
-                        none_course(context)
-                    }else{
-                        Log.d("hoge", "call")
-                        task_dialog(context).course_selecter_dialog(class_data_array)
+                            uni_course_doc(week_and_period, class_id)
+                                .get()
+                                .addOnSuccessListener {
+                                    val course_name = it.getString("course")!!
+
+                                    val tmp = hashMapOf(
+                                        "course_id" to class_id,
+                                        "week_to_day" to week_and_period,
+                                        "course" to course_name
+                                    )
+
+                                    class_data_array.add(tmp)
+                                    Log.d(TAG, "class_data_array: $class_data_array")
+                                    if (course_num == class_data_array.size){
+                                        if (class_data_array.isEmpty()){
+                                            none_Timetable(context)
+                                        }else{
+                                            task_dialog(context).course_selecter_dialog(class_data_array)
+                                        }
+                                    }
+                                }
+                            }
+
                     }
                 }
+
+
             }
-        }
+            .addOnFailureListener {
+
+            }
+
+
     }
 
     fun create_task(task_data: Map<String, Any>){
