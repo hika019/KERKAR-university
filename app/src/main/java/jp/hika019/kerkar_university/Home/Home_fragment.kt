@@ -9,26 +9,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import jp.hika019.kerkar_university.*
-import kotlinx.android.synthetic.main.activity_home.view.*
-import kotlinx.android.synthetic.main.item_home_activity_taimetable.view.*
 import kotlinx.coroutines.runBlocking
 import java.lang.Exception
 import java.util.*
 import jp.hika019.kerkar_university.databinding.ActivityHomeBinding
 import jp.hika019.kerkar_university.viewmodels.Home_VM
+import kotlin.collections.ArrayList
 
 class Home_fragment(): Fragment() {
 
     private val TAG = "Home_fragment"
 
-    private var course_id_map = mutableMapOf<String, Int>()
-    private var lecture_id_map = mutableMapOf<String, Int>()
+    private var course_id_ArrayList = ArrayList<Int>()
+    private var lecture_id_ArrayList = ArrayList<Int>()
 
     val calendar: Calendar = Calendar.getInstance()
-    val now_week_to_day = week_to_day_symbol_list[calendar.get(Calendar.DAY_OF_WEEK)-1]
+    val now_week = week_to_day_symbol_list[calendar.get(Calendar.DAY_OF_WEEK)-1]
 
     private val viewmodel by viewModels<Home_VM>()
 
@@ -48,7 +48,6 @@ class Home_fragment(): Fragment() {
 
         runBlocking {
             try{
-                //load_timetable(view, requireContext())
                 //timetable_onclick_event(view)
                 //load_task(view)
                 //firedb_timetable(view.context).courses_is_none()
@@ -70,10 +69,47 @@ class Home_fragment(): Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        viewmodel.course_data.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            for (period in 0 until period_num){
+                show_course(period)
+            }
+        })
+    }
+
+    private fun show_course(period: Int){
+        Log.d(TAG, "show_course -> call")
+        Log.d(TAG, "$period_num")
+
+        Log.d(TAG, "peri: $period")
+        val title_id = course_id_ArrayList[period]
+
+        val course_textview = requireView().findViewById<TextView>(title_id)
+        val course_name = viewmodel.course_data.value?.get("$now_week$period")?.get("course")
+        if (course_name == null)
+            course_textview.text = ""
+        else
+            course_textview.text = course_name.toString()
+
+        val lecture_id = lecture_id_ArrayList[period]
+        val lecture_textview = requireView().findViewById<TextView>(lecture_id!!)
+        val course_lecturer = viewmodel.course_data.value?.get("$now_week$period")?.get("lecturer") as List<String>?
+
+        if (course_lecturer == null){
+            lecture_textview.text = ""
+        }else{
+            if (course_lecturer.size == 1){
+                Log.d(TAG, "course_lecturer: $course_lecturer")
+                lecture_textview.text = "${course_lecturer[0]}"
+            }else{
+                lecture_textview.text = "${course_lecturer?.get(0)}...他"
+            }
+        }
 
     }
 
+
     private fun create_period(context: Context): LinearLayout {
+        Log.d(TAG, "create_period -> call")
         val linearLayout = LinearLayout(context)
         linearLayout.layoutParams = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -100,6 +136,7 @@ class Home_fragment(): Fragment() {
     }
 
     private fun create_course_textview(context: Context): LinearLayout {
+        Log.d(TAG, "create_course_textview -> call")
         val linearLayout = LinearLayout(context)
         linearLayout.layoutParams = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -125,6 +162,7 @@ class Home_fragment(): Fragment() {
             course_linearLayout.gravity = CENTER
 
             val course_name = TextView(context)
+            course_name.id = ViewCompat.generateViewId()
             course_name.text = "授業名"
             course_name.gravity = CENTER
             course_name.textSize = 12f
@@ -135,6 +173,12 @@ class Home_fragment(): Fragment() {
                 0,
                 2f
             )
+
+            course_name.setOnClickListener {
+                viewmodel.get_course_data(now_week, period, context)
+            }
+
+            course_id_ArrayList.add(course_name.id)
 
             val course_teacher = TextView(context)
             course_teacher.text = "教師"
@@ -148,53 +192,14 @@ class Home_fragment(): Fragment() {
                 1f
             )
 
+            lecture_id_ArrayList.add(course_name.id)
+
             course_linearLayout.addView(course_name)
             course_linearLayout.addView(course_teacher)
             linearLayout.addView(course_linearLayout)
         }
         return linearLayout
     }
-
-
-
-    private fun load_timetable(view: View, context: Context){
-        Log.d(TAG, "load_timetable -> call")
-
-//        for (period in 1..period_num){
-//            show_timetable(view, period, get_course_name("${now_week_to_day+period}"))
-//        }
-    }
-
-//    private fun show_timetable(view: View, period: Int, course_name: String){
-//        when(period){
-//            1 -> view.today_first_period.timetable_title_textView.text = course_name
-//            2 -> view.today_second_period.timetable_title_textView.text = course_name
-//            3 -> view.today_third_period.timetable_title_textView.text = course_name
-//            4 -> view.today_fourth_period.timetable_title_textView.text = course_name
-//            5 -> view.today_fifth_period.timetable_title_textView.text = course_name
-//        }
-//    }
-//
-//    private fun timetable_onclick_event(view: View){
-//        val firedb_timetable = context?.let { firedb_timetable(it) }
-//
-//        view.today_first_period.setOnClickListener {
-//            firedb_timetable?.get_course_data(now_week_to_day, 1)
-//        }
-//        view.today_second_period.setOnClickListener {
-//            firedb_timetable?.get_course_data(now_week_to_day, 2)
-//        }
-//        view.today_third_period.setOnClickListener {
-//            firedb_timetable?.get_course_data(now_week_to_day, 3)
-//        }
-//        view.today_fourth_period.setOnClickListener {
-//            firedb_timetable?.get_course_data(now_week_to_day, 4)
-//        }
-//        view.today_fifth_period.setOnClickListener {
-//            firedb_timetable?.get_course_data(now_week_to_day, 5)
-//        }
-//
-//    }
 
     private fun load_task(view: View){
         context?.let { firedb_task(it).get_tomorrow_not_comp_task_list(view) }

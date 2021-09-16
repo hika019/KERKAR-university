@@ -86,9 +86,6 @@ class test: Fragment() {
 
         view.hogee.addView(week_title(week_num))
         for (period in 1..period_num){
-            //空白消去
-//            if (period != 1)
-//                view.hogee.addView(row_spacer())
 
             view.hogee.addView(row_courses(period))
         }
@@ -118,37 +115,28 @@ class test: Fragment() {
         //Log.d(TAG, "title_id: $title_id")
 
         val course_textview = requireView().findViewById<TextView>(title_id!!)
-        if (title_id != null){
-            val course_name = viewmodel.course_data.value?.get(week_period)?.get("course")
-            if (course_name == null)
-                course_textview.text = ""
-            else
-                course_textview.text = course_name.toString()
-        }else{
+        val course_name = viewmodel.course_data.value?.get(week_period)?.get("course")
+        if (course_name == null)
             course_textview.text = ""
-        }
+        else
+            course_textview.text = course_name.toString()
+
+
 
         val lecture_id = lecture_id_map[week_period]
         //Log.d(TAG, "($week_period) lecture_id: $lecture_id")
-        if (lecture_id != null){
-            val lecture_textview = requireView().findViewById<TextView>(lecture_id!!)
-            val course_lecturer = viewmodel.course_data.value?.get(week_period)?.get("lecturer") as List<String>?
-            //Log.d(TAG, "($week_period)course_lecturer: ${course_lecturer}")
+        val lecture_textview = requireView().findViewById<TextView>(lecture_id!!)
+        val course_lecturer = viewmodel.course_data.value?.get(week_period)?.get("lecturer") as List<String>?
 
-            if (course_lecturer == null){
-                lecture_textview.text = ""
+        if (course_lecturer == null){
+            lecture_textview.text = ""
+        }else{
+            if (course_lecturer.size == 1){
+                Log.d(TAG, "course_lecturer: $course_lecturer")
+                lecture_textview.text = "${course_lecturer[0]}"
             }else{
-                if (course_lecturer.size == 1){
-                    Log.d(TAG, "course_lecturer: $course_lecturer")
-                    lecture_textview.text = "${course_lecturer[0]}"
-                }else{
-                    lecture_textview.text = "${course_lecturer?.get(0)}...他"
-                }
+                lecture_textview.text = "${course_lecturer?.get(0)}...他"
             }
-
-
-
-
         }
 
 

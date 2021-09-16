@@ -59,7 +59,6 @@ class Timetable_VM: ViewModel() {
     }
 
     fun get_course_data(week: String, period: Int, _context: Context){
-        val timetable_map = user_timetable_data_live.value
         context = _context
         var message = ""
 
@@ -91,10 +90,6 @@ class Timetable_VM: ViewModel() {
 //
 //                }
         dialog.show()
-    }
-
-    fun create_timetable(){
-        //val i = Intent(context, Create)
     }
 
 

@@ -36,9 +36,6 @@ class MainActivity : AppCompatActivity() {
 
         //cheack_timetable(this)
         val firedb_tt_class = firedb_timetable_new()
-
-
-
         firedb_tt_class.check_user_timetable(this)
 
         setContentView(R.layout.activity_main2)
