@@ -1,5 +1,8 @@
 package jp.hika019.kerkar_university.test
 
+import android.graphics.Color
+import android.graphics.Typeface
+import android.graphics.fonts.FontFamily
 import android.os.Bundle
 import android.view.Gravity.CENTER
 import android.view.LayoutInflater
@@ -16,6 +19,7 @@ import jp.hika019.kerkar_university.*
 import jp.hika019.kerkar_university.viewmodels.Timetable_VM
 import jp.hika019.kerkar_university.databinding.TimetableBinding
 import android.util.*
+import android.view.Gravity.BOTTOM
 
 
 class test: Fragment() {
@@ -26,13 +30,6 @@ class test: Fragment() {
 
 
 
-
-    private val set_timetable_row_layout = LinearLayout.LayoutParams(
-        0,
-        ViewGroup.LayoutParams.MATCH_PARENT,
-        1.0f
-    )
-
     private val set_timetable_Column_layout = LinearLayout.LayoutParams(
         ViewGroup.LayoutParams.MATCH_PARENT,
         0,
@@ -42,7 +39,7 @@ class test: Fragment() {
     private val set_timetable_row_space_layout = LinearLayout.LayoutParams(
         ViewGroup.LayoutParams.MATCH_PARENT,
         0,
-        0.025f
+        0.5f
     )
 
     private val set_timetable_Column_space_layout = LinearLayout.LayoutParams(
@@ -54,7 +51,7 @@ class test: Fragment() {
     private val set_timetable_period_layout = LinearLayout.LayoutParams(
         0,
         ViewGroup.LayoutParams.MATCH_PARENT,
-        0.7f
+        0.4f
     )
 
     private val set_timetable_title_layout = LinearLayout.LayoutParams(
@@ -66,12 +63,14 @@ class test: Fragment() {
     private val set_timetable_course_layout = LinearLayout.LayoutParams(
         0,
         ViewGroup.LayoutParams.MATCH_PARENT,
-        1f
+        1.0f
     )
 
     var id: Int? = null
     private var course_id_map = mutableMapOf<String, Int>()
     private var lecture_id_map = mutableMapOf<String, Int>()
+    private var room_id_map = mutableMapOf<String, Int>()
+
 
 
     override fun onCreateView(
@@ -140,6 +139,16 @@ class test: Fragment() {
         }
 
 
+        val room_id = room_id_map[week_period]
+        val room_textview = requireView().findViewById<TextView>(room_id!!)
+        val course_room = viewmodel.course_data.value?.get(week_period)?.get("room") as? String
+        if (course_room == null){
+            room_textview.text = ""
+        }else{
+            room_textview.text = course_room
+        }
+
+
     }
 
     private fun week_title(size: Int): LinearLayout {
@@ -150,37 +159,28 @@ class test: Fragment() {
         //曜日
         for(index in 0..size){
             val textView = TextView(context)
-            textView.textSize = 18f
+            textView.textSize = 12f
+            textView.gravity = CENTER
+            textView.typeface = Typeface.DEFAULT_BOLD
             if(index != 0){
                 textView.text = week_to_day_symbol_list_jp_short[index-1]
-                textView.layoutParams = set_timetable_row_layout
+                textView.layoutParams = set_timetable_course_layout
             }else{
-                textView.text = ""
-                //textView.background = R.color.black.toDrawable()
                 textView.layoutParams = set_timetable_period_layout
+                //textView.setBackgroundColor(Color.RED)
             }
-            textView.gravity = CENTER
 
             //textView.setBackgroundResource(R.color.black)
 
             week_title_Linear.addView(textView)
 
-            if (index != size){
-                val space = View(context)
-                space.layoutParams = set_timetable_Column_space_layout
-                //space.setBackgroundResource(R.color.black)
-                week_title_Linear.addView(space)
-            }
         }
         return week_title_Linear
 
     }
 
 
-    private fun course(week: String, period: Int, course_name: String, teacher_name: String): LinearLayout {
-
-        var course_name = course_name
-        var teacher_name = teacher_name
+    private fun course(week: String, period: Int): LinearLayout {
 
 
 
@@ -200,7 +200,6 @@ class test: Fragment() {
 
         val couse_name_textview = TextView(context)
         couse_name_textview.id = generateViewId()
-        couse_name_textview.text = "読み込み中"
         couse_name_textview.gravity = CENTER
         couse_name_textview.textSize = 12f
         couse_name_textview.maxLines = 2
@@ -208,20 +207,16 @@ class test: Fragment() {
         couse_name_textview.layoutParams = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             0,
-            2f
+            5f
         )
 
         course_id_map.put("$week$period" , couse_name_textview.id)
         //Log.d(TAG, "course_id_map: ${course_id_map}")
 
 
-        couse_name_textview.setOnClickListener {
-            viewmodel.get_course_data(week, period, requireContext())
-        }
 
         val teacher_name_textview = TextView(context)
         teacher_name_textview.id = generateViewId()
-        teacher_name_textview.text = teacher_name
         teacher_name_textview.gravity = CENTER
         teacher_name_textview.textSize = 10f
         teacher_name_textview.maxLines = 1
@@ -230,12 +225,30 @@ class test: Fragment() {
             0,
             1f
         )
-
         lecture_id_map.put("$week$period" , teacher_name_textview.id)
+
+        val teacher_room_textview = TextView(context)
+        teacher_room_textview.id = generateViewId()
+        teacher_room_textview.gravity = CENTER
+        teacher_room_textview.textSize = 10f
+        teacher_room_textview.maxLines = 1
+        teacher_room_textview.layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            0,
+            1f
+        )
+        room_id_map.put("$week$period" , teacher_room_textview.id)
+
+
         //Log.d(TAG, "lecture_id_map: ${lecture_id_map}")
 
         course.addView(couse_name_textview)
         course.addView(teacher_name_textview)
+        course.addView(teacher_room_textview)
+
+        course.setOnClickListener {
+            viewmodel.get_course_data(week, period, requireContext())
+        }
 
         return course
 
@@ -251,6 +264,7 @@ class test: Fragment() {
         val Linear = LinearLayout(context)
         //Liner.setBackgroundResource(R.color.black)
         Linear.orientation = LinearLayout.HORIZONTAL
+        Linear.gravity = CENTER
         Linear.layoutParams = set_timetable_Column_layout
 
 
@@ -258,9 +272,11 @@ class test: Fragment() {
             if (week == 0){
 
                 val textView = TextView(context)
-                textView.text = "${period}限"
+                textView.text = "${period}"
                 textView.gravity = CENTER
                 textView.layoutParams = set_timetable_period_layout
+                //textView.setBackgroundColor(Color.BLUE)
+                textView.textSize = 12f
                 Linear.addView(textView)
 
 
@@ -269,7 +285,9 @@ class test: Fragment() {
                 val hoge = View(context)
                 hoge.layoutParams = set_timetable_Column_space_layout
                 //Linear.addView(hoge)
-                Linear.addView(course(week_to_day_symbol_list[week], period, get_course_name(week_and_period), get_lecturer(week_and_period)))
+                Linear.addView(course(
+                    week_to_day_symbol_list[week], period
+                ))
             }
         }
         return Linear

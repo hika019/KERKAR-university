@@ -234,3 +234,16 @@ fun get_lecturer(week_period: String): String {
     }
     return lecturer[0]
 }
+
+fun get_course_room(week_period: String): String {
+    Log.d("timetable", "get_course_room -> call")
+    val tmp =  test_course_data_map?.get(week_period)
+
+    var lecturer = ""
+
+    if (tmp != null){
+        val data = tmp as Map<String, Any>
+        lecturer = data["room"] as String
+    }
+    return lecturer
+}
