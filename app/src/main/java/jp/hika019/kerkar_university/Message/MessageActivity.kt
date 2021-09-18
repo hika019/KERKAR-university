@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import jp.hika019.kerkar_university.R
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_message.view.*
+import kotlinx.android.synthetic.main.fragment_message.view.*
 
 class MessageFragment(): Fragment() {
     private val TAG = "MessageFragment"
@@ -19,7 +19,7 @@ class MessageFragment(): Fragment() {
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.activity_message, container, false)
+        val view = inflater.inflate(R.layout.fragment_message, container, false)
         var list: ArrayList<HashMap<String, String>> = arrayListOf()
         var firedb = FirebaseFirestore.getInstance()
 

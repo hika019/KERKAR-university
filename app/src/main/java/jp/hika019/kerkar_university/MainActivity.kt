@@ -3,23 +3,17 @@ package jp.hika019.kerkar_university
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.ui.AppBarConfiguration
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import jp.hika019.kerkar_university.Message.MessageFragment
 import jp.hika019.kerkar_university.Task.Task_list_Fragment
 import com.google.android.material.navigation.NavigationView
 import jp.hika019.kerkar_university.Home.Home_fragment
 import jp.hika019.kerkar_university.Home.load_fragment
 import jp.hika019.kerkar_university.test.test
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main2.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -50,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         })
         Log.d(TAG, "hogee")
 
-        setContentView(R.layout.activity_main2)
+        setContentView(R.layout.activity_main)
         //this.setToolbar()
         //this.setDrawerLayout()
         this.bottom_navi_view.setOnNavigationItemSelectedListener(bottomNav)

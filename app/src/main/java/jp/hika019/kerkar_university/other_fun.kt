@@ -144,8 +144,8 @@ fun set_timetable_semester(context: Context, timetableId: String){
                     semester = "$year-$term"
                     timetable_name = data["timetable_name"] as? String
 
-                    val firebaseTest = firebase_test()
-                    firebaseTest.get_all_course_id(context)
+                    val firedb_tt_new = firedb_timetable_new()
+                    firedb_tt_new.get_all_course_id(context)
                 }
             }
     }

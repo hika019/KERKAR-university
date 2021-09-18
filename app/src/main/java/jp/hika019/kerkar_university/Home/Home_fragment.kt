@@ -16,7 +16,7 @@ import jp.hika019.kerkar_university.*
 import kotlinx.coroutines.runBlocking
 import java.lang.Exception
 import java.util.*
-import jp.hika019.kerkar_university.databinding.ActivityHomeBinding
+import jp.hika019.kerkar_university.databinding.FragmentHomeBinding
 import jp.hika019.kerkar_university.viewmodels.Home_VM
 import kotlin.collections.ArrayList
 
@@ -35,7 +35,7 @@ class Home_fragment(): Fragment() {
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
     savedInstanceState: Bundle?): View? {
-        val view = ActivityHomeBinding.inflate(inflater, container, false)
+        val view = FragmentHomeBinding.inflate(inflater, container, false)
         view.viewmodel = viewmodel
         view.lifecycleOwner = viewLifecycleOwner
 
@@ -201,7 +201,7 @@ class Home_fragment(): Fragment() {
         return linearLayout
     }
 
-    private fun load_task(view: ActivityHomeBinding){
+    private fun load_task(view: FragmentHomeBinding){
         context?.let { firedb_task(it).get_tomorrow_not_comp_task_list(view) }
     }
 

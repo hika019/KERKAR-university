@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import jp.hika019.kerkar_university.R
 import jp.hika019.kerkar_university.firedb_task
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.activity_task_list.view.*
+import kotlinx.android.synthetic.main.fragment_task.view.*
 
 
 class Task_list_Fragment(): Fragment() {
@@ -20,7 +20,7 @@ class Task_list_Fragment(): Fragment() {
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.activity_task_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_task, container, false)
 
         view.AssignmentActivity_assignment_recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
 

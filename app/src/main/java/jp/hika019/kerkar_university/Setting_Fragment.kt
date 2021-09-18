@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_setting.view.*
+import kotlinx.android.synthetic.main.flagment_setting.view.*
 
 class Setting_Fragment: Fragment() {
     private val TAG = "Setting_Fragment"
@@ -18,7 +18,7 @@ class Setting_Fragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.activity_setting, container, false)
+        val view = inflater.inflate(R.layout.flagment_setting, container, false)
 
         view.setting_uid_textview.text = uid
         view.setting_uid_textview.setOnClickListener {

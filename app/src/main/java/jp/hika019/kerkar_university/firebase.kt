@@ -18,15 +18,13 @@ import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
 import jp.hika019.kerkar_university.Setup.SetupActivity
 import jp.hika019.kerkar_university.Timetable.Create_timetableActivity
-import kotlinx.android.synthetic.main.activity_home.view.*
-import kotlinx.android.synthetic.main.activity_task_list.view.*
-import kotlinx.android.synthetic.main.activity_timetable.view.*
 import kotlinx.coroutines.runBlocking
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import jp.hika019.kerkar_university.databinding.ActivityHomeBinding
+import jp.hika019.kerkar_university.databinding.FragmentHomeBinding
+import kotlinx.android.synthetic.main.fragment_task.view.*
 
 
 //要リファクタリング
@@ -45,73 +43,6 @@ fun login_cheack(): Boolean {
     val cheack_user = Firebase.auth.currentUser
     Log.d(TAG, "login check: ${cheack_user != null}")
     return cheack_user != null
-}
-
-class firedb_semester(val context: Context, val view: View): firedb_col_doc(){
-    val TAG = "firedb_semester" +TAG_hoge
-
-
-    fun get_semester_list(){
-        Log.d(TAG, "get_semester_list -> call")
-
-        var semester_name_list: Array<String> = arrayOf()
-        var semester_id_list: Array<String> = arrayOf()
-
-        firedb.collection("semester")
-                .get()
-                .addOnSuccessListener {
-                    for(item in it){
-
-                        semester_id_list += item.id
-                        semester_name_list += item.getString("title")!!
-                    }
-                    select_semester_dialog(semester_name_list, semester_id_list)
-
-                }
-    }
-
-    fun change_user_semester(semester_id: String){
-        Log.d(TAG, "change_user_semester -> call")
-        user_doc()
-                .update("semester", semester_id)
-                .addOnSuccessListener {
-                    semester = semester_id
-                    Log.d(TAG, "change_user_semester -> success")
-                    get_semester_title()
-                }
-                .addOnFailureListener {
-                    Log.w(TAG, "change_user_semester -> failure")
-                }
-    }
-
-    fun get_semester_title(){
-        firedb.collection("semester")
-            .document(semester!!)
-            .get()
-            .addOnSuccessListener {
-                view.semester_textView.text = it.getString("title")
-            }
-    }
-
-    fun select_semester_dialog(semester_list: Array<String>, semester_id_list: Array<String>){
-
-        Log.d("dialog", "select_semester_dialog -> call")
-
-        var semester_id = ""
-        val dialog = AlertDialog.Builder(context)
-            .setTitle("学期選択")
-            .setSingleChoiceItems(semester_list, -1){dialog, which ->
-                semester_id = semester_id_list[which]
-            }
-            .setPositiveButton("OK"){ dialog, which ->
-                if(semester_id != ""){
-                    change_user_semester(semester_id)
-                }else{
-                    false
-                }
-            }
-        dialog.show()
-    }
 }
 
 open class firedb_setup(): firedb_col_doc(){
@@ -136,28 +67,6 @@ open class firedb_setup(): firedb_col_doc(){
             Log.d(TAG, uid.toString())
 
             //firedb_register_login(this).get_university_list_LoadActivity()
-        }
-    }
-
-    fun set_uid(){
-        val auth = Firebase.auth
-        runBlocking {
-            auth.signInAnonymously()
-                .addOnCompleteListener{ login ->
-                    runBlocking {
-                        if (login.isSuccessful){
-
-                            Log.d(TAG, "login -> success")
-                            runBlocking {
-                                uid = auth.uid
-                            }
-                        }else{
-                            Log.w(TAG, "login -> failure")
-                        }
-                        return@runBlocking
-                    }
-                    return@addOnCompleteListener
-                }
         }
     }
 
@@ -703,14 +612,13 @@ class firedb_timetable_new(): firedb_col_doc(){
         val week_and_period = "$week$period"
         val user_timetable = user_timetable_data_live.value
         val course_data = user_timetable?.get(week_and_period) as? Map<String, Any?>
-        Log.d("hoge", "dataa: ${course_data}")
         if (course_data != null){
             val course_id = course_data["course_id"] as String
             uni_course_doc(week_and_period, course_id)
                     .get()
                 .addOnSuccessListener {
                     val online_data = it.data
-                    Log.d("hoge", "$online_data")
+                    Log.d(TAG, "get_user_course_data($week_and_period): $online_data")
                     if (online_data != null){
                         val course_name = online_data["course"] as String
                         val lecturer = online_data["lecturer"] as List<String>
@@ -818,6 +726,84 @@ class firedb_timetable_new(): firedb_col_doc(){
                 Toast.makeText(context, "追加に失敗しました", Toast.LENGTH_SHORT).show()
             }
     }
+
+    fun get_all_course_id(context: Context){
+        Log.d(TAG, "get_all_course_id -> call")
+
+        val tt_id = get_timetable_id(context)
+
+        user_doc_tt(tt_id!!)
+            .addSnapshotListener{ value, error ->
+                if (error != null){
+                    return@addSnapshotListener
+                }
+
+                val hoge = value?.data
+                //Log.d("hogee", "hoge: $hoge")
+
+                if (hoge != null){
+
+                    val wtd = hoge["wtd"] as Long
+                    week_num = wtd.toInt()
+                    val period = hoge["period"] as Long
+                    period_num = period.toInt()
+
+
+
+                    test_course_data_map = mutableMapOf()
+                    for (week in week_to_day_symbol_list){
+                        for(period in period_list){
+                            val week_period = week+period.toString()
+                            val tmp = hoge.get(week_period) as? Map<String, String>
+                            //Log.d("hogee", "aaa$tmp")
+
+                            if (tmp != null){
+                                //test_course_id_map[week_period!!] = tmp["course_id"]
+                                get_course_data(week_period, tmp["course_id"]!!)
+
+                                //data[week_period] = tmp["course_id"]
+                                //test_course_id.value = data
+                                //Log.d("hogee", "data: ${test_course_id.value}")
+                                //Log.d("hogee", "data2: ${data}")
+
+                            }
+                        }
+                    }
+                }
+            }
+    }
+
+    fun get_course_data(week_period: String, course_id: String){
+        Log.d(TAG, "get_course_data -> call")
+        Log.d(TAG, "week_period: $week_period, id: $course_id")
+
+        uni_course_doc(week_period, course_id)
+            .get()
+            .addOnSuccessListener {
+                val data = it.data
+
+                if (data != null) {
+                    val course_name = data["course"] as String
+                    val lecturer = data["lecturer"] as ArrayList<String>
+
+                    val in_data = mapOf<String, Any?>(
+                        "course" to course_name,
+                        "lecturer" to lecturer,
+                        "course_id" to course_id
+                    )
+
+                    //Log.d(TAG, "wee: $week_period")
+                    //Log.d(TAG, "hoge: $hoge")
+
+                    test_course_data_map.put(week_period, in_data)
+                    Log.d(TAG, "course data map: ${test_course_data_map}")
+                }
+            }
+            .addOnFailureListener {
+                Log.w(TAG, "get_course_data -> failure: $week_period /$course_id: ", it)
+            }
+    }
+
 }
 
 
@@ -1102,7 +1088,7 @@ class firedb_task(val context: Context): firedb_col_doc(){
             }
     }
 
-    fun get_tomorrow_not_comp_task_list(view: ActivityHomeBinding){
+    fun get_tomorrow_not_comp_task_list(view: FragmentHomeBinding){
         Log.d(TAG, "get_tomorrow_not_comp_task_list -> call")
 
         val cal = Calendar.getInstance()
