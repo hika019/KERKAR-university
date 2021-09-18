@@ -20,7 +20,6 @@ class Timetable_VM: ViewModel() {
 
     val timetable_name = MutableLiveData("")
     var context: Context? =null
-    var course_data = MutableLiveData<MutableMap<String, Map<String, Any>?>>()
 
     private val firedb_tt_class = firedb_timetable_new()
 
@@ -28,21 +27,18 @@ class Timetable_VM: ViewModel() {
         Log.d(TAG, "Timetable_VM / init -> call")
         //Log.d(TAG, "user_timetable_data_live: ${user_timetable_data_live.value}")
 
-
-        user_timetable_data_live.asFlow()
+        timetable_id.asFlow()
             .onEach {
-                get_timetable_name()
-                for (week in week_to_day_symbol_list){
-                    for (period in period_list){
-                        firedb_tt_class.get_user_course_data(week, period)
+                user_timetable_data_live.asFlow()
+                    .onEach {
+                        get_timetable_name()
+                        for (week in week_to_day_symbol_list){
+                            for (period in period_list){
+                                firedb_tt_class.get_user_course_data(week, period)
+                            }
+                        }
                     }
-                }
-            }
-            .launchIn(viewModelScope)
-
-        course_data_live.asFlow()
-            .onEach {
-                course_data_live_to_course_data()
+                    .launchIn(viewModelScope)
             }
             .launchIn(viewModelScope)
 
@@ -54,24 +50,19 @@ class Timetable_VM: ViewModel() {
         Log.d(TAG, "timetable_name.value: ${timetable_name.value}")
     }
 
-    fun course_data_live_to_course_data(){
-        Log.d(TAG, "course_data_live_to_course_data -> call")
-        course_data.value = course_data_live.value as MutableMap<String, Map<String, Any>?>
-        Log.d(TAG, "course_data: ${course_data.value}")
-    }
-
     fun get_course_data(week: String, period: Int, _context: Context){
+        Log.d(TAG, "get_course_data -> call")
         context = _context
         var message: String? = null
 
-        val data = course_data.value?.get("$week$period")
+        val data = course_data_live.value?.get("$week$period")
         Log.d(TAG, "data: ${data}")
         if (data != null) {
             message = course_data_map_to_str(data as Map<String, Any>)
 
         }
 
-        Log.d("hogee", "mess: $message")
+        Log.d(TAG, "mess: $message")
         if (message.isNullOrEmpty()){
             val firedb_tt_old_class = firedb_timetable(context!!)
             firedb_tt_old_class.get_course_list(week, period)
@@ -80,7 +71,7 @@ class Timetable_VM: ViewModel() {
     }
 
     fun show_course_info(week: String, period: Int, message: String){
-
+        Log.d(TAG, "show_course_info -> call")
 
         val week_jp = week_to_day_jp_chenger(week)
 

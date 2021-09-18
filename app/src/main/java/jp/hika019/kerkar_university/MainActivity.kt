@@ -29,15 +29,26 @@ class MainActivity : AppCompatActivity() {
     private lateinit var toolbar: Toolbar
     lateinit var drawerLayout: DrawerLayout
     lateinit var navView: NavigationView
+    private val flag = true
 
+    init {
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        Log.d(TAG, "MainActivity")
+        if (!flag)
+            timetable_id.value = get_timetable_id(this)
 
-        //cheack_timetable(this)
-        val firedb_tt_class = firedb_timetable_new()
-        firedb_tt_class.check_user_timetable(this)
+        timetable_id.observe(this, Observer {
+            Log.d(TAG, "change timetable_id")
+            //授業の取得
+            val firedb_tt_class = firedb_timetable_new()
+            firedb_tt_class.check_user_timetable(this)
+        })
+        Log.d(TAG, "hogee")
 
         setContentView(R.layout.activity_main2)
         //this.setToolbar()
@@ -109,54 +120,4 @@ class MainActivity : AppCompatActivity() {
         //drawer_layout.closeDrawer(GravityCompat.START)
         false
     }
-
-    /*
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        var fragment : Fragment? = null
-
-        when (item.itemId){
-            R.id.nav_home ->{
-                //fragment = Test_fragment()
-                fragment = Home_fragment()
-                Log.d(TAG, "select: Home_fragment")
-            }
-            R.id.nav_timetable -> {
-                fragment = test()
-                //fragment = Timetable_Fragment()
-                Log.d(TAG, "select: Timetable_fragment")
-            }
-            //R.id.nav_assignment_list -> {
-            R.id.nav_task -> {
-
-                fragment = Task_list_Fragment()
-                Log.d(TAG, "select: Assignment_list_fragment")
-            }
-            R.id.nav_message -> {
-                fragment = MessageFragment()
-                Log.d(TAG, "select fragment: Message_fragment")
-            }
-            R.id.nav_setting -> {
-//                AuthUI.getInstance()
-//                        .signOut(this)
-//                        .addOnCompleteListener {
-//                            val intent = Intent(this, LoginActivity::class.java)
-//                            startActivity(intent)
-//                        }
-//                Log.d(TAG, "logout")
-                fragment = Setting_Fragment()
-                Log.d(TAG, "select fragment: Setting_Fragment")
-
-            }
-        }
-
-        if (fragment != null){
-            val ft = supportFragmentManager.beginTransaction()
-            ft.replace(R.id.main_host_fragment, fragment)
-            ft.commit()
-        }
-        drawer_layout.closeDrawer(GravityCompat.START)
-        return true
-    }
-     */
-
 }

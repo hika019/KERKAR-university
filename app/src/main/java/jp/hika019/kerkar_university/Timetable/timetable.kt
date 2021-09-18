@@ -17,6 +17,10 @@ import jp.hika019.kerkar_university.*
 import jp.hika019.kerkar_university.viewmodels.Timetable_VM
 import jp.hika019.kerkar_university.databinding.TimetableBinding
 import android.util.*
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 
 class test: Fragment() {
@@ -79,12 +83,17 @@ class test: Fragment() {
         view.viewmodel = viewmodel
         view.lifecycleOwner = viewLifecycleOwner
 
+        timetable_id.asFlow()
+            .onEach {
+                view.hogee.removeAllViews()
 
-        view.hogee.addView(week_title(week_num))
-        for (period in 1..period_num){
+                view.hogee.addView(week_title(week_num))
+                for (period in 1..period_num){
+                    view.hogee.addView(row_courses(period))
+                }
+            }
+            .launchIn(lifecycleScope)
 
-            view.hogee.addView(row_courses(period))
-        }
 
 
 
@@ -92,7 +101,7 @@ class test: Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewmodel.course_data.observe(viewLifecycleOwner, Observer {
+        course_data_live.observe(viewLifecycleOwner, Observer {
 
             for (week_index in 1..week_num){
                 for (period in 1..period_num){
@@ -110,8 +119,10 @@ class test: Fragment() {
 
         //Log.d(TAG, "title_id: $title_id")
 
+        val course_data = course_data_live.value?.get(week_period) as? Map<String, Any?>
+
         val course_textview = requireView().findViewById<TextView>(title_id!!)
-        val course_name = viewmodel.course_data.value?.get(week_period)?.get("course")
+        val course_name = course_data?.get("course")
         if (course_name == null)
             course_textview.text = ""
         else
@@ -122,7 +133,7 @@ class test: Fragment() {
         val lecture_id = lecture_id_map[week_period]
         //Log.d(TAG, "($week_period) lecture_id: $lecture_id")
         val lecture_textview = requireView().findViewById<TextView>(lecture_id!!)
-        val course_lecturer = viewmodel.course_data.value?.get(week_period)?.get("lecturer") as List<String>?
+        val course_lecturer = course_data?.get("lecturer") as List<String>?
 
         if (course_lecturer == null){
             lecture_textview.text = ""
@@ -138,7 +149,7 @@ class test: Fragment() {
 
         val room_id = room_id_map[week_period]
         val room_textview = requireView().findViewById<TextView>(room_id!!)
-        val course_room = viewmodel.course_data.value?.get(week_period)?.get("room") as? String
+        val course_room = course_data?.get("room") as? String
         if (course_room == null){
             room_textview.text = ""
         }else{

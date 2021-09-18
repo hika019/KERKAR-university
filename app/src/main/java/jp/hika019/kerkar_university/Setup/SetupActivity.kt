@@ -11,11 +11,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import jp.hika019.kerkar_university.R
+import jp.hika019.kerkar_university.TAG_hoge
 import jp.hika019.kerkar_university.firedb_setup
 import kotlinx.android.synthetic.main.activity_setup.*
 
 class SetupActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    private val TAG = "Setup_Activity"
+    private val TAG = "Setup_Activity" + TAG_hoge
 
     lateinit var toolbar: Toolbar
     lateinit var drawerLayout: DrawerLayout

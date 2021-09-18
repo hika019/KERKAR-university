@@ -25,7 +25,7 @@ val createtimetable_finish = MutableLiveData(false)
 var semester: String? = null
 var university_id: String? = null
 var timetable_name: String? = ""
-var timetable_id: String? = null
+var timetable_id = MutableLiveData<String?>(null)
 var timetable_live = MutableLiveData<String?>(null)
 
 

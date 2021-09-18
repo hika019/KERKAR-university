@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class Create_timetableActivity : AppCompatActivity() {
-    private val TAG = "Create_timetable"
+    private val TAG = "Create_timetable" +TAG_hoge
 
     private val viewmodel by viewModels<Create_timetable_VM>()
 
@@ -30,6 +30,7 @@ class Create_timetableActivity : AppCompatActivity() {
         )
         binding.viewmodel = viewmodel
         binding.lifecycleOwner = this
+        Log.d(TAG, "Create_timetableActivity -> show")
 
 
         //setContentView(R.layout.activity_create_timetable)

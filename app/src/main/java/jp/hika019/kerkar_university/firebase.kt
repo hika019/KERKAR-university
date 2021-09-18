@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.Timestamp
@@ -270,12 +271,14 @@ open class firedb_setup(): firedb_col_doc(){
                                     val year = data?.get("year")
                                     val term = data?.get("term")
                                     semester = "$year-$term"
-                                    timetable_id = timetableId
+                                    timetable_id.value = timetableId
                                     val tmp = data?.get("period") as Long
                                     period_num = tmp.toInt()
-                                    Log.d(TAG, "semester: $period_num")
+                                    Log.d(TAG, "semester: $semester")
+                                    Log.d(TAG, "period_num: $period_num")
+                                    Log.d(TAG, "timetableId: ${timetableId}")
 
-                                    Log.d(TAG, "画面遷移")
+                                    Log.d(TAG, "画面遷移(to home)")
 
                                     val intent = Intent(context, MainActivity::class.java)
                                         .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -670,7 +673,8 @@ class firedb_timetable_new(): firedb_col_doc(){
     private val TAG = "firedb_timetable_new" + TAG_hoge
 
     fun get_user_timetable_all_data(context: Context){
-        user_doc_tt(timetable_id!!)
+        Log.d(TAG, "get_user_timetable_all_data -> call")
+        user_doc_tt(timetable_id.value!!)
             .addSnapshotListener { value, error ->
 
                 if (error != null){
@@ -686,7 +690,8 @@ class firedb_timetable_new(): firedb_col_doc(){
                 user_timetable_data_live.value = value?.data
                 week_num = value?.getLong("wtd")!!.toInt()
                 period_num = value?.getLong("period")!!.toInt()
-                Log.d("hoge", "wtd $week_num")
+                Log.d(TAG, "user_timetable_data_live ${user_timetable_data_live.value}")
+
             }
     }
 
@@ -694,6 +699,7 @@ class firedb_timetable_new(): firedb_col_doc(){
         week: String,
         period: Int
     ){
+        Log.d(TAG, "get_user_course_data($week$period) -> call ")
         val week_and_period = "$week$period"
         val user_timetable = user_timetable_data_live.value
         val course_data = user_timetable?.get(week_and_period) as? Map<String, Any?>
@@ -723,7 +729,7 @@ class firedb_timetable_new(): firedb_col_doc(){
                         }
                         course_data_live.value = tmp
 
-                        Log.d("hoge", "tmp: ${course_data_live.value}")
+                        Log.d(TAG, "course_data_live: ${course_data_live.value}")
                     }
 
                 }
@@ -734,9 +740,8 @@ class firedb_timetable_new(): firedb_col_doc(){
     }
 
     fun check_user_timetable(context: Context){
-
-        if (get_timetable_id(context) != null){
-            timetable_id = get_timetable_id(context)
+        Log.d(TAG, "check_user_timetable -> call")
+        if (timetable_id.value != null){
             get_user_timetable_all_data(context)
         }else{
             user_collection_tt()
@@ -793,10 +798,18 @@ class firedb_timetable_new(): firedb_col_doc(){
                 semester = "$year-$term"
                 week_num = week
                 period_num = period
-                timetable_id = doc_id
-                set_timetable_id(context, timetable_id!!)
+                timetable_id.value = doc_id
+                set_timetable_id(context, timetable_id.value!!)
                 Log.d(TAG, "semester: $semester")
-                Log.d(TAG, "timetable_id: $timetable_id")
+                Log.d(TAG, "timetable_id: ${timetable_id.value}")
+
+                user_timetable_data_live = MutableLiveData<Map<String, Any?>>()
+                course_data_live = MutableLiveData<MutableMap<String, Any?>>()
+                Log.d(TAG, "user_timetable_data_live: ${user_timetable_data_live.value}")
+                Log.d(TAG, "course_data_live: ${course_data_live.value}")
+
+                Log.d(TAG, "user_timetable_data_live & course_data_live -> clear")
+
                 createtimetable_finish.value = true
 
             }
@@ -815,7 +828,7 @@ class firedb_task(val context: Context): firedb_col_doc(){
     fun get_course_list(){
         Log.d(TAG, "get_course_list -> call")
 
-        user_doc_tt(timetable_id!!)
+        user_doc_tt(timetable_id.value!!)
             .get()
             .addOnSuccessListener {
                 Log.d(TAG, "firedb_task.get_course_list: get user data -> success")

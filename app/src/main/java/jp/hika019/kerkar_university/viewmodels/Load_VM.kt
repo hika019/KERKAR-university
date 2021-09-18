@@ -23,7 +23,7 @@ class Load_VM: ViewModel() {
         firedb.collection("user")
             .document(uid!!)
             .collection("timetable")
-            .document(timetable_id!!)
+            .document(timetable_id.value!!)
             .get()
             .addOnSuccessListener {
                 period.value = it.getLong("period")!!.toInt()

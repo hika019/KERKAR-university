@@ -15,9 +15,10 @@ import java.util.*
 
 
 class LoadActivity: AppCompatActivity() {
-    val TAG = "StartActivity"
+    val TAG = "LoadActivity"+TAG_hoge
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "show LoadActivity")
         setTheme(R.style.AppTheme_Splash)
         Thread.sleep(200)
         setContentView(R.layout.activity_load)
