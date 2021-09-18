@@ -1,16 +1,18 @@
 package jp.hika019.kerkar_university.Timetable
 
-import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
+import androidx.activity.viewModels
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import jp.hika019.kerkar_university.*
-
+import jp.hika019.kerkar_university.R
+import jp.hika019.kerkar_university.databinding.ActivityCreateTimetableBinding
+import jp.hika019.kerkar_university.viewmodels.Create_timetable_VM
 import kotlinx.android.synthetic.main.activity_create_timetable.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -18,52 +20,67 @@ import java.util.*
 class Create_timetableActivity : AppCompatActivity() {
     private val TAG = "Create_timetable"
 
+    private val viewmodel by viewModels<Create_timetable_VM>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_create_timetable)
+        val binding = DataBindingUtil.setContentView<ActivityCreateTimetableBinding>(
+            this, R.layout.activity_create_timetable
+        )
+        binding.viewmodel = viewmodel
+        binding.lifecycleOwner = this
+
+
+        //setContentView(R.layout.activity_create_timetable)
 
         setToolbar()
-        period_picer.minValue = 4
-        period_picer.maxValue = 8
+        binding.periodPicer.minValue = 4
+        binding.periodPicer.maxValue = 8
+
+
+        viewmodel.radioGroup.observe(this, Observer {
+            val term = term_radioGroup.indexOfChild(term_radioGroup.findViewById<RadioButton>(viewmodel.radioGroup.value!!))
+            viewmodel.term.value = term
+        })
+
+        createtimetable_finish.observe(this, Observer {
+            if (createtimetable_finish.value == true){
+                createtimetable_finish.value = false
+                finish()
+            }
+        })
+
+
 
         var select_year: Int? = null
 
 
         val now_year = SimpleDateFormat("yyyy").format(Date()).toInt()
 
-        timetablse_title_textview.setOnFocusChangeListener { v, hasFocus ->
-            if(!hasFocus){
-                val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                inputManager.hideSoftInputFromWindow(v.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+
+        //学期の選択
+        firedb.collection("university")
+            .document(university_id!!)
+            .get()
+            .addOnSuccessListener {
+                val term = it.getLong("term")?.toInt()
+
+                for(i in 1..term!!){
+                    val radio = RadioButton(this)
+                    radio.text = "${i}学期"
+                    radio.minHeight = 48
+                    term_radioGroup.addView(radio)
+                }
+
             }
-        }
+            .addOnFailureListener {
+                Toast.makeText(this, "学期の取得に失敗しました\n" +
+                        "通信環境を見直してください", Toast.LENGTH_SHORT).show()
+                Log.w(TAG, "get term -> failure: ", it)
+            }
 
 
-        year_textview.setOnClickListener {
-
-            val year_list = Array(4){(now_year-2+it).toString()}
-            var select_index: Int? = null
-
-            val dialog = AlertDialog.Builder(this)
-                .setTitle("年の選択")
-                .setSingleChoiceItems(year_list, -1){ dialog, which ->
-                    select_index = which
-                }
-                .setPositiveButton("確定"){ dialog, which ->
-                    select_year = year_list[select_index!!].toInt()
-                    year_textview.text = select_year.toString()
-                }
-            dialog.show()
-        }
-
-
-        for(i in 1..2){
-            val radio = RadioButton(this)
-            radio.text = "${i}学期"
-            radio.minHeight = 48
-            term_radioGroup.addView(radio)
-        }
 
 
         create_timetable_button.setOnClickListener {

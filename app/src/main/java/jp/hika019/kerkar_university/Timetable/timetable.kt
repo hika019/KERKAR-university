@@ -1,8 +1,6 @@
 package jp.hika019.kerkar_university.test
 
-import android.graphics.Color
 import android.graphics.Typeface
-import android.graphics.fonts.FontFamily
 import android.os.Bundle
 import android.view.Gravity.CENTER
 import android.view.LayoutInflater
@@ -19,7 +17,6 @@ import jp.hika019.kerkar_university.*
 import jp.hika019.kerkar_university.viewmodels.Timetable_VM
 import jp.hika019.kerkar_university.databinding.TimetableBinding
 import android.util.*
-import android.view.Gravity.BOTTOM
 
 
 class test: Fragment() {
@@ -181,19 +178,35 @@ class test: Fragment() {
 
 
     private fun course(week: String, period: Int): LinearLayout {
+        val background = LinearLayout(context)
+        background.layoutParams = set_timetable_course_layout
+        background.setBackgroundResource(R.drawable.timetable_course_background_gray)
+        background.orientation = LinearLayout.VERTICAL
+        //background.setBackgroundColor(Color.RED)
+        background.elevation = 2f
 
+        val bglp: ViewGroup.LayoutParams = background.layoutParams
+        val bgmlp = bglp as MarginLayoutParams
+        bgmlp.setMargins(4, 4, 4, 4)
+        background.layoutParams = bgmlp
 
 
         val course = LinearLayout(context)
         //course.setBackgroundResource(R.color.black)
         course.orientation = LinearLayout.VERTICAL
-        course.layoutParams = set_timetable_course_layout
+        course.layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            0,
+            5.0f
+        )
         course.setBackgroundResource(R.drawable.timetable_course_background)
-        course.elevation = 2f
+        //course.elevation = 2f
+
+
 
         val lp: ViewGroup.LayoutParams = course.layoutParams
         val mlp = lp as MarginLayoutParams
-        mlp.setMargins(4, 4, 4, 4)
+        mlp.setMargins(6, 4, 6, 0)
         course.layoutParams = mlp;
 
 
@@ -244,13 +257,15 @@ class test: Fragment() {
 
         course.addView(couse_name_textview)
         course.addView(teacher_name_textview)
-        course.addView(teacher_room_textview)
+
 
         course.setOnClickListener {
             viewmodel.get_course_data(week, period, requireContext())
         }
 
-        return course
+        background.addView(course)
+        background.addView(teacher_room_textview)
+        return background
 
     }
 

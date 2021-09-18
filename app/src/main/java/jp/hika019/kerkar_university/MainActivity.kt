@@ -45,7 +45,6 @@ class MainActivity : AppCompatActivity() {
         this.bottom_navi_view.setOnNavigationItemSelectedListener(bottomNav)
 
         val ft = supportFragmentManager.beginTransaction()
-        //ft.replace(R.id.main_host_fragment, test())
         ft.replace(R.id.main_host_fragment, load_fragment())
         ft.commit()
 

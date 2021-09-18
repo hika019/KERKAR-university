@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import android.util.*
 import android.view.Gravity
+import jp.hika019.kerkar_university.Timetable.Create_timetableActivity
 
 class Timetable_VM: ViewModel() {
     private val TAG = "Timetable_VM"+ TAG_hoge
@@ -61,7 +62,7 @@ class Timetable_VM: ViewModel() {
 
     fun get_course_data(week: String, period: Int, _context: Context){
         context = _context
-        var message = ""
+        var message: String? = null
 
         val data = course_data.value?.get("$week$period")
         Log.d(TAG, "data: ${data}")
@@ -69,7 +70,13 @@ class Timetable_VM: ViewModel() {
             message = course_data_map_to_str(data as Map<String, Any>)
 
         }
-        show_course_info(week, period, message)
+
+        Log.d("hogee", "mess: $message")
+        if (message.isNullOrEmpty()){
+            val firedb_tt_old_class = firedb_timetable(context!!)
+            firedb_tt_old_class.get_course_list(week, period)
+        }else
+            show_course_info(week, period, message)
     }
 
     fun show_course_info(week: String, period: Int, message: String){
@@ -96,6 +103,11 @@ class Timetable_VM: ViewModel() {
 //        tmp.show()
 
         dialog.create().show()
+    }
+
+    fun Create_timetable(context: Context){
+        val i = Intent(context, Create_timetableActivity::class.java)
+        context.startActivity(i)
     }
 
 

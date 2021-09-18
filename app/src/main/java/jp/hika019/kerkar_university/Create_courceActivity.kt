@@ -19,8 +19,8 @@ class Create_courceActivity: AppCompatActivity() {
 
 
 
-        val binding = DataBindingUtil.setContentView<ActivityCreateCourcetBinding>(this,
-            R.layout.activity_create_courcet
+        val binding = DataBindingUtil.setContentView<ActivityCreateCourcetBinding>(
+            this, R.layout.activity_create_courcet
         )
         binding.viewmodel = viewmodel
         binding.lifecycleOwner = this

@@ -328,9 +328,14 @@ open class firedb_col_doc(){
         return tmp.document(timetableId)
     }
 
-    fun uni_semester_collection(): CollectionReference {
+    fun uni(): DocumentReference {
         val tmp = firedb.collection("university")
             .document(university_id!!)
+        return tmp
+    }
+
+    fun uni_semester_collection(): CollectionReference {
+        val tmp = uni()
             .collection("semester")
         return tmp
     }
@@ -645,7 +650,7 @@ open class firedb_timetable(context: Context){
         val updates = hashMapOf<String, Any>(
                 week_to_day to FieldValue.delete()
         )
-
+        //TODO
         firedb.collection("user")
                 .document(uid!!)
                 .collection("timetable")
@@ -770,6 +775,35 @@ class firedb_timetable_new(): firedb_col_doc(){
 
 
         }
+    }
+
+    fun create_timetable(context: Context, tt_data: Map<String, Any?>){
+        Log.d(TAG, "create_timetable -> call")
+        val doc_id = tt_data["timetable_id"] as String
+        val year = tt_data["year"] as Int
+        val term = tt_data["term"] as Int
+        val week = tt_data["wtd"] as Int
+        val period = tt_data["period"] as Int
+
+        user_doc_tt(doc_id)
+            .set(tt_data)
+            .addOnSuccessListener {
+                Log.d(TAG, "create_timetable -> success")
+
+                semester = "$year-$term"
+                week_num = week
+                period_num = period
+                timetable_id = doc_id
+                set_timetable_id(context, timetable_id!!)
+                Log.d(TAG, "semester: $semester")
+                Log.d(TAG, "timetable_id: $timetable_id")
+                createtimetable_finish.value = true
+
+            }
+            .addOnFailureListener {
+                Log.w(TAG, "create_timetable -> failure")
+                Toast.makeText(context, "追加に失敗しました", Toast.LENGTH_SHORT).show()
+            }
     }
 }
 

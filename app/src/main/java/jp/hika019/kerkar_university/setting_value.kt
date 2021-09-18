@@ -17,6 +17,10 @@ var uid: String? = null
 var check_position = -1
 
 
+//移動系
+var to_home_fragment = MutableLiveData<Boolean>(false)
+val createtimetable_finish = MutableLiveData(false)
+
 
 var semester: String? = null
 var university_id: String? = null
@@ -35,7 +39,7 @@ var period_num = 6
 
 var test_course_data_map = mutableMapOf<String, Any?>()
 
-var to_home_fragment = MutableLiveData<Boolean>(false)
+
 
 //Create_course
 var createcource_period = -1
