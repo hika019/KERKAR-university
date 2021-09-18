@@ -11,6 +11,7 @@ import jp.hika019.kerkar_university.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import android.util.*
+import android.view.Gravity
 
 class Timetable_VM: ViewModel() {
     private val TAG = "Timetable_VM"+ TAG_hoge
@@ -89,7 +90,12 @@ class Timetable_VM: ViewModel() {
 //                .setNeutralButton("課題を確認") { dialog, which ->
 //
 //                }
-        dialog.show()
+//        val tmp = dialog.create()
+//        val lp = tmp.window?.attributes
+//        lp?.gravity = Gravity.BOTTOM
+//        tmp.show()
+
+        dialog.create().show()
     }
 
 

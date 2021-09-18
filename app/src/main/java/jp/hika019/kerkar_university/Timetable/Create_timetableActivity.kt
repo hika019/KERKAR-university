@@ -24,8 +24,8 @@ class Create_timetableActivity : AppCompatActivity() {
         setContentView(R.layout.activity_create_timetable)
 
         setToolbar()
-        period_picer.minValue = 1
-        period_picer.maxValue = 6
+        period_picer.minValue = 4
+        period_picer.maxValue = 8
 
         var select_year: Int? = null
 

@@ -49,7 +49,7 @@ class Home_fragment(): Fragment() {
         runBlocking {
             try{
                 //timetable_onclick_event(view)
-                //load_task(view)
+                load_task(view)
                 //firedb_timetable(view.context).courses_is_none()
             }catch (e: Exception){
                 Log.w(TAG, "start -> error")
@@ -201,7 +201,7 @@ class Home_fragment(): Fragment() {
         return linearLayout
     }
 
-    private fun load_task(view: View){
+    private fun load_task(view: ActivityHomeBinding){
         context?.let { firedb_task(it).get_tomorrow_not_comp_task_list(view) }
     }
 

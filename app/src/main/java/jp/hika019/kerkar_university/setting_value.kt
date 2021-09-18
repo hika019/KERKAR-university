@@ -35,6 +35,8 @@ var period_num = 6
 
 var test_course_data_map = mutableMapOf<String, Any?>()
 
+var to_home_fragment = MutableLiveData<Boolean>(false)
+
 //Create_course
 var createcource_period = -1
 var createcource_wtd = ""

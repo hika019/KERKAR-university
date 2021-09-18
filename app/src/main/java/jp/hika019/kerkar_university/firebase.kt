@@ -25,9 +25,7 @@ import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import android.content.DialogInterface
-
-
+import jp.hika019.kerkar_university.databinding.ActivityHomeBinding
 
 
 //要リファクタリング
@@ -273,7 +271,9 @@ open class firedb_setup(): firedb_col_doc(){
                                     val term = data?.get("term")
                                     semester = "$year-$term"
                                     timetable_id = timetableId
-                                    Log.d(TAG, "semester: $semester")
+                                    val tmp = data?.get("period") as Long
+                                    period_num = tmp.toInt()
+                                    Log.d(TAG, "semester: $period_num")
 
                                     Log.d(TAG, "画面遷移")
 
@@ -1055,7 +1055,7 @@ class firedb_task(val context: Context): firedb_col_doc(){
             }
     }
 
-    fun get_tomorrow_not_comp_task_list(view: View){
+    fun get_tomorrow_not_comp_task_list(view: ActivityHomeBinding){
         Log.d(TAG, "get_tomorrow_not_comp_task_list -> call")
 
         val cal = Calendar.getInstance()
@@ -1065,11 +1065,10 @@ class firedb_task(val context: Context): firedb_col_doc(){
 
 
 //            Log.d("hoge", "to_int:${time_limit_int}")
+        view.mainTaskInfoRecyclerview.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
 
-        view.main_task_info_recyclerview.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        //view.main_task_info_recyclerview.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
 
-        val user_doc = firedb.collection("user")
-            .document(uid!!)
 
         user_doc_tt(get_timetable_id(context)!!)
             .addSnapshotListener { value, error ->
@@ -1141,9 +1140,14 @@ class firedb_task(val context: Context): firedb_col_doc(){
                                                     val adapter = Home_task_list_CustomAdapter(task_list, context, semester!!)
                                                     val layoutManager = LinearLayoutManager(context)
 
-                                                    view.main_task_info_recyclerview.layoutManager = layoutManager
-                                                    view.main_task_info_recyclerview.adapter = adapter
-                                                    view.main_task_info_recyclerview.setHasFixedSize(true)
+
+                                                    view.mainTaskInfoRecyclerview.layoutManager = layoutManager
+                                                    view.mainTaskInfoRecyclerview.adapter = adapter
+                                                    view.mainTaskInfoRecyclerview.setHasFixedSize(true)
+
+//                                                    view.main_task_info_recyclerview.layoutManager = layoutManager
+//                                                    view.main_task_info_recyclerview.adapter = adapter
+//                                                    view.main_task_info_recyclerview.setHasFixedSize(true)
                                                 }
                                             }
                                     }

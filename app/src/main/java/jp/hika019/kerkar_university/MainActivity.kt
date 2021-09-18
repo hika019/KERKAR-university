@@ -16,6 +16,7 @@ import jp.hika019.kerkar_university.Message.MessageFragment
 import jp.hika019.kerkar_university.Task.Task_list_Fragment
 import com.google.android.material.navigation.NavigationView
 import jp.hika019.kerkar_university.Home.Home_fragment
+import jp.hika019.kerkar_university.Home.load_fragment
 import jp.hika019.kerkar_university.test.test
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main2.*
@@ -45,10 +46,17 @@ class MainActivity : AppCompatActivity() {
 
         val ft = supportFragmentManager.beginTransaction()
         //ft.replace(R.id.main_host_fragment, test())
-        ft.replace(R.id.main_host_fragment, Home_fragment())
+        ft.replace(R.id.main_host_fragment, load_fragment())
         ft.commit()
 
-
+        to_home_fragment.observe(this, Observer {
+            if (to_home_fragment.value == true){
+                val ft = supportFragmentManager.beginTransaction()
+                //ft.replace(R.id.main_host_fragment, test())
+                ft.replace(R.id.main_host_fragment, Home_fragment())
+                ft.commit()
+            }
+        })
 
     }
 
