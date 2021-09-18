@@ -85,12 +85,30 @@ class Create_timetable_VM: ViewModel() {
             "timetable_id" to doc_id,
             "timetable_name" to timetable_name.value
         )
-        Log.d("hoge", "data: ${tt_data}")
+        var sattmp ="土曜日を表示しない"
+        if (week == 6)
+            sattmp = "土曜日を表示する"
 
-        val firedb = firedb_timetable_new()
-        firedb.create_timetable(context, tt_data)
+        val message = "時間割名: ${timetable_name.value}\n" +
+                "年: ${select_year.value}\n" +
+                "学期: ${term.value!!+1}\n" +
+                "${period.value}限まで\n" +
+                sattmp
+
+        AlertDialog.Builder(context)
+            .setTitle("確認")
+            .setMessage(message)
+            .setPositiveButton("作成する"){_, _ ->
+                Log.d(TAG, "data: ${tt_data}")
+
+                val firedb = firedb_timetable_new()
+                firedb.create_timetable(context, tt_data)
+            }
+            .setNegativeButton("直す"){_, _ ->
+                false
+            }
+            .create().show()
+
     }
-
-
 
 }

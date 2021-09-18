@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
 import jp.hika019.kerkar_university.R
 import jp.hika019.kerkar_university.firedb_task
+import jp.hika019.kerkar_university.task_dialog_new
 import kotlinx.android.synthetic.main.item_assignment_activity.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -95,33 +96,16 @@ class task_cmp_list_CustomAdapter(
     }
 
     fun task_comp_ditail_dialog(context: Context, task_data: Map<String, Any>, position: Int){
-        val cal = Calendar.getInstance()
 
-        val class_data = task_data["class_data"] as Map<String, Any>
-        val time_limit_timestamp = task_data["time_limit"] as Timestamp
+        val hoge = task_dialog_new(context)
+        hoge.task_detail_dialog(task_data)
+            .setNeutralButton("未提出にする") {dialog, which ->
 
-        cal.time = time_limit_timestamp.toDate()
-        val df = SimpleDateFormat("MM/dd HH:mm")
-
-
-        val str = "　期限: ${df.format(cal.time)}\n" +
-                "　教科: ${class_data["course"]}\n" +
-                "　詳細: ${task_data["task_name"]}\n" +
-                "その他: ${task_data["note"]}"
-
-        AlertDialog.Builder(context)
-                .setTitle("課題")
-                .setMessage(str)
-                .setPositiveButton("OK") { dialog, which ->
-
-                }
-                .setNeutralButton("未提出にする") {dialog, which ->
-//                    addListItem(list[position])
-                    val class_data = list[position]
-                    firedb_task(context).task_to_notcomp(class_data)
-                    removeItem(position)
-                }
-                .show()
+                val class_data = list[position]
+                firedb_task(context).task_to_notcomp(class_data)
+                removeItem(position)
+            }
+            .create().show()
     }
 
 }

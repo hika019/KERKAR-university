@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.google.firebase.Timestamp
 import jp.hika019.kerkar_university.Timetable.Create_timetableActivity
 import kotlinx.android.synthetic.main.dialog_add_task.view.*
 import kotlinx.android.synthetic.main.dialog_add_university.view.*
@@ -295,36 +296,6 @@ class task_dialog(val context: Context){
 
     }
 
-    fun day_cheack(today: List<String>, set_day: List<String>): Boolean {
-        val today_y = today[0].toInt()
-        val today_m = today[1].toInt()
-        val today_d = today[2].toInt()
-
-        val set_y = set_day[0].toInt()
-        val set_m = set_day[1].toInt()
-        val set_d = set_day[2].toInt()
-
-        if(today_y > set_y){
-            return false
-        }else if(today_y < set_y){
-            return true
-        }
-
-
-        if(today_m > set_m){
-            return false
-        }else if(today_m < set_m){
-            return true
-        }
-
-        if(today_d > set_d){
-            return false
-        }else{
-            return true
-        }
-
-    }
-
     fun create_task_dialog(){
         task_dialog_second.add_task_semester_textView.text = semester
 
@@ -516,6 +487,32 @@ class task_dialog(val context: Context){
         )
         timePicker.show()
 
+    }
+
+}
+
+class task_dialog_new(val context: Context){
+
+    fun task_detail_dialog(task_data: Map<String, Any>): AlertDialog.Builder {
+        val cal = Calendar.getInstance()
+
+        val class_data = task_data["class_data"] as Map<String, Any>
+        val time_limit_timestamp = task_data["time_limit"] as Timestamp
+
+        cal.time = time_limit_timestamp.toDate()
+        val df = SimpleDateFormat("MM/dd HH:mm")
+
+
+        val str = "　期限: ${df.format(cal.time)}\n" +
+                "　教科: ${class_data["course"]}\n" +
+                "　詳細: ${task_data["task_name"]}\n" +
+                "その他: ${task_data["note"]}"
+
+        val dialog = AlertDialog.Builder(context)
+            .setTitle("課題")
+            .setMessage(str)
+
+        return dialog
     }
 
 }

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
 import jp.hika019.kerkar_university.R
 import jp.hika019.kerkar_university.firedb_task
+import jp.hika019.kerkar_university.task_dialog_new
 import kotlinx.android.synthetic.main.item_home_assignment_info.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -105,30 +106,21 @@ class Home_task_list_CustomAdapter(private val task_List: ArrayList<Map<String, 
 
     private fun home_task_ditail_dialog(context: Context, task_data:Map<String, Any>, position: Int){
 
-        val class_data = task_data["class_data"] as Map<String, Any>
+        val hoge = task_dialog_new(context)
+        hoge.task_detail_dialog(task_data)
+            .setPositiveButton("OK") { dialog, which ->
 
-        val str = "期限: ${task_data["time_limit"]}\n" +
-                "教科: ${class_data["course"]}\n" +
-                "詳細: ${task_data["task_name"]}\n" +
-                "その他: ${task_data["note"]}"
-
-
-        AlertDialog.Builder(context)
-                .setTitle("課題")
-                .setMessage(str)
-                .setPositiveButton("OK") { dialog, which ->
-
-                }
-                .setNeutralButton("提出済みにする") {dialog, which ->
+            }
+            .setNeutralButton("提出済みにする") {dialog, which ->
 //                    firedb_load_task_class(context).task_to_comp(class_data)
-                    Log.d(TAG, "$position　を提出済みにする")
+                Log.d(TAG, "$position　を提出済みにする")
 
-                    val class_data = task_List[position] as Map<String, Any>
-                    Log.d(TAG, "data:${class_data}")
-                    firedb_task(context).task_to_comp(class_data)
-                    removeItem(position)
-                }
-                .show()
+                val class_data = task_List[position] as Map<String, Any>
+                Log.d(TAG, "data:${class_data}")
+                firedb_task(context).task_to_comp(class_data)
+                removeItem(position)
+            }
+            .show()
     }
 
 }

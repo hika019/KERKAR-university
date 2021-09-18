@@ -15,7 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import jp.hika019.kerkar_university.*
 import jp.hika019.kerkar_university.viewmodels.Timetable_VM
-import jp.hika019.kerkar_university.databinding.TimetableBinding
+import jp.hika019.kerkar_university.databinding.FragmentTimetableBinding
 import android.util.*
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
@@ -79,7 +79,7 @@ class test: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = TimetableBinding.inflate(inflater, container, false)
+        val view = FragmentTimetableBinding.inflate(inflater, container, false)
         view.viewmodel = viewmodel
         view.lifecycleOwner = viewLifecycleOwner
 
@@ -231,7 +231,7 @@ class test: Fragment() {
         couse_name_textview.layoutParams = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             0,
-            5f
+            4f
         )
 
         course_id_map.put("$week$period" , couse_name_textview.id)
