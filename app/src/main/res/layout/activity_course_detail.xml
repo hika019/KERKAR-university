@@ -142,6 +142,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@android:drawable/ic_input_add" />
 
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:onClick="@{() -> viewmodel.change_color(context)}"
+            android:text="色の変更"
+            app:layout_constraintEnd_toEndOf="@+id/course_room"
+            app:layout_constraintTop_toBottomOf="@+id/course_room" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

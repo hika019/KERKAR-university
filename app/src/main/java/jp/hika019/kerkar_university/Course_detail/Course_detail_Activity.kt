@@ -2,7 +2,6 @@ package jp.hika019.kerkar_university.Course_detail
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.util.*
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +14,7 @@ import jp.hika019.kerkar_university.TAG_hoge
 import jp.hika019.kerkar_university.createtimetable_finish
 import jp.hika019.kerkar_university.viewmodels.Course_ditail_VM
 import jp.hika019.kerkar_university.databinding.ActivityCourseDetailBinding
+import jp.hika019.kerkar_university.firedb_task_new
 import kotlinx.android.synthetic.main.activity_course_detail.*
 
 class Course_detail_Activity: AppCompatActivity() {
@@ -61,14 +61,19 @@ class Course_detail_Activity: AppCompatActivity() {
 
         viewmodel.week_period.value = "${intent_data!![0]}${intent_data[1]}"
 
-        val hoge = listOf(1,2,3,4,5,6,7,8,9,10)
+//        val hoge = listOf(1,2,3,4,5,6,7,8,9,10)
 
-        val adapter = Course_detail_CustomAdapter(hoge, this)
-        val layoutManager = LinearLayoutManager(this)
+        val hoge = firedb_task_new()
+        hoge.get_course_task(task_recycleview, viewmodel.week_period.value!!, viewmodel.course_id!!, this)
 
-        binding.taskRecycleview.adapter = adapter
-        binding.taskRecycleview.layoutManager = layoutManager
-        binding.taskRecycleview.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        binding.courseLecturerLinearLayout
+
+//        val adapter = Course_detail_CustomAdapter(hoge, this)
+//        val layoutManager = LinearLayoutManager(this)
+//
+//        binding.taskRecycleview.adapter = adapter
+//        binding.taskRecycleview.layoutManager = layoutManager
+//        binding.taskRecycleview.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
 
 

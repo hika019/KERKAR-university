@@ -4,13 +4,19 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.Timestamp
 import jp.hika019.kerkar_university.R
 import jp.hika019.kerkar_university.TAG_hoge
 import kotlinx.android.synthetic.main.item_course_detail_activity.view.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class Course_detail_CustomAdapter(
-    private val list: List<Int>,
+    private val list: ArrayList<Map<String, Any>>,
+    private val comp_list: ArrayList<String>,
     private val context: Context?
     ):RecyclerView.Adapter<Course_detail_CustomAdapter.CustomViewHolder>() {
 
@@ -32,8 +38,29 @@ class Course_detail_CustomAdapter(
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        //val data = list[position] as Map<String, String>
-        //holder.course_name.text = data["title"]
+        val task_data = list[position] as Map<String, String>
+
+        val task_mame = task_data["task_name"]
+        val time_limit_timestamp = task_data.get("time_limit") as Timestamp
+        val timelimit_date = time_limit_timestamp.toDate()
+        val cal = Calendar.getInstance()
+        cal.time = timelimit_date
+        val df_day = SimpleDateFormat("yyyy/MM/dd")
+        val df_time = SimpleDateFormat("HH:mm")
+
+        holder.day.text = df_day.format(cal.time)
+        holder.time.text = df_time.format(cal.time)
+        holder.course_name.text = task_mame
+        if (comp_list.contains(task_data["task_id"])){
+            val drawable = ContextCompat.getDrawable(context!!, R.drawable.outline_done_24)
+            drawable!!.setTint(context.getColor(R.color.logo_color))
+            holder.check.setImageDrawable(drawable)
+        }
+
+
+
+
+
     }
 
     override fun getItemCount(): Int {

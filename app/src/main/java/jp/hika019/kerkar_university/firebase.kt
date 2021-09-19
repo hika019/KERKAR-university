@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
 import jp.hika019.kerkar_university.Home.Home_task_list_CustomAdapter
 import jp.hika019.kerkar_university.Task.task_cmp_list_CustomAdapter
@@ -16,6 +17,7 @@ import jp.hika019.kerkar_university.Task.task_notcmp_list_CustomAdapter
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
+import jp.hika019.kerkar_university.Course_detail.Course_detail_CustomAdapter
 import jp.hika019.kerkar_university.Setup.SetupActivity
 import jp.hika019.kerkar_university.Timetable.Create_timetableActivity
 import kotlinx.coroutines.runBlocking
@@ -1091,6 +1093,8 @@ class firedb_task(val context: Context): firedb_col_doc(){
             }
     }
 
+
+
     fun get_tomorrow_not_comp_task_list(view: FragmentHomeBinding){
         Log.d(TAG, "get_tomorrow_not_comp_task_list -> call")
 
@@ -1278,5 +1282,43 @@ class firedb_task(val context: Context): firedb_col_doc(){
                 Toast.makeText(context, "未提出にできませんでした",Toast.LENGTH_SHORT).show()
             }
 
+    }
+}
+
+class firedb_task_new(): firedb_col_doc(){
+
+    fun get_course_task(recycle_view: RecyclerView, week_to_day: String, course_id: String, context: Context){
+        Log.d(TAG, "get_course_task -> call")
+
+        val course_datas = user_timetable_data_live.value?.get(week_to_day) as? Map<String, Any?>
+        val comp_task = course_datas?.get("comp_task") as ArrayList<String>
+
+
+
+        uni_task_col(week_to_day, course_id)
+            .orderBy("time_limit")
+            .addSnapshotListener { value, error ->
+                if (error != null){
+                    Log.w(TAG, "get_course_task -> erro", error)
+                }
+                var task_list: ArrayList<Map<String, Any>> = arrayListOf()
+                if (value != null) {
+                    for (doc in value.documents){
+                        val task_data = doc.data
+                        val task_id = task_data?.get("task_id") as? String
+
+                        if (task_data != null) {
+                            task_list.add(task_data)
+                        }
+                        val adapter = Course_detail_CustomAdapter(task_list, comp_task, context)
+                        val layoutManager = LinearLayoutManager(context)
+
+                        recycle_view.layoutManager = layoutManager
+                        recycle_view.adapter = adapter
+                        recycle_view.setHasFixedSize(true)
+
+                    }
+                }
+            }
     }
 }
