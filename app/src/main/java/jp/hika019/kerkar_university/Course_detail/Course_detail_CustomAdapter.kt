@@ -17,7 +17,7 @@ import kotlin.collections.ArrayList
 
 class Course_detail_CustomAdapter(
     private val list: ArrayList<Map<String, Any>>,
-    private val comp_list: ArrayList<String>,
+    private val comp_list: ArrayList<String>?,
     private val context: Context?
     ):RecyclerView.Adapter<Course_detail_CustomAdapter.CustomViewHolder>() {
 
@@ -55,11 +55,13 @@ class Course_detail_CustomAdapter(
         Log.d(TAG, "comp_list: $comp_list")
         Log.d(TAG, "comp_list: ${task_data["task_id"]}")
 
-        if (comp_list.contains(task_data["task_id"])){
-            Log.d(TAG, "hogeeeee")
-            val drawable = ContextCompat.getDrawable(context!!, R.drawable.outline_task_alt_24)
-            drawable!!.setTint(context.getColor(R.color.logo_color))
-            holder.check.setImageDrawable(drawable)
+        if (comp_list != null) {
+            if (comp_list.contains(task_data["task_id"])){
+                Log.d(TAG, "hogeeeee")
+                val drawable = ContextCompat.getDrawable(context!!, R.drawable.outline_task_alt_24)
+                drawable!!.setTint(context.getColor(R.color.logo_color))
+                holder.check.setImageDrawable(drawable)
+            }
         }
 
 

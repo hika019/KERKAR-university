@@ -27,7 +27,8 @@ class Course_ditail_VM: ViewModel() {
     init {
         week_period.asFlow()
             .onEach {
-                get_course_data()
+                if (!week_period.value.equals(""))
+                    get_course_data()
             }
             .launchIn(viewModelScope)
 
@@ -36,6 +37,7 @@ class Course_ditail_VM: ViewModel() {
     fun get_course_data(){
         Log.d(TAG, "get_course_data -> call")
         val data = course_data_live.value?.get(week_period.value!!) as? Map<String, Any>
+        Log.d(TAG, "data: ${course_data_live.value}")
         val course_datas = user_timetable_data_live.value?.get(week_period.value!!) as? Map<String, Any?>
         course_id = course_datas?.get("course_id") as? String
         course_neme.value = data?.get("course") as? String

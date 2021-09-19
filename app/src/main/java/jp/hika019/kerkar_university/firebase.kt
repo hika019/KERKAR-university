@@ -1278,7 +1278,7 @@ class firedb_task_new(): firedb_col_doc(){
         Log.d(TAG, "get_course_task -> call")
 
         val course_datas = user_timetable_data_live.value?.get(week_to_day) as? Map<String, Any?>
-        val comp_task = course_datas?.get("comp_task") as ArrayList<String>
+        val comp_task = course_datas?.get("comp_task") as? ArrayList<String>
 
 
 
