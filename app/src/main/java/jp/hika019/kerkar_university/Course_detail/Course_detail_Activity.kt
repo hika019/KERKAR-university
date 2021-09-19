@@ -82,6 +82,7 @@ class Course_detail_Activity: AppCompatActivity() {
         val toolbar = course_detail_toolbar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -6,9 +6,13 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.asFlow
 import jp.hika019.kerkar_university.databinding.ActivityCreateTaskBinding
 import jp.hika019.kerkar_university.viewmodels.Create_task_VM
 import kotlinx.android.synthetic.main.activity_create_task.*
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 class Create_task_Activity: AppCompatActivity() {
 
@@ -27,6 +31,8 @@ class Create_task_Activity: AppCompatActivity() {
 
         setSupportActionBar(toolbar5)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
 
     }
 
@@ -35,6 +41,18 @@ class Create_task_Activity: AppCompatActivity() {
 
 
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+
+        val item = menu.findItem(R.id.create_menu)
+        item.isEnabled = false
+
+        viewmodel.create_button_enable.observe(this, Observer {
+            item.isEnabled = viewmodel.create_button_enable.value == true
+        })
+
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

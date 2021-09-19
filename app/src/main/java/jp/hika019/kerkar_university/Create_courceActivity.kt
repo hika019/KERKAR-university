@@ -29,6 +29,7 @@ class Create_courceActivity: AppCompatActivity() {
         val toolbar = binding.toolbar2
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
 
         viewmodel.finish_event.observe(this, androidx.lifecycle.Observer {

@@ -20,24 +20,34 @@ class Create_task_VM: ViewModel() {
     private val TAG = "Create_task_VM" + TAG_hoge
 
     val task_title = MutableLiveData("")
-    val other = MutableLiveData<String?>(null)
+    val other = MutableLiveData<String>("")
     var create_button_enable = MutableLiveData(false)
 
     val timelimit_day = MutableLiveData("")
     val timelimit_time = MutableLiveData("")
 
     init {
-        other.asFlow()
+        listOf(other, task_title).forEach {
+            it.asFlow()
             .onEach {
-                if (other.value != null)
-                    Log.d(TAG, "callll")
-                    create_button_enable.value = true
+                check()
+
             }
             .launchIn(viewModelScope)
+        }
     }
 
     fun create(){
         Log.d(TAG, "create")
+    }
+
+    fun check(){
+        Log.d(TAG, "check -> call")
+        Log.d(TAG, "${timelimit_day.value}")
+        if (other.value != "" && task_title.value != "" &&
+            timelimit_day.value!!.isNotEmpty() && timelimit_time.value!!.isNotEmpty()){
+            create_button_enable.value = true
+        }
     }
 
     fun select_day(_context: Context){
@@ -50,6 +60,7 @@ class Create_task_VM: ViewModel() {
 //                    Log.d("hoge", "time: ${calendar.time} -> show")
                 timelimit_day.value = strInputDate
                 Log.d(TAG, "day: $_year/$_month/$_day -> set")
+                Log.d(TAG, "time: ${timelimit_day.value}")
 
             },
             calendar.get(Calendar.YEAR),
@@ -71,8 +82,7 @@ class Create_task_VM: ViewModel() {
                 val strInputDate = dfInputdata.format(calender.time)
                 timelimit_time.value = strInputDate
 
-                Log.d(TAG, "time: $strInputDate")
-
+                Log.d(TAG, "time: ${timelimit_time.value}")
             },
             calender.get(Calendar.HOUR_OF_DAY),
             calender.get(Calendar.MINUTE),
