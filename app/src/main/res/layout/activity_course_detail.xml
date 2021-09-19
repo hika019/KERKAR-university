@@ -111,7 +111,7 @@
             android:clickable="true"
             android:elevation="5dp"
             android:focusable="true"
-            android:tint="@android:color/black"
+            android:tint="@color/logo_color"
             app:backgroundTint="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

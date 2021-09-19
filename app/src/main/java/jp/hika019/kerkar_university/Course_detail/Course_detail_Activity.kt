@@ -37,6 +37,9 @@ class Course_detail_Activity: AppCompatActivity() {
                 val textview = TextView(this)
                 textview.text = lecturer
                 textview.textSize = 20f
+                textview.setPadding(8, 0, 8, 0)
+                textview.setTextColor(getColor(R.color.white))
+                textview.setBackgroundResource(R.drawable.lecturer_background)
 
                 binding.courseLecturerLinearLayout.addView(textview)
             }
