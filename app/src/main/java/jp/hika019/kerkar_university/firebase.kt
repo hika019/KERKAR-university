@@ -558,18 +558,21 @@ open class firedb_timetable(context: Context){
     }
 
     fun delete_user_timetable(week_to_day: String){
+        Log.d(TAG, "delete_user_timetable -> call")
 
         val updates = hashMapOf<String, Any>(
                 week_to_day to FieldValue.delete()
         )
-        //TODO
         firedb.collection("user")
                 .document(uid!!)
                 .collection("timetable")
-                .document(get_timetable_id(context!!)!!)
-                .update(updates).addOnCanceledListener {
-                    local_timetable.remove(week_to_day)
+                .document(timetable_id.value!!)
+                .update(updates)
+                .addOnCompleteListener{
+                    course_data_live = MutableLiveData()
                     Log.d(TAG, "delete_user_timetable: $week_to_day -> complete")
+
+                    createtimetable_finish.value = true
                 }
     }
 
@@ -608,7 +611,7 @@ class firedb_timetable_new(): firedb_col_doc(){
         week: String,
         period: Int
     ){
-        Log.d(TAG, "get_user_course_data($week$period) -> call ")
+        //Log.d(TAG, "get_user_course_data($week$period) -> call ")
         val week_and_period = "$week$period"
         val user_timetable = user_timetable_data_live.value
         val course_data = user_timetable?.get(week_and_period) as? Map<String, Any?>

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import jp.hika019.kerkar_university.R
 import jp.hika019.kerkar_university.TAG_hoge
+import jp.hika019.kerkar_university.createtimetable_finish
 import jp.hika019.kerkar_university.viewmodels.Course_ditail_VM
 import jp.hika019.kerkar_university.databinding.ActivityCourseDetailBinding
 import kotlinx.android.synthetic.main.activity_course_detail.*
@@ -31,6 +32,13 @@ class Course_detail_Activity: AppCompatActivity() {
         binding.lifecycleOwner = this
         set_toolbar()
 
+        createtimetable_finish.observe(this, Observer {
+            if (createtimetable_finish.value == true){
+                createtimetable_finish.value =false
+                finish()
+            }
+        })
+
         viewmodel.course_lecturer.observe(this, Observer {
             binding.courseLecturerLinearLayout.removeAllViews()
             for(lecturer in viewmodel.course_lecturer.value!!){
@@ -38,8 +46,8 @@ class Course_detail_Activity: AppCompatActivity() {
                 textview.text = lecturer
                 textview.textSize = 20f
                 textview.setPadding(8, 0, 8, 0)
-                textview.setTextColor(getColor(R.color.white))
-                textview.setBackgroundResource(R.drawable.lecturer_background)
+                //textview.setTextColor(getColor(R.color.white))
+                //textview.setBackgroundResource(R.drawable.lecturer_background)
 
                 binding.courseLecturerLinearLayout.addView(textview)
             }

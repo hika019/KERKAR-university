@@ -23,9 +23,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 
-class test: Fragment() {
+class Timetable_Fragment: Fragment() {
 
-    private val TAG = "test_timetable" + TAG_hoge
+    private val TAG = "Timetable_Fragment" + TAG_hoge
 
     private val viewmodel by viewModels<Timetable_VM>()
 
@@ -85,12 +85,18 @@ class test: Fragment() {
 
         timetable_id.asFlow()
             .onEach {
-                view.hogee.removeAllViews()
 
-                view.hogee.addView(week_title(week_num))
-                for (period in 1..period_num){
-                    view.hogee.addView(row_courses(period))
-                }
+                user_timetable_data_live.asFlow()
+                    .onEach {
+                        view.hogee.removeAllViews()
+
+                        view.hogee.addView(week_title(week_num))
+                        for (period in 1..period_num){
+                            view.hogee.addView(row_courses(period))
+                        }
+                    }
+                    .launchIn(lifecycleScope)
+
             }
             .launchIn(lifecycleScope)
 
@@ -120,6 +126,8 @@ class test: Fragment() {
         //Log.d(TAG, "title_id: $title_id")
 
         val course_data = course_data_live.value?.get(week_period) as? Map<String, Any?>
+        Log.d(TAG, "${course_data_live.value}")
+        Log.d(TAG, "${user_timetable_data_live.value}")
 
         val course_textview = requireView().findViewById<TextView>(title_id!!)
         val course_name = course_data?.get("course")

@@ -1,5 +1,6 @@
 package jp.hika019.kerkar_university.viewmodels
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
@@ -9,6 +10,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import android.util.*
 import jp.hika019.kerkar_university.TAG_hoge
+import jp.hika019.kerkar_university.createtimetable_finish
+import jp.hika019.kerkar_university.firedb_timetable
 
 class Course_ditail_VM: ViewModel() {
 
@@ -19,6 +22,8 @@ class Course_ditail_VM: ViewModel() {
     val course_room = MutableLiveData("915教室")
     val course_lecturer = MutableLiveData<List<String>>()
 
+    private var context: Context? = null
+
     private val TAG = "Course_ditail_VM" + TAG_hoge
 
     init {
@@ -27,6 +32,7 @@ class Course_ditail_VM: ViewModel() {
                 get_course_data()
             }
             .launchIn(viewModelScope)
+
     }
 
     fun get_course_data(){
@@ -39,6 +45,16 @@ class Course_ditail_VM: ViewModel() {
         Log.d(TAG, "course_data: ${data}")
 
     }
+
+    fun delete_course(_context: Context){
+        context = _context
+        Log.d(TAG, "delete_course(${week_period.value}) -> call")
+        val hoge = firedb_timetable(context!!)
+        hoge.delete_user_timetable(week_period.value!!)
+
+    }
+
+
 
 
 }

@@ -12,7 +12,7 @@ import jp.hika019.kerkar_university.Task.Task_list_Fragment
 import com.google.android.material.navigation.NavigationView
 import jp.hika019.kerkar_university.Home.Home_fragment
 import jp.hika019.kerkar_university.Home.load_fragment
-import jp.hika019.kerkar_university.test.test
+import jp.hika019.kerkar_university.test.Timetable_Fragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.nav_timetable -> {
 
-                ft.replace(R.id.main_host_fragment, test())
+                ft.replace(R.id.main_host_fragment, Timetable_Fragment())
                 ft.commit()
                 return@OnNavigationItemSelectedListener true
             }
