@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import android.util.*
 import android.view.Gravity
+import jp.hika019.kerkar_university.Course_detail.Course_detail_Activity
 import jp.hika019.kerkar_university.Timetable.Create_timetableActivity
 
 class Timetable_VM: ViewModel() {
@@ -66,8 +67,13 @@ class Timetable_VM: ViewModel() {
         if (message.isNullOrEmpty()){
             val firedb_tt_old_class = firedb_timetable(context!!)
             firedb_tt_old_class.get_course_list(week, period)
-        }else
-            show_course_info(week, period, message)
+        }else{
+            val i = Intent(context, Course_detail_Activity::class.java)
+            i.putExtra("week_period", arrayOf<String>(week, period.toString()))
+            context!!.startActivity(i)
+
+            //show_course_info(week, period, message)
+        }
     }
 
     fun show_course_info(week: String, period: Int, message: String){

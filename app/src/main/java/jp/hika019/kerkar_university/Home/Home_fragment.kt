@@ -1,6 +1,7 @@
 package jp.hika019.kerkar_university.Home
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity.CENTER
@@ -13,6 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import jp.hika019.kerkar_university.*
+import jp.hika019.kerkar_university.Course_detail.Course_detail_Activity
 import kotlinx.coroutines.runBlocking
 import java.lang.Exception
 import java.util.*
@@ -26,6 +28,8 @@ class Home_fragment(): Fragment() {
 
     private var course_id_ArrayList = ArrayList<Int>()
     private var lecture_id_ArrayList = ArrayList<Int>()
+    private var room_id_ArrayList = ArrayList<Int>()
+
 
     val calendar: Calendar = Calendar.getInstance()
     val now_week = week_to_day_symbol_list[calendar.get(Calendar.DAY_OF_WEEK)-1]
@@ -59,9 +63,12 @@ class Home_fragment(): Fragment() {
 
 
         view.floatingActionButton.setOnClickListener {
+            val i = Intent(context, Course_detail_Activity::class.java)
+            requireContext().startActivity(i)
+
             val hoge = context?.let { it -> firedb_task(it) }
             if (hoge != null) {
-                hoge.get_course_list()
+                //hoge.get_course_list()
             }
         }
 
@@ -144,7 +151,6 @@ class Home_fragment(): Fragment() {
             3f
         )
         linearLayout.gravity = CENTER
-        linearLayout
 
         for (period in 1..viewmodel.period.value!!){
             val course_linearLayout = LinearLayout(context)
@@ -171,7 +177,7 @@ class Home_fragment(): Fragment() {
             course_name.layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 0,
-                2f
+                4f
             )
 
             course_name.setOnClickListener {
@@ -192,10 +198,24 @@ class Home_fragment(): Fragment() {
                 1f
             )
 
+            val course_room = TextView(context)
+            course_room.text = "915"
+            course_room.gravity = CENTER
+            course_room.textSize = 8f
+            course_room.maxLines = 1
+            course_room.maxEms = 8
+            course_room.layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                0,
+                1f
+            )
+
             lecture_id_ArrayList.add(course_name.id)
 
             course_linearLayout.addView(course_name)
             course_linearLayout.addView(course_teacher)
+            course_linearLayout.addView(course_room)
+
             linearLayout.addView(course_linearLayout)
         }
         return linearLayout

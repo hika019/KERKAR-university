@@ -5,13 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
 import jp.hika019.kerkar_university.R
 import jp.hika019.kerkar_university.firedb_task
 import jp.hika019.kerkar_university.task_dialog_new
-import kotlinx.android.synthetic.main.item_assignment_activity.view.*
+import kotlinx.android.synthetic.main.item_task_fragment.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -34,7 +33,7 @@ class task_cmp_list_CustomAdapter(
     // 上記のViewHolderクラスを使ってViewHolderを作成
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val item = layoutInflater.inflate(R.layout.item_assignment_activity, parent, false)
+        val item = layoutInflater.inflate(R.layout.item_task_fragment, parent, false)
         return CustomViewHolder(item)
     }
 
