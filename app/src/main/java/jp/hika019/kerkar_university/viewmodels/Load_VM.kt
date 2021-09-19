@@ -11,26 +11,32 @@ class Load_VM: ViewModel() {
 
 
     init {
-        update_period()
-        period.asFlow()
+        timetable_id.asFlow()
             .onEach {
-                update_home_fragment()
+                update_period()
+                period.asFlow()
+                    .onEach {
+                        update_home_fragment()
+                    }
+                    .launchIn(viewModelScope)
             }
             .launchIn(viewModelScope)
     }
 
     fun update_period(){
-        firedb.collection("user")
-            .document(uid!!)
-            .collection("timetable")
-            .document(timetable_id.value!!)
-            .get()
-            .addOnSuccessListener {
-                period.value = it.getLong("period")!!.toInt()
-            }
-            .addOnFailureListener {
+        timetable_id.value?.let {
+            firedb.collection("user")
+                .document(uid!!)
+                .collection("timetable")
+                .document(it)
+                .get()
+                .addOnSuccessListener {
+                    period.value = it.getLong("period")!!.toInt()
+                }
+                .addOnFailureListener {
 
-            }
+                }
+        }
     }
 
     fun update_home_fragment(){

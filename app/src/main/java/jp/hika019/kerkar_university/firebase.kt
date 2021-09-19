@@ -159,8 +159,10 @@ open class firedb_setup(): firedb_col_doc(){
             .get()
             .addOnSuccessListener {
                 val data = it.data
+                Log.d(TAG, "cheak_user_data: get data")
 
                 if (data != null){
+                    Log.d(TAG, "data is not null")
                     val create_at = data["create_at"] as? com.google.firebase.Timestamp
                     val university = data["university"] as? String
                     //semester = data["semester"] as? String
@@ -201,6 +203,11 @@ open class firedb_setup(): firedb_col_doc(){
                                         .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                                     context.startActivity(intent)
                                 }
+                        }else{
+                            uid = Firebase.auth.uid
+                            val intent = Intent(context, SetupActivity::class.java)
+                                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            context.startActivity(intent)
                         }
 
                     }else{
@@ -344,44 +351,24 @@ class firedb_register_login(override val context: Context): register_dialog(cont
 
         Log.d(TAG, "create_user_data -> call")
 
-        var semester: Array<Int> = arrayOf()
-        var nowsemester: String? = null
-        runBlocking {
-            firedb.collection("semester")
-                .get()
-                .addOnSuccessListener {
-                    for(item in it){
-                        semester += item.id.toInt()
-//                        Log.d("hoge", "semester: ${item.id}")
+        val data = hashMapOf(
+            "uid" to uid,
+            "university" to university,
+            "create_at" to Timestamp(Date()),
+            "university_id" to university_id,
+        )
 
-
-                    }
-                    Log.d(TAG, "semester: ${semester}")
-                    nowsemester = semester.maxOrNull().toString()
-
-                    val time = SimpleDateFormat("yyyy/MM/dd HH:mm").format(Date())
-                    if(nowsemester != null){
-
-                        val data = hashMapOf(
-                            "uid" to uid,
-                            "university" to university,
-                            "create_at" to time,
-                            "university_id" to university_id,
-                            "semester" to nowsemester
-                        )
-                        runBlocking {
-
-                        }
-
-                    }else{
-                        Log.w(TAG, "nowsemester is null!")
-                    }
-
-                }
-                .addOnFailureListener {
-
-                }
-        }
+//        firedb.collection("user")
+//            .document(uid)
+//            .set(data)
+//            .addOnSuccessListener {
+//                Log.d(TAG, "create_user_data: set -> success")
+//                val i = Intent(context, MainActivity::class.java)
+//                context.startActivity()
+//            }
+//            .addOnFailureListener {
+//                Log.w(TAG, "create_user_data: set -> failure", it)
+//            }
 
     }
 
