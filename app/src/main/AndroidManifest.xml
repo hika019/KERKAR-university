@@ -42,6 +42,8 @@
 
         <activity android:name=".Course_detail.Course_detail_Activity"/>
 
+        <activity android:name=".Create_task_Activity"/>
+
         <receiver android:name=".Uninstall">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />

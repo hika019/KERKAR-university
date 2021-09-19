@@ -166,9 +166,6 @@ class timetable_dialog(override val context: Context): firedb_timetable(context)
                 .setNegativeButton("戻る"){ dialog, which ->
 
                 }
-//                .setNeutralButton("課題を確認") { dialog, which ->
-//
-//                }
          dialog.show()
     }
 

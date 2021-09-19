@@ -12,6 +12,7 @@ import jp.hika019.kerkar_university.TAG_hoge
 import kotlinx.android.synthetic.main.item_course_detail_activity.view.*
 import java.text.SimpleDateFormat
 import java.util.*
+import android.util.*
 import kotlin.collections.ArrayList
 
 class Course_detail_CustomAdapter(
@@ -51,14 +52,15 @@ class Course_detail_CustomAdapter(
         holder.day.text = df_day.format(cal.time)
         holder.time.text = df_time.format(cal.time)
         holder.course_name.text = task_mame
+        Log.d(TAG, "comp_list: $comp_list")
+        Log.d(TAG, "comp_list: ${task_data["task_id"]}")
+
         if (comp_list.contains(task_data["task_id"])){
-            val drawable = ContextCompat.getDrawable(context!!, R.drawable.outline_done_24)
+            Log.d(TAG, "hogeeeee")
+            val drawable = ContextCompat.getDrawable(context!!, R.drawable.outline_task_alt_24)
             drawable!!.setTint(context.getColor(R.color.logo_color))
             holder.check.setImageDrawable(drawable)
         }
-
-
-
 
 
     }

@@ -14,7 +14,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/outline_done_24" />
+        app:srcCompat="@drawable/outline_task_alt_24" />
 
 
     <TextView
@@ -49,4 +49,5 @@
         app:layout_constraintBottom_toBottomOf="@+id/item_course_detail_task_done_igview"
         app:layout_constraintEnd_toEndOf="@+id/item_course_detail_task_limit_day_textview"
         app:layout_constraintTop_toBottomOf="@+id/item_course_detail_task_limit_day_textview" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
