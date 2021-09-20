@@ -20,6 +20,7 @@ var check_position = -1
 //移動系
 var to_home_fragment = MutableLiveData<Boolean>(false)
 val createtimetable_finish = MutableLiveData(false)
+val createtask_finish = MutableLiveData(false)
 
 
 var semester: String? = null

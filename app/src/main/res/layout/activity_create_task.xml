@@ -124,6 +124,17 @@
                 android:textSize="20sp" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="8"
+            android:gravity="right|end"
+            android:text="@{viewmodel.course_name}"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView18"
+            app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName2" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

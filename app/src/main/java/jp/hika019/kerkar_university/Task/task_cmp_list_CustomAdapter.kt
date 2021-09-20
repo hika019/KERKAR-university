@@ -96,8 +96,8 @@ class task_cmp_list_CustomAdapter(
 
     fun task_comp_ditail_dialog(context: Context, task_data: Map<String, Any>, position: Int){
 
-        val hoge = task_dialog_new(context)
-        hoge.task_detail_dialog(task_data)
+        val hoge = task_dialog_new()
+        hoge.task_detail_dialog(context, task_data)
             .setNeutralButton("未提出にする") {dialog, which ->
 
                 val class_data = list[position]

@@ -11,8 +11,7 @@ import androidx.lifecycle.asFlow
 import jp.hika019.kerkar_university.databinding.ActivityCreateTaskBinding
 import jp.hika019.kerkar_university.viewmodels.Create_task_VM
 import kotlinx.android.synthetic.main.activity_create_task.*
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import android.util.*
 
 class Create_task_Activity: AppCompatActivity() {
 
@@ -32,6 +31,19 @@ class Create_task_Activity: AppCompatActivity() {
         setSupportActionBar(toolbar5)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        val hoge  = intent.getStringExtra("week_period")
+        Log.d(TAG, "hoge: $hoge")
+        viewmodel.week_period = hoge
+        viewmodel.get_course_name()
+
+        createtask_finish.observe(this, Observer {
+            if (createtask_finish.value == true){
+                createtask_finish.value = false
+                finish()
+            }
+        })
+
 
 
     }
@@ -57,7 +69,7 @@ class Create_task_Activity: AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.create_menu){
-            viewmodel.create()
+            viewmodel.create(this)
         }else{
             finish()
         }

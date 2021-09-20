@@ -52,19 +52,19 @@ class Course_detail_Activity: AppCompatActivity() {
 
 
         })
-
-        floatingActionButton2.setOnClickListener {
-            val i = Intent(this, Create_task_Activity::class.java)
-            startActivity(i)
-        }
-
-
-
         val intent_data = intent.getStringArrayExtra("week_period")
 
         viewmodel.week_period.value = "${intent_data!![0]}${intent_data[1]}"
 
-//        val hoge = listOf(1,2,3,4,5,6,7,8,9,10)
+
+
+        floatingActionButton2.setOnClickListener {
+            val i = Intent(this, Create_task_Activity::class.java)
+            i.putExtra("week_period", "${intent_data!![0]}${intent_data[1]}")
+            startActivity(i)
+        }
+
+
 
         val hoge = firedb_task_new()
         hoge.get_course_task(task_recycleview, viewmodel.week_period.value!!, viewmodel.course_id!!, this)

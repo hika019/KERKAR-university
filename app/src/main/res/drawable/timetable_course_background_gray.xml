@@ -9,7 +9,7 @@
                 android:bottomRightRadius="4dp"
                 />
             <solid
-                android:color="@color/light_gray"/>
+                android:color="@color/logo_color"/>
         </shape>
     </item>
 </selector>

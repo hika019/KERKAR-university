@@ -98,8 +98,8 @@ class task_notcmp_list_CustomAdapter(
 
     fun task_nocomp_ditail_dialog(context: Context, task_data: Map<String, Any>, position: Int){
 
-        val hoge = task_dialog_new(context)
-        hoge.task_detail_dialog(task_data)
+        val hoge = task_dialog_new()
+        hoge.task_detail_dialog(context, task_data)
                 .setPositiveButton("OK") { dialog, which ->
 
                 }

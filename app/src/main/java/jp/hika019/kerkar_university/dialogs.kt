@@ -234,7 +234,7 @@ class timetable_dialog(override val context: Context): firedb_timetable(context)
 
 class task_dialog(val context: Context){
 
-    val TAG = "task_dialog"
+    val TAG = "task_dialog"+ TAG_hoge
 
     var year: Int? = null
     var month: Int? = null
@@ -281,9 +281,15 @@ class task_dialog(val context: Context){
                                 "class_id" to class_id_list[select_point!!],
                                 "week_to_day" to class_week_to_day_list[select_point!!]
                         )
-                        subject_data = data
-                        Log.d(TAG, "class_id1: ${class_id_list[select_point!!]}")
-                        create_task_dialog()
+                        val i = Intent(context, Create_task_Activity::class.java)
+                        i.putExtra(
+                            "week_period",
+                            "${class_week_to_day_list[select_point!!].take(3)}${class_week_to_day_list[select_point!!][3]}")
+                        context.startActivity(i)
+
+//                        subject_data = data
+//                        Log.d(TAG, "class_id1: ${class_id_list[select_point!!]}")
+//                        create_task_dialog()
                     }
                 }
                 .setNegativeButton("戻る"){ dialog, which ->
@@ -488,9 +494,9 @@ class task_dialog(val context: Context){
 
 }
 
-class task_dialog_new(val context: Context){
+class task_dialog_new(): firedb_col_doc(){
 
-    fun task_detail_dialog(task_data: Map<String, Any>): AlertDialog.Builder {
+    fun task_detail_dialog(context: Context, task_data: Map<String, Any>): AlertDialog.Builder {
         val cal = Calendar.getInstance()
 
         val class_data = task_data["class_data"] as Map<String, Any>

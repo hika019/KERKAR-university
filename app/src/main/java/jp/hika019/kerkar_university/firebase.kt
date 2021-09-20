@@ -22,7 +22,6 @@ import jp.hika019.kerkar_university.Setup.SetupActivity
 import jp.hika019.kerkar_university.Timetable.Create_timetableActivity
 import kotlinx.coroutines.runBlocking
 import java.lang.Exception
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import jp.hika019.kerkar_university.databinding.FragmentHomeBinding
@@ -1273,6 +1272,7 @@ class firedb_task(val context: Context): firedb_col_doc(){
 }
 
 class firedb_task_new(): firedb_col_doc(){
+    private val TAG = "firedb_task_new" + TAG_hoge
 
     fun get_course_task(recycle_view: RecyclerView, week_to_day: String, course_id: String, context: Context){
         Log.d(TAG, "get_course_task -> call")
@@ -1306,6 +1306,28 @@ class firedb_task_new(): firedb_col_doc(){
 
                     }
                 }
+            }
+    }
+
+    fun create_task(context: Context, week_period: String, courseId: String, data: MutableMap<String, Any?>){
+        Log.d(TAG, "create_task -> call")
+        val doc = uni_task_col(week_period, courseId)
+            .document()
+
+        data["task_id"] = doc.id
+        Log.d(TAG, "ho: $data")
+
+        doc
+            .set(data)
+            .addOnSuccessListener {
+                Log.d(TAG, "add task -> success")
+                Toast.makeText(context, "課題が追加されました", Toast.LENGTH_SHORT).show()
+                Thread.sleep(300)
+                createtask_finish.value = true
+            }
+            .addOnFailureListener {
+                Log.w(TAG, "add task -> failure")
+                Toast.makeText(context, "課題が追加できませんでした", Toast.LENGTH_SHORT).show()
             }
     }
 }
