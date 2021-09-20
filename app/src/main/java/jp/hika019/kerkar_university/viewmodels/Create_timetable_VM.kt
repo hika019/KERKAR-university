@@ -26,6 +26,9 @@ class Create_timetable_VM: ViewModel() {
     val term = MutableLiveData(-1)
     val period = MutableLiveData(5)
 
+    val create_button_bg = MutableLiveData(R.drawable.setup_button_bg_false)
+
+
     init {
         listOf(timetable_name, select_year, term).forEach {
             it.asFlow()

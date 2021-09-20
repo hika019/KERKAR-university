@@ -1280,8 +1280,6 @@ class firedb_task_new(): firedb_col_doc(){
         val course_datas = user_timetable_data_live.value?.get(week_to_day) as? Map<String, Any?>
         val comp_task = course_datas?.get("comp_task") as? ArrayList<String>
 
-
-
         uni_task_col(week_to_day, course_id)
             .orderBy("time_limit")
             .addSnapshotListener { value, error ->
@@ -1317,8 +1315,7 @@ class firedb_task_new(): firedb_col_doc(){
         data["task_id"] = doc.id
         Log.d(TAG, "ho: $data")
 
-        doc
-            .set(data)
+        doc.set(data)
             .addOnSuccessListener {
                 Log.d(TAG, "add task -> success")
                 Toast.makeText(context, "課題が追加されました", Toast.LENGTH_SHORT).show()

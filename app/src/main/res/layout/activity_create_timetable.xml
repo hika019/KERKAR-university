@@ -25,6 +25,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:background="@android:color/white"
+            app:navigationIcon="@drawable/outline_arrow_back_24"
             android:elevation="4dp"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
@@ -112,14 +113,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
-            <Button
+            <TextView
                 android:id="@+id/button5"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:gravity="center|start"
                 android:onClick="@{() -> viewmodel.select_year(context)}"
                 android:text="@={viewmodel.select_year}"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView12"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView12"
@@ -214,9 +217,11 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="14dp"
-            android:text="作成"
-            android:onClick="@{() -> viewmodel.create_timetable(context)}"
+            android:background="@drawable/setup_button_bg_false"
             android:enabled="@{viewmodel.create_button_enable}"
+            android:onClick="@{() -> viewmodel.create_timetable(context)}"
+            android:text="作成"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

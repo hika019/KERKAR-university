@@ -43,10 +43,6 @@ class Create_courceActivity: AppCompatActivity() {
 
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.toolbar_menu, menu)
-//        return true
-//    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         finish()

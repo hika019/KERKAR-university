@@ -40,9 +40,26 @@ class Create_task_VM: ViewModel() {
         listOf(other, task_title, timelimit_day, timelimit_time).forEach {
             it.asFlow()
             .onEach {
+                cheack_title()
+                cheack_other()
+
                 check()
             }
             .launchIn(viewModelScope)
+        }
+    }
+
+    fun cheack_title(){
+        val hoge = task_title.value
+        if (hoge?.takeLast(1).equals("\n")){
+            task_title.value = hoge?.substring(0, hoge.length-1)
+        }
+    }
+
+    fun cheack_other(){
+        val hoge = other.value
+        if (hoge?.takeLast(1).equals("\n")){
+            other.value = hoge?.substring(0, hoge.length-1)
         }
     }
 

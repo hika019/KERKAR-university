@@ -11,7 +11,7 @@ import android.util.*
 import jp.hika019.kerkar_university.*
 
 class Create_courceVM: ViewModel() {
-    private val TAG = "Create_courceVM"
+    private val TAG = "Create_courceVM" + TAG_hoge
 
     var week_and_period = MutableLiveData("")
     val course_name = MutableLiveData<String>("")
@@ -33,9 +33,33 @@ class Create_courceVM: ViewModel() {
         listOf(course_name, course_room, course_lecture_list, course_lecture).forEach {
             it.asFlow()
                 .onEach {
+                    check_room_str()
+                    check_name_str()
+                    check_lecture_str()
                     CreateButton_to_true()
                 }
                 .launchIn(viewModelScope)
+        }
+    }
+
+    fun check_room_str(){
+        val hoge = course_room.value?.takeLast(1)
+        if (hoge.equals("\n")){
+            course_room.value = course_room.value?.substring(0, course_room.value!!.length-1)
+        }
+    }
+
+    fun check_name_str(){
+        val hoge = course_name.value?.takeLast(1)
+        if (hoge.equals("\n")){
+            course_name.value = course_name.value?.substring(0, course_name.value!!.length-1);
+        }
+    }
+
+    fun check_lecture_str(){
+        val hoge = course_lecture.value?.takeLast(1)
+        if (hoge.equals("\n")){
+            course_lecture.value = course_lecture.value?.substring(0, course_lecture.value!!.length-1);
         }
     }
 

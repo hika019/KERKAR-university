@@ -45,6 +45,12 @@ class Create_timetableActivity : AppCompatActivity() {
             viewmodel.term.value = term
         })
 
+        viewmodel.create_button_enable.observe(this, Observer {
+            if (viewmodel.create_button_enable.value == true){
+                binding.createTimetableButton.setBackgroundResource(R.drawable.setup_button_bg)
+            }
+        })
+
         createtimetable_finish.observe(this, Observer {
             if (createtimetable_finish.value == true){
                 createtimetable_finish.value = false
@@ -52,12 +58,6 @@ class Create_timetableActivity : AppCompatActivity() {
             }
         })
 
-
-
-        var select_year: Int? = null
-
-
-        val now_year = SimpleDateFormat("yyyy").format(Date()).toInt()
 
 
         //学期の選択
@@ -84,61 +84,7 @@ class Create_timetableActivity : AppCompatActivity() {
 
 
 
-        create_timetable_button.setOnClickListener {
-            Log.d(TAG, "create_timetable_button -> click")
 
-            val timetable_title = timetablse_title_textview.text.toString()
-            val tmp = term_radioGroup.checkedRadioButtonId
-            val term = term_radioGroup.indexOfChild(term_radioGroup.findViewById<RadioButton>(tmp))
-            var week = 5
-            if (saturday_cheack.isChecked){
-                week = 6
-            }
-
-            val period = period_picer.value
-
-            if (timetable_title != "" && select_year != null && term != -1){
-
-                semester = "$select_year-$term"
-                week_num = week
-                period_num = period
-                Log.d(TAG, "semester: $semester")
-
-                val user_tt_doc = firedb.collection("user")
-                    .document(uid!!)
-                    .collection("timetable")
-
-                val doc_id = user_tt_doc.document().id
-                val tt_data = mapOf(
-                    "wtd" to week,
-                    "year" to now_year,
-                    "term" to term+1,
-                    "period" to period,
-                    "timetable_id" to doc_id,
-                    "timetable_name" to timetable_title
-                )
-
-                Log.d("hoge", "$tt_data")
-
-                user_tt_doc
-                    .document(doc_id)
-                    .set(tt_data)
-                    .addOnSuccessListener {
-                        Toast.makeText(this, "作成が成功しました", Toast.LENGTH_SHORT).show()
-
-                        set_timetable_id(this, doc_id)
-                        set_timetable_semester(this, doc_id)
-                        finish()
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(this, "作成が失敗しました", Toast.LENGTH_SHORT).show()
-                        Log.w(TAG, "create timetable -> failure", it)
-                    }
-
-            }else{
-                Toast.makeText(this, "未入力があります", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     fun setToolbar(){

@@ -42,7 +42,7 @@ class Course_detail_Activity: AppCompatActivity() {
             for(lecturer in viewmodel.course_lecturer.value!!){
                 val textview = TextView(this)
                 textview.text = lecturer
-                textview.textSize = 20f
+                textview.textSize = 12f
                 textview.setPadding(8, 0, 8, 0)
                 //textview.setTextColor(getColor(R.color.white))
                 //textview.setBackgroundResource(R.drawable.lecturer_background)

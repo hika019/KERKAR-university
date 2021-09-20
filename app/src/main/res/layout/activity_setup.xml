@@ -28,7 +28,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:background="@drawable/setup_button_bg"
+        android:ems="10"
         android:text="新規"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/load_acount"
         app:layout_constraintEnd_toEndOf="@+id/load_acount"
         app:layout_constraintHorizontal_bias="0.5"
@@ -40,14 +43,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:background="@drawable/setup_button_bg"
+        android:ems="10"
         android:text="引き継ぐ"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/new_acount" />
 
-    <Button
+    <TextView
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

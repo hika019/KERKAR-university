@@ -167,7 +167,7 @@ class Home_fragment(): Fragment() {
 
             val course_name = TextView(context)
             course_name.id = ViewCompat.generateViewId()
-            course_name.text = "授業名"
+            course_name.text = ""
             course_name.gravity = CENTER
             course_name.textSize = 12f
             course_name.maxLines = 2
@@ -182,10 +182,10 @@ class Home_fragment(): Fragment() {
                 viewmodel.get_course_data(now_week, period, context)
             }
 
-            course_id_ArrayList.add(course_name.id)
 
             val course_teacher = TextView(context)
-            course_teacher.text = "教師"
+            course_teacher.id = ViewCompat.generateViewId()
+            course_teacher.text = ""
             course_teacher.gravity = CENTER
             course_teacher.textSize = 8f
             course_teacher.maxLines = 1
@@ -197,7 +197,8 @@ class Home_fragment(): Fragment() {
             )
 
             val course_room = TextView(context)
-            course_room.text = "915"
+            course_room.id = ViewCompat.generateViewId()
+            course_room.text = ""
             course_room.gravity = CENTER
             course_room.textSize = 8f
             course_room.maxLines = 1
@@ -208,7 +209,10 @@ class Home_fragment(): Fragment() {
                 1f
             )
 
-            lecture_id_ArrayList.add(course_name.id)
+            course_id_ArrayList.add(course_name.id)
+            lecture_id_ArrayList.add(course_teacher.id)
+            room_id_ArrayList.add(course_room.id)
+
 
             course_linearLayout.addView(course_name)
             course_linearLayout.addView(course_teacher)
