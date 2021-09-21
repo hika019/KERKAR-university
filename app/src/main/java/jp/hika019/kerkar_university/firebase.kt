@@ -543,7 +543,7 @@ open class firedb_timetable(context: Context){
             .addOnSuccessListener {
                 Log.d(TAG, "add course to user: ${classId} -> success")
                 local_timetable[week_to_day] = classId
-
+                createtask_finish.value = true
             }
             .addOnFailureListener{
                 Log.d(TAG, "add course to user: ${classId} -> failure")

@@ -7,6 +7,7 @@ import android.util.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import jp.hika019.kerkar_university.*
 import jp.hika019.kerkar_university.databinding.ActivitySelectCourseBinding
 import jp.hika019.kerkar_university.viewmodels.Select_course_VM
@@ -51,6 +52,13 @@ class Select_course_Activity: AppCompatActivity() {
             startActivity(i)
             finish()
         }
+
+        createtask_finish.observe(this, Observer {
+            if (createtask_finish.value == true){
+                createtask_finish.value = false
+                finish()
+            }
+        })
 
     }
 
