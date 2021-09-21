@@ -976,6 +976,8 @@ class firedb_task(val context: Context): firedb_col_doc(){
                                                         Log.d(TAG, "datas: $task_data")
                                                         //Log.d(TAG, "datas: $task_list")
 
+                                                        task_list.sortBy { it.get("time_limit") as Timestamp }
+
                                                         //表示
                                                         //Log.d(TAG, "tasks show to recyclerview")
                                                         val adapter = task_notcmp_list_CustomAdapter(task_list, context)
@@ -1053,6 +1055,8 @@ class firedb_task(val context: Context): firedb_col_doc(){
                                                         task_list.add(task_data)
                                                     }
 
+                                                    task_list.sortByDescending { it.get("time_limit") as Timestamp }
+
                                                     //表示
                                                     Log.d(TAG, "tasks show to recyclerview")
                                                     val adapter = task_cmp_list_CustomAdapter(task_list, context, semester!!)
@@ -1118,13 +1122,6 @@ class firedb_task(val context: Context): firedb_col_doc(){
                             val comp_task = user_class_data["comp_task"] as? ArrayList<String?>
                             all_comp_task = add_array_to_array(all_comp_task, comp_task)
 
-                            val class_db = firedb.collection("university")
-                                .document(university_id!!)
-                                .collection("semester")
-                                .document(semester!!)
-                                .collection(week + period)
-                                .document(course_id)
-
                             //履修中の授業取得
                             uni_course_doc(week, period, course_id)
                                 .get()
@@ -1160,6 +1157,7 @@ class firedb_task(val context: Context): firedb_col_doc(){
                                                         task_list.add(task_data)
                                                     }
 
+                                                    task_list.sortBy { it.get("time_limit") as Timestamp }
 
                                                     //表示
                                                     Log.d(TAG, "tasks show to recyclerview")
