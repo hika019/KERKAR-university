@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
             val firedb_tt_class = firedb_timetable_new()
             firedb_tt_class.check_user_timetable(this)
         })
-        Log.d(TAG, "hogee")
 
         setContentView(R.layout.activity_main)
         //this.setToolbar()

@@ -673,7 +673,7 @@ class firedb_timetable_new(): firedb_col_doc(){
 
 
                     }else{
-                        dialog.setMessage("時間割選択画面がないので新たに作ってください")
+                        dialog.setMessage("時間割選択画面がまだないので新たに作ってください")
                             .show()
                     }
                 }
