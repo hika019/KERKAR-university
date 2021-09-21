@@ -27,8 +27,8 @@ var semester: String? = null
 var university_id: String? = null
 var timetable_name: String? = ""
 var timetable_id = MutableLiveData<String?>(null)
-var timetable_live = MutableLiveData<String?>(null)
 
+val url = "https://docs.google.com/forms/d/e/1FAIpQLSfsJhsA9uPc6ysPz45-SNjsjvo7Z5hXw0Yl65j1MithOyoqJA/viewform"
 
 var local_timetable = mutableMapOf<String, String?>()
 

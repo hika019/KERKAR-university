@@ -1,6 +1,8 @@
 package jp.hika019.kerkar_university
 
 import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,6 +31,11 @@ class Setting_Fragment: Fragment() {
 
         view.setting_data_transfer_button.setOnClickListener {
             enter_uid(view)
+        }
+
+        view.button6.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            context?.startActivity(intent)
         }
 
 //        view.setting_destroy_user.setOnClickListener {

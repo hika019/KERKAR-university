@@ -11,6 +11,7 @@
         android:id="@+id/create_university_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:focusableInTouchMode="true">
 
         <androidx.appcompat.widget.Toolbar
@@ -39,7 +40,6 @@
             android:id="@+id/university_name_edittext"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:hint="〇〇大学"
             android:inputType="textPersonName"
             android:minHeight="48dp"
@@ -54,6 +54,8 @@
             android:id="@+id/create_university_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="@drawable/setup_button_bg"
+            android:textColor="@color/white"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:text="作成する"

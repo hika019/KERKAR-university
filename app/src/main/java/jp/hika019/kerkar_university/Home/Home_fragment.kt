@@ -151,19 +151,35 @@ class Home_fragment(): Fragment() {
         linearLayout.gravity = CENTER
 
         for (period in 1..viewmodel.period.value!!){
-            val course_linearLayout = LinearLayout(context)
-            course_linearLayout.orientation = LinearLayout.VERTICAL
-            course_linearLayout.layoutParams = LinearLayout.LayoutParams(
+            val course_linearLayout_bg = LinearLayout(context)
+            course_linearLayout_bg.orientation = LinearLayout.VERTICAL
+            course_linearLayout_bg.setBackgroundResource(R.drawable.timetable_course_background_gray)
+            course_linearLayout_bg.layoutParams = LinearLayout.LayoutParams(
                 0,
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 1f
             )
+            val lp_bg: ViewGroup.LayoutParams = course_linearLayout_bg.layoutParams
+            val mlp_bg = lp_bg as ViewGroup.MarginLayoutParams
+            mlp_bg.setMargins(4, 4, 4, 4)
+            course_linearLayout_bg.layoutParams = mlp_bg;
+            course_linearLayout_bg.gravity = CENTER
+
+
+            val course_linearLayout = LinearLayout(context)
+            course_linearLayout.orientation = LinearLayout.VERTICAL
+            course_linearLayout.setBackgroundResource(R.drawable.timetable_course_background)
+            course_linearLayout.layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                0,
+                4f
+            )
             val lp: ViewGroup.LayoutParams = course_linearLayout.layoutParams
             val mlp = lp as ViewGroup.MarginLayoutParams
-            mlp.setMargins(4, 4, 4, 4)
+            mlp.setMargins(6, 4, 6, 0)
             course_linearLayout.layoutParams = mlp;
-
             course_linearLayout.gravity = CENTER
+
 
             val course_name = TextView(context)
             course_name.id = ViewCompat.generateViewId()
@@ -216,9 +232,11 @@ class Home_fragment(): Fragment() {
 
             course_linearLayout.addView(course_name)
             course_linearLayout.addView(course_teacher)
-            course_linearLayout.addView(course_room)
 
-            linearLayout.addView(course_linearLayout)
+            course_linearLayout_bg.addView(course_linearLayout)
+            course_linearLayout_bg.addView(course_room)
+
+            linearLayout.addView(course_linearLayout_bg)
         }
         return linearLayout
     }

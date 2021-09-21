@@ -2,6 +2,7 @@ package jp.hika019.kerkar_university.Setup
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -13,6 +14,7 @@ import com.google.android.material.navigation.NavigationView
 import jp.hika019.kerkar_university.R
 import jp.hika019.kerkar_university.TAG_hoge
 import jp.hika019.kerkar_university.firedb_setup
+import jp.hika019.kerkar_university.url
 import kotlinx.android.synthetic.main.activity_setup.*
 
 class SetupActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -26,7 +28,6 @@ class SetupActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setup)
 
-        Log.d(TAG, "hogeeee")
         /*
         val ft = supportFragmentManager.beginTransaction()
         ft.replace(R.id.setup_host_fragment, Select_university_fragment())
@@ -48,7 +49,8 @@ class SetupActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         button2.setOnClickListener {
-            Toast.makeText(this, "未実装機能です", Toast.LENGTH_SHORT).show()
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            startActivity(intent)
         }
 
 
