@@ -1097,9 +1097,6 @@ class firedb_task(val context: Context): firedb_col_doc(){
 //            Log.d("hoge", "to_int:${time_limit_int}")
         view.mainTaskInfoRecyclerview.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
 
-        //view.main_task_info_recyclerview.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-
-
         user_doc_tt(get_timetable_id(context)!!)
             .addSnapshotListener { value, error ->
                 if (error != null) {
@@ -1169,9 +1166,6 @@ class firedb_task(val context: Context): firedb_col_doc(){
                                                     view.mainTaskInfoRecyclerview.adapter = adapter
                                                     view.mainTaskInfoRecyclerview.setHasFixedSize(true)
 
-//                                                    view.main_task_info_recyclerview.layoutManager = layoutManager
-//                                                    view.main_task_info_recyclerview.adapter = adapter
-//                                                    view.main_task_info_recyclerview.setHasFixedSize(true)
                                                 }
                                             }
                                     }

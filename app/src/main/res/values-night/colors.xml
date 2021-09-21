@@ -5,8 +5,8 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FFFFFFFF</color>
+    <color name="white">#2e2e2e</color>
 
     <color name="very_light_gray">#606060</color>
     <color name="light_gray">#AAAAAA</color>
@@ -22,6 +22,14 @@
     
     <color name="course_color1">#DD5D59</color>
     <color name="course_color2">#EE7C52</color>
+    <color name="course_color3">#F2C256</color>
+    <color name="course_color4">#4EA986</color>
+    <color name="course_color5">#47A1A3</color>
+    <color name="course_color6">#4686D7</color>
+    <color name="course_color7">#2F2491</color>
+    <color name="course_color8">#D46ACB</color>
+    <color name="course_color9">#757D8A</color>
+    <color name="course_color10">#232F3C</color>
 
 
 </resources>

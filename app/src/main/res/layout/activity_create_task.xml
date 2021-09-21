@@ -14,8 +14,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Create_task_Activity"
-        android:background="@color/white">
+        android:background="@color/white"
+        tools:context=".Create_task_Activity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar5"
@@ -24,10 +24,10 @@
             android:background="@color/white"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
-            app:navigationIcon="@drawable/outline_arrow_back_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/outline_arrow_back_24" />
 
         <TextView
             android:id="@+id/textView18"
@@ -65,12 +65,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:ems="10"
+            android:hint="その他・補足"
+            android:inputType="textMultiLine"
             android:maxLength="20"
             android:maxLines="2"
-            android:hint="その他・補足"
-            android:text="@={viewmodel.other}"
-            android:inputType="textMultiLine"
             android:minHeight="48dp"
+            android:text="@={viewmodel.other}"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName2"
             app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName2"
@@ -108,22 +108,22 @@
                 android:id="@+id/textView26"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="2"
                 android:enabled="true"
+                android:hint="2021/01/20"
                 android:onClick="@{() -> viewmodel.select_day(context)}"
                 android:text="@{viewmodel.timelimit_day}"
-                android:layout_weight="2"
-                android:hint="2021/01/20"
                 android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textView27"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewmodel.select_time(context)}"
-                android:text="@{viewmodel.timelimit_time}"
                 android:layout_weight="1"
                 android:gravity="right"
                 android:hint="13:00"
+                android:onClick="@{() -> viewmodel.select_time(context)}"
+                android:text="@{viewmodel.timelimit_time}"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -143,9 +143,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/clear"
-            android:text="@string/create"
             android:enabled="@{viewmodel.create_button_enable}"
             android:onClick="@{() -> viewmodel.create(context)}"
+            android:text="@string/create"
             android:textColor="@color/light_gray"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/toolbar5"
