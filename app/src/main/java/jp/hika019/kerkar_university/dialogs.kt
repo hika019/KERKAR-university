@@ -215,9 +215,6 @@ class timetable_dialog(override val context: Context): firedb_timetable(context)
                         add_user_timetable(week_to_day+period, class_id)
                     }
                 }
-                .setNegativeButton("空き授業"){dialog, which ->
-                    delete_user_timetable(week_to_day + period)
-                }
                 .setNeutralButton("授業をつくる"){dialog, which ->
 
                     createcource_wtd = week_to_day
