@@ -37,6 +37,7 @@
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/activity_main2.xml" value="0.3333333333333333" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/activity_message.xml" value="0.5546875" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/activity_register.xml" value="0.3333333333333333" />
+        <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/activity_select_course.xml" value="0.4466666666666667" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/activity_set_university.xml" value="0.40729166666666666" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/activity_setting.xml" value="0.3848958333333333" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/activity_setup.xml" value="0.3796875" />
@@ -47,6 +48,7 @@
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/dialog_add_class_editer.xml" value="0.3848958333333333" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/dialog_add_task.xml" value="0.5546875" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/dialog_add_university.xml" value="0.3848958333333333" />
+        <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/dialog_color_picker.xml" value="0.4466666666666667" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/dialog_enter_uid.xml" value="0.43931159420289856" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/dialog_timetable_setting.xml" value="0.5" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/flagment_home.xml" value="0.5546875" />
@@ -62,8 +64,10 @@
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/item_home_activity_taimetable.xml" value="0.4466666666666667" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/item_home_assignment_info.xml" value="0.3848958333333333" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/item_message.xml" value="0.38229166666666664" />
+        <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/item_select_course.xml" value="0.5546875" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/item_select_university.xml" value="0.39855072463768115" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/item_serch_university.xml" value="0.38229166666666664" />
+        <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/item_task_fragment.xml" value="0.5546875" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/item_timetable.xml" value="0.39427083333333335" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/nav_draw_header.xml" value="0.39311594202898553" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/test.xml" value="0.4466666666666667" />

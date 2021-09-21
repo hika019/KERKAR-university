@@ -14,11 +14,11 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import jp.hika019.kerkar_university.*
-import jp.hika019.kerkar_university.Course_detail.Course_detail_Activity
 import kotlinx.coroutines.runBlocking
 import java.lang.Exception
 import java.util.*
 import jp.hika019.kerkar_university.databinding.FragmentHomeBinding
+import jp.hika019.kerkar_university.select_course.Select_course_Activity
 import jp.hika019.kerkar_university.viewmodels.Home_VM
 import kotlin.collections.ArrayList
 
@@ -63,11 +63,13 @@ class Home_fragment(): Fragment() {
 
 
         view.floatingActionButton.setOnClickListener {
+            val i = Intent(context, Select_course_Activity::class.java)
+            context!!.startActivity(i)
 
-            val hoge = context?.let { it -> firedb_task(it) }
-            if (hoge != null) {
-                hoge.get_course_list()
-            }
+//            val hoge = context?.let { it -> firedb_task(it) }
+//            if (hoge != null) {
+//                hoge.get_course_list()
+//            }
         }
 
         return view.root

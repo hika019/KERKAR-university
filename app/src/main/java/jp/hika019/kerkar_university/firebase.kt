@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asFlow
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,12 +21,16 @@ import com.google.firebase.ktx.Firebase
 import jp.hika019.kerkar_university.Course_detail.Course_detail_CustomAdapter
 import jp.hika019.kerkar_university.Setup.SetupActivity
 import jp.hika019.kerkar_university.Timetable.Create_timetableActivity
+import jp.hika019.kerkar_university.databinding.ActivitySelectCourseBinding
 import kotlinx.coroutines.runBlocking
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 import jp.hika019.kerkar_university.databinding.FragmentHomeBinding
+import jp.hika019.kerkar_university.select_course.Select_course_CustomAdapter
 import kotlinx.android.synthetic.main.fragment_task.view.*
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 
 //要リファクタリング
@@ -795,6 +800,67 @@ class firedb_timetable_new(): firedb_col_doc(){
             }
     }
 
+    fun get_course_list(binding: ActivitySelectCourseBinding, context: Context, week_to_day: String){
+
+        uni_course_collerction(week_to_day)
+            .get()
+            .addOnSuccessListener {
+
+                var list = arrayListOf<Map<String, String>>()
+                for (doc in it){
+                    val data = doc.data
+                    val course_name = data["course"] as? String
+                    var course_lecturer = ""
+                    val tmp_course_lecturer = data["lecturer"] as? List<String>
+                    val course_room = data["room"] as? String
+
+
+                    if (tmp_course_lecturer?.size != 1){
+                        course_lecturer = tmp_course_lecturer!![0]+"..."
+                    }else{
+                        course_lecturer = tmp_course_lecturer!![0]
+                    }
+                    val map = mapOf(
+                        "course_name" to course_name,
+                        "course_lecturer" to course_lecturer,
+                        "course_room" to course_room
+                        )
+
+                    list.add(map as Map<String, String>)
+
+                    if (it.size() == list.size){
+
+                        searchbar.observe(binding.lifecycleOwner!!, androidx.lifecycle.Observer {
+                            val keyword = searchbar.value
+                            var adapter: Select_course_CustomAdapter? =null
+
+                            if (keyword != null){
+                                val tmp = list.filter{
+                                    it["course_name"]!!.contains(keyword) || it["course_lecturer"]!!.contains(keyword)
+                                }
+                                adapter = Select_course_CustomAdapter(
+                                    tmp as ArrayList<Map<String, String>>, context
+                                )
+                            }else{
+                                adapter = Select_course_CustomAdapter(
+                                    list, context)
+                            }
+
+                            val layoutManager = LinearLayoutManager(context)
+
+                            binding.recycleView.layoutManager = layoutManager
+                            binding.recycleView.adapter = adapter
+                            binding.recycleView.setHasFixedSize(true)
+                        })
+
+
+                    }
+                }
+            }
+            .addOnFailureListener {
+
+            }
+    }
 }
 
 
