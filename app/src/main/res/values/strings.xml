@@ -48,4 +48,6 @@
     <string name="setting_your_university">登録大学</string>
     <string name="setting_destroy_user">データ消去</string>
 
+    <string name="create">作成</string>
+
 </resources>

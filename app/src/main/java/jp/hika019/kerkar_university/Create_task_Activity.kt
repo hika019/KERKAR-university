@@ -47,35 +47,19 @@ class Create_task_Activity: AppCompatActivity() {
             }
         })
 
-
-
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.toolbar_menu, menu)
-
-
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-
-        val item = menu.findItem(R.id.create_menu)
-        item.isEnabled = false
-
         viewmodel.create_button_enable.observe(this, Observer {
-            item.isEnabled = viewmodel.create_button_enable.value == true
+            if(viewmodel.create_button_enable.value == true){
+                binding.button7.setTextColor(getColor(R.color.logo_color))
+            }
         })
 
-        return true
+
+
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.create_menu){
-            viewmodel.create(this)
-        }else{
-            finish()
-        }
+        finish()
         return super.onOptionsItemSelected(item)
     }
 

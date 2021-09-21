@@ -54,7 +54,6 @@
             android:maxLength="20"
             android:maxLines="2"
             android:text="@={viewmodel.task_title}"
-            android:textColorHint="@android:color/holo_red_light"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -138,6 +137,20 @@
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/textView18"
             app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName2" />
+
+        <Button
+            android:id="@+id/button7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/clear"
+            android:text="@string/create"
+            android:enabled="@{viewmodel.create_button_enable}"
+            android:onClick="@{() -> viewmodel.create(context)}"
+            android:textColor="@color/light_gray"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/toolbar5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -47,12 +47,14 @@ class Create_courceActivity: AppCompatActivity() {
 
         viewmodel.course_lecture.observe(this, Observer {
             binding.lectureLinearLayout.removeAllViews()
-            for(lecturer in viewmodel.course_lecture_list.value!!){
+            if(viewmodel.course_lecture_list.value != null){
+                for(lecturer in viewmodel.course_lecture_list.value!!){
                 val textview = TextView(this)
                 textview.text = lecturer
                 textview.textSize = 12f
                 textview.setPadding(8, 0, 8, 0)
                 binding.lectureLinearLayout.addView(textview)
+                }
             }
 
         })

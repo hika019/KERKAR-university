@@ -24,7 +24,7 @@ import kotlin.collections.ArrayList
 
 class Home_fragment(): Fragment() {
 
-    private val TAG = "Home_fragment"
+    private val TAG = "Home_fragment" + TAG_hoge
 
     private var course_id_ArrayList = ArrayList<Int>()
     private var lecture_id_ArrayList = ArrayList<Int>()
@@ -113,7 +113,8 @@ class Home_fragment(): Fragment() {
         val room_id = room_id_ArrayList[period]
         val room_textview = requireView().findViewById<TextView>(room_id)
         val course_room = viewmodel.course_data.value?.get("$now_week${period+1}")?.get("room")
-        if (course_room != null)
+        Log.d(TAG, "room: ${course_room}")
+        if (course_room == null)
             room_textview.text = ""
         else
             room_textview.text = course_room.toString()

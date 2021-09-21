@@ -28,6 +28,7 @@
             android:background="@android:color/white"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
+            app:navigationIcon="@drawable/outline_arrow_back_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,18 +38,17 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="32dp"
             android:text="@{viewmodel.week_and_period}"
             android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar2"
             app:layout_constraintVertical_chainStyle="packed" />
 
         <EditText
             android:id="@+id/course_name_edittext"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:ems="10"
@@ -59,14 +59,13 @@
             android:maxLines="2"
             android:text="@={viewmodel.course_name}"
             android:textSize="@dimen/class_edit_textsize"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/class_edittext"
+            app:layout_constraintStart_toStartOf="@+id/class_edittext"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
         <EditText
             android:id="@+id/class_edittext"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:ems="10"
@@ -76,9 +75,8 @@
             android:maxLines="2"
             android:text="@={viewmodel.course_room}"
             android:textSize="@dimen/class_edit_textsize"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/imageButton2"
+            app:layout_constraintStart_toStartOf="@+id/teacherName_editTextText"
             app:layout_constraintTop_toBottomOf="@+id/course_name_edittext" />
 
         <EditText
@@ -103,12 +101,11 @@
             android:id="@+id/CreateButton"
             android:layout_width="0dp"
             android:layout_height="48dp"
-            android:layout_marginEnd="8dp"
             android:background="@color/clear"
 
             android:enabled="@{viewmodel.createbutton_enable}"
             android:onClick="@{() -> viewmodel.create_couce(context)}"
-            android:text="登録"
+            android:text="@string/create"
             android:textColor="@color/light_gray"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/toolbar2"
@@ -129,14 +126,13 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="@color/white"
-            android:tint="@color/logo_color"
             android:onClick="@{() -> viewmodel.add_lecturer()}"
+            android:tint="@color/logo_color"
             app:layout_constraintBottom_toTopOf="@+id/lecture_LinearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/teacherName_editTextText"
             app:layout_constraintTop_toTopOf="@+id/teacherName_editTextText"
-            app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@android:drawable/ic_input_add" />
 
 

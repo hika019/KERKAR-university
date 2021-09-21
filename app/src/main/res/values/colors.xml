@@ -15,10 +15,23 @@
     <color name="setting_gray">#E4E4E4</color>
 
     <color name="logo_color">#32CD99</color>
-    <color name="logo_color2">#339C64</color>
 
     <color name="test">#f8f8f8</color>
 
     <color name="clear">#00000000</color>
+    
+    
+    <color name="course_color1">#EE7470</color>
+    <color name="course_color2">#F0855B</color>
+    <color name="course_color3">#F7CB6B</color>
+    <color name="course_color4">#62CEA4</color>
+    <color name="course_color5">#5ECFD2</color>
+    <color name="course_color6">#65A0F8</color>
+    <color name="course_color7">#5730C5</color>
+    <color name="course_color8">#EB9FE8</color>
+    <color name="course_color9">#A6B0BD</color>
+    <color name="course_color10">#596572</color>
+
+
 
 </resources>
