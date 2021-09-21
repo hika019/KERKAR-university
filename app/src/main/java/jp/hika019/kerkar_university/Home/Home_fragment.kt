@@ -110,6 +110,14 @@ class Home_fragment(): Fragment() {
             }
         }
 
+        val room_id = room_id_ArrayList[period]
+        val room_textview = requireView().findViewById<TextView>(room_id)
+        val course_room = viewmodel.course_data.value?.get("$now_week$period")?.get("room")
+        if (course_room != null)
+            room_textview.text = ""
+        else
+            room_textview.text = course_room.toString()
+
     }
 
 
@@ -134,7 +142,6 @@ class Home_fragment(): Fragment() {
             )
             linearLayout.addView(textView)
         }
-
 
 
         return linearLayout
