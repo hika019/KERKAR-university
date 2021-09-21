@@ -96,6 +96,18 @@
                 android:textSize="10sp" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/course_lecturer_linearLayout2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@+id/course_name"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/course_name"
+            app:layout_constraintTop_toBottomOf="@+id/course_lecturer_linearLayout">
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/course_room"
             android:layout_width="0dp"
@@ -105,8 +117,9 @@
             android:text="@{viewmodel.course_room}"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/course_lecturer_linearLayout"
-            app:layout_constraintTop_toBottomOf="@+id/course_lecturer_linearLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/course_lecturer_linearLayout2" />
 
         <TextView
             android:id="@+id/textView19"

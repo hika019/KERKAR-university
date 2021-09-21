@@ -89,7 +89,7 @@ class Home_fragment(): Fragment() {
         val title_id = course_id_ArrayList[period]
 
         val course_textview = requireView().findViewById<TextView>(title_id)
-        val course_name = viewmodel.course_data.value?.get("$now_week$period")?.get("course")
+        val course_name = viewmodel.course_data.value?.get("$now_week${period+1}")?.get("course")
         if (course_name == null)
             course_textview.text = ""
         else
@@ -97,7 +97,7 @@ class Home_fragment(): Fragment() {
 
         val lecture_id = lecture_id_ArrayList[period]
         val lecture_textview = requireView().findViewById<TextView>(lecture_id!!)
-        val course_lecturer = viewmodel.course_data.value?.get("$now_week$period")?.get("lecturer") as List<String>?
+        val course_lecturer = viewmodel.course_data.value?.get("$now_week${period+1}")?.get("lecturer") as List<String>?
 
         if (course_lecturer == null){
             lecture_textview.text = ""
@@ -112,7 +112,7 @@ class Home_fragment(): Fragment() {
 
         val room_id = room_id_ArrayList[period]
         val room_textview = requireView().findViewById<TextView>(room_id)
-        val course_room = viewmodel.course_data.value?.get("$now_week$period")?.get("room")
+        val course_room = viewmodel.course_data.value?.get("$now_week${period+1}")?.get("room")
         if (course_room != null)
             room_textview.text = ""
         else

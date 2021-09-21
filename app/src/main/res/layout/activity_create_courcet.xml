@@ -31,7 +31,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView3"
@@ -93,22 +93,11 @@
             android:maxLines="2"
             android:text="@={viewmodel.course_lecture}"
             android:textSize="@dimen/class_edit_textsize"
-            app:layout_constraintEnd_toEndOf="@+id/class_edittext"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton2"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/class_edittext"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/class_edittext" />
-
-        <Button
-            android:id="@+id/Add_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:onClick="@{() -> viewmodel.add_lecturer()}"
-            android:text="教員追加"
-            app:layout_constraintEnd_toEndOf="@+id/teacherName_editTextText"
-            app:layout_constraintHorizontal_bias="0.494"
-            app:layout_constraintStart_toStartOf="@+id/teacherName_editTextText"
-            app:layout_constraintTop_toBottomOf="@+id/lecture_LinearLayout" />
 
         <Button
             android:id="@+id/CreateButton"
@@ -131,9 +120,24 @@
             android:layout_width="0dp"
             android:layout_height="20dp"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="@+id/teacherName_editTextText"
+            app:layout_constraintEnd_toEndOf="@+id/imageButton2"
             app:layout_constraintStart_toStartOf="@+id/teacherName_editTextText"
             app:layout_constraintTop_toBottomOf="@+id/teacherName_editTextText"></LinearLayout>
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@color/white"
+            android:tint="@color/logo_color"
+            android:onClick="@{() -> viewmodel.add_lecturer()}"
+            app:layout_constraintBottom_toTopOf="@+id/lecture_LinearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/teacherName_editTextText"
+            app:layout_constraintTop_toTopOf="@+id/teacherName_editTextText"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@android:drawable/ic_input_add" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

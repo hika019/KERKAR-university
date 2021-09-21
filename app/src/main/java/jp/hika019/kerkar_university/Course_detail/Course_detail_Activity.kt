@@ -38,16 +38,31 @@ class Course_detail_Activity: AppCompatActivity() {
         })
 
         viewmodel.course_lecturer.observe(this, Observer {
+            var lecture_num = 0
             binding.courseLecturerLinearLayout.removeAllViews()
             for(lecturer in viewmodel.course_lecturer.value!!){
-                val textview = TextView(this)
-                textview.text = lecturer
-                textview.textSize = 12f
-                textview.setPadding(8, 0, 8, 0)
-                //textview.setTextColor(getColor(R.color.white))
-                //textview.setBackgroundResource(R.drawable.lecturer_background)
+                lecture_num += lecturer.length
+                if (lecture_num <= 12){
+                    val textview = TextView(this)
+                    textview.text = lecturer
+                    textview.textSize = 12f
+                    textview.setPadding(8, 0, 8, 0)
+                    //textview.setTextColor(getColor(R.color.white))
+                    //textview.setBackgroundResource(R.drawable.lecturer_background)
 
-                binding.courseLecturerLinearLayout.addView(textview)
+                    binding.courseLecturerLinearLayout.addView(textview)
+                }else{
+                    val textview = TextView(this)
+                    textview.text = lecturer
+                    textview.textSize = 12f
+                    textview.setPadding(8, 0, 8, 0)
+                    //textview.setTextColor(getColor(R.color.white))
+                    //textview.setBackgroundResource(R.drawable.lecturer_background)
+
+                    binding.courseLecturerLinearLayout2.addView(textview)
+                }
+
+
             }
 
 
