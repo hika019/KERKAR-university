@@ -30,6 +30,9 @@ class Select_course_Activity: AppCompatActivity() {
         val week = intent_data!![0]
         val period = intent_data!![1].toInt()
 
+        val week_jp = week_to_day_jp_chenger(week)
+        viewmodel.week_to_day.value = "${week_jp}曜日 ${period}限 での検索結果"
+
         binding.viewmodel = viewmodel
         binding.lifecycleOwner = this
 

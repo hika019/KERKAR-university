@@ -38,7 +38,6 @@
                 android:layout_marginTop="8dp"
                 android:elevation="4dp"
                 android:text="@string/timetable_to_day"
-                android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -75,7 +74,6 @@
                 android:layout_height="27dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:textColor="@color/black"
                 android:elevation="4dp"
                 android:text="@string/assignment_to_date"
                 android:textSize="20sp"

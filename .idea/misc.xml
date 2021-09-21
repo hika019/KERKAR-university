@@ -52,7 +52,7 @@
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/dialog_enter_uid.xml" value="0.43931159420289856" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/dialog_timetable_setting.xml" value="0.5" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/flagment_home.xml" value="0.5546875" />
-        <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/fragment_home.xml" value="0.5" />
+        <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/fragment_home.xml" value="0.4466666666666667" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/fragment_message.xml" value="0.4244791666666667" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/fragment_set_university.xml" value="0.3333333333333333" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/fragment_setting.xml" value="0.3885416666666667" />
@@ -74,6 +74,7 @@
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/test_activity.xml" value="0.3854166666666667" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/test_fragment.xml" value="0.4466666666666667" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/timetable.xml" value="0.4466666666666667" />
+        <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/layout/walkthrough_fragment1.xml" value="0.43854166666666666" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/menu/bottom_menu.xml" value="0.4244791666666667" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/menu/nav_drawer.xml" value="0.38333333333333336" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/menu/toolbar_menu.xml" value="0.4244791666666667" />

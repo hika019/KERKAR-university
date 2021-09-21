@@ -26,28 +26,40 @@
             android:theme="?attr/actionBarTheme"
             app:contentInsetStartWithNavigation="8dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIcon="@drawable/outline_arrow_back_24">
 
-            <EditText
-                android:id="@+id/search"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="検索"
-                android:iconifiedByDefault="false"
-                android:maxHeight="48dp"
-                android:maxEms="10"
-                android:maxLines="1"
-                android:minHeight="48dp"
-                android:text="@={viewmodel.search_str}"
-                app:layout_constraintEnd_toEndOf="@+id/toolbar6"
-                app:layout_constraintStart_toStartOf="@+id/toolbar6"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar6" />
+                android:gravity="center"
+                android:text="@{viewmodel.week_to_day}"
+                android:textSize="24sp"
+                tools:layout_editor_absoluteX="56dp"
+                tools:layout_editor_absoluteY="5dp" />
+
 
         </androidx.appcompat.widget.Toolbar>
 
+        <EditText
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:ems="10"
+            android:hint="検索"
+            android:iconifiedByDefault="false"
+            android:maxHeight="48dp"
+            android:maxEms="10"
+            android:maxLines="1"
+            android:minHeight="48dp"
+            android:text="@={viewmodel.search_str}"
+            app:layout_constraintEnd_toEndOf="@+id/toolbar6"
+            app:layout_constraintStart_toStartOf="@+id/toolbar6"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar6" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycle_view"
@@ -60,7 +72,7 @@
             app:layout_constraintBottom_toTopOf="@+id/Create_course_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar6" />
+            app:layout_constraintTop_toBottomOf="@+id/search" />
 
         <Button
             android:id="@+id/Create_course_button"

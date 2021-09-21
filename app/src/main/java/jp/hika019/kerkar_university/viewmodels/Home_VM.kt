@@ -1,6 +1,7 @@
 package jp.hika019.kerkar_university.viewmodels
 
 import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
@@ -10,6 +11,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import android.util.*
 import androidx.appcompat.app.AlertDialog
+import jp.hika019.kerkar_university.Course_detail.Course_detail_Activity
+import jp.hika019.kerkar_university.select_course.Select_course_Activity
 
 class Home_VM: ViewModel() {
     private val TAG = "Home_VM" + TAG_hoge
@@ -64,7 +67,19 @@ class Home_VM: ViewModel() {
             message = course_data_map_to_str(data as Map<String, Any>)
 
         }
-        show_course_info(week, period, message)
+        if (message.isNullOrEmpty()){
+            val i = Intent(context, Select_course_Activity::class.java)
+            i.putExtra("week_period", arrayOf<String>(week, period.toString()))
+            context!!.startActivity(i)
+
+
+        }else{
+            //授業の詳細
+            val i = Intent(context, Course_detail_Activity::class.java)
+            i.putExtra("week_period", arrayOf<String>(week, period.toString()))
+            context!!.startActivity(i)
+
+        }
     }
 
     fun show_course_info(week: String, period: Int, message: String){

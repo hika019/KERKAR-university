@@ -70,15 +70,13 @@ class Timetable_VM: ViewModel() {
             i.putExtra("week_period", arrayOf<String>(week, period.toString()))
             context!!.startActivity(i)
 
-//            val firedb_tt_old_class = firedb_timetable(context!!)
-//            firedb_tt_old_class.get_course_list(week, period)
         }else{
             //授業の詳細
             val i = Intent(context, Course_detail_Activity::class.java)
             i.putExtra("week_period", arrayOf<String>(week, period.toString()))
             context!!.startActivity(i)
 
-            //show_course_info(week, period, message)
+
         }
     }
 

@@ -9,7 +9,7 @@
                 android:bottomRightRadius="4dp"
                 />
             <solid
-                android:color="@color/course_color9"/>
+                android:color="@color/very_light_gray"/>
         </shape>
     </item>
 </selector>

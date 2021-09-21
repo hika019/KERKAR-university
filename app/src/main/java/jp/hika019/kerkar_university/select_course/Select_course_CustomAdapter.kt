@@ -20,6 +20,7 @@ class Select_course_CustomAdapter(
     class CustomViewHolder(val view: View): RecyclerView.ViewHolder(view) {
         val course_name = view.item_select_course_name
         val course_lecture = view.item_select_course_lecturer
+        val course_room = view.item_select_course_room
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
@@ -33,6 +34,7 @@ class Select_course_CustomAdapter(
 
         holder.course_name.text = course_data["course_name"]
         holder.course_lecture.text = course_data["course_lecturer"]
+        holder.course_room.text = course_data["course_room"]
 
         holder.view.setOnClickListener {
             Log.d(TAG, "click event: $position")

@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:ems="8"
-        android:maxLength="10"
-        android:maxLines="1"
+        android:maxLength="16"
+        android:maxLines="2"
         android:text="授業名"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -29,8 +29,20 @@
         android:maxLines="1"
         android:text="教員"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/item_select_course_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/item_select_course_name"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintBottom_toTopOf="@+id/item_select_course_room"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/item_select_course_room"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:ems="7"
+        android:gravity="right"
+        android:maxLength="10"
+        android:maxLines="1"
+        android:text="915"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
