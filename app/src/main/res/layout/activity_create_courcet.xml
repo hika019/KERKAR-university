@@ -81,14 +81,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/course_name_edittext" />
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{viewmodel.course_lecture_list.toString()}"
-            app:layout_constraintStart_toStartOf="@+id/teacherName_editTextText"
-            app:layout_constraintTop_toBottomOf="@+id/teacherName_editTextText" />
-
         <EditText
             android:id="@+id/teacherName_editTextText"
             android:layout_width="wrap_content"
@@ -110,12 +102,13 @@
             android:id="@+id/Add_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:onClick="@{() -> viewmodel.add_lecturer()}"
             android:text="教員追加"
             app:layout_constraintEnd_toEndOf="@+id/teacherName_editTextText"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.494"
             app:layout_constraintStart_toStartOf="@+id/teacherName_editTextText"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            app:layout_constraintTop_toBottomOf="@+id/lecture_LinearLayout" />
 
         <Button
             android:id="@+id/CreateButton"
@@ -127,11 +120,20 @@
             android:enabled="@{viewmodel.createbutton_enable}"
             android:onClick="@{() -> viewmodel.create_couce(context)}"
             android:text="登録"
+            android:textColor="@color/light_gray"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/toolbar2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/toolbar2" />
 
+        <LinearLayout
+            android:id="@+id/lecture_LinearLayout"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@+id/teacherName_editTextText"
+            app:layout_constraintStart_toStartOf="@+id/teacherName_editTextText"
+            app:layout_constraintTop_toBottomOf="@+id/teacherName_editTextText"></LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
