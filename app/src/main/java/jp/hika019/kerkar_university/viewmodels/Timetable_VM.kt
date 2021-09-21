@@ -34,6 +34,8 @@ class Timetable_VM: ViewModel() {
                 user_timetable_data_live.asFlow()
                     .onEach {
                         get_timetable_name()
+                        course_data_live.value = (null)
+
                         for (week in week_to_day_symbol_list){
                             for (period in period_list){
                                 firedb_tt_class.get_user_course_data(week, period)

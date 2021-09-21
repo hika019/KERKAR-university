@@ -562,7 +562,6 @@ open class firedb_timetable(context: Context){
                 .document(timetable_id.value!!)
                 .update(updates)
                 .addOnCompleteListener{
-                    course_data_live = MutableLiveData()
                     Log.d(TAG, "delete_user_timetable: $week_to_day -> complete")
 
                     createtimetable_finish.value = true
