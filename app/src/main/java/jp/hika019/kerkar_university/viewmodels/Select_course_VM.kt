@@ -14,6 +14,7 @@ class Select_course_VM: ViewModel() {
     val search_str = MutableLiveData<String?>("")
     private val TAG = "Select_course_VM" + TAG_hoge
 
+
     init {
         search_str.asFlow()
             .onEach {

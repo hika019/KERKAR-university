@@ -63,13 +63,11 @@ class Home_fragment(): Fragment() {
 
 
         view.floatingActionButton.setOnClickListener {
-            val i = Intent(context, Select_course_Activity::class.java)
-            context!!.startActivity(i)
 
-//            val hoge = context?.let { it -> firedb_task(it) }
-//            if (hoge != null) {
-//                hoge.get_course_list()
-//            }
+            val hoge = context?.let { it -> firedb_task(it) }
+            if (hoge != null) {
+                hoge.get_course_list()
+            }
         }
 
         return view.root

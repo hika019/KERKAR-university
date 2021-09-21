@@ -813,6 +813,7 @@ class firedb_timetable_new(): firedb_col_doc(){
                     var course_lecturer = ""
                     val tmp_course_lecturer = data["lecturer"] as? List<String>
                     val course_room = data["room"] as? String
+                    val courseId = data["course_id"]
 
 
                     if (tmp_course_lecturer?.size != 1){
@@ -823,7 +824,8 @@ class firedb_timetable_new(): firedb_col_doc(){
                     val map = mapOf(
                         "course_name" to course_name,
                         "course_lecturer" to course_lecturer,
-                        "course_room" to course_room
+                        "course_room" to course_room,
+                        "course_id" to courseId
                         )
 
                     list.add(map as Map<String, String>)

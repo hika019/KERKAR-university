@@ -1,14 +1,14 @@
 package jp.hika019.kerkar_university.select_course
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.util.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import jp.hika019.kerkar_university.R
-import jp.hika019.kerkar_university.TAG_hoge
+import jp.hika019.kerkar_university.*
 import jp.hika019.kerkar_university.databinding.ActivitySelectCourseBinding
-import jp.hika019.kerkar_university.firedb_timetable_new
 import jp.hika019.kerkar_university.viewmodels.Select_course_VM
 
 class Select_course_Activity: AppCompatActivity() {
@@ -23,8 +23,18 @@ class Select_course_Activity: AppCompatActivity() {
             this, R.layout.activity_select_course
         )
 
+        val intent_data = intent.getStringArrayExtra("week_period")
+
+
+        val week = intent_data!![0]
+        val period = intent_data!![1].toInt()
+
         binding.viewmodel = viewmodel
         binding.lifecycleOwner = this
+
+        tmp_str = "$week$period"
+
+        Log.d(TAG, "wtd: $week$period")
 
         val toolbar = binding.toolbar6
         setSupportActionBar(toolbar)
@@ -32,7 +42,15 @@ class Select_course_Activity: AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         val hoge = firedb_timetable_new()
-        hoge.get_course_list(binding, this, "mon1")
+        hoge.get_course_list(binding, this, "$week$period")
+
+        binding.CreateCourseButton.setOnClickListener {
+            val i = Intent(this, Create_courceActivity::class.java)
+            createcource_wtd = week
+            createcource_period = period
+            startActivity(i)
+            finish()
+        }
 
     }
 

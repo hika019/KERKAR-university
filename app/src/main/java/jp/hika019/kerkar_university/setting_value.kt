@@ -39,9 +39,9 @@ val developer = false
 var week_num = 6
 var period_num = 6
 
+var tmp_str = ""
 
 var test_course_data_map = mutableMapOf<String, Any?>()
-
 
 
 //Create_course
