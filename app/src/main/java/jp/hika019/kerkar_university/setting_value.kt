@@ -30,7 +30,7 @@ var timetable_id = MutableLiveData<String?>(null)
 
 var searchbar = MutableLiveData<String?>(null)
 
-val url = "https://docs.google.com/forms/d/e/1FAIpQLSfsJhsA9uPc6ysPz45-SNjsjvo7Z5hXw0Yl65j1MithOyoqJA/viewform"
+val url = "https://forms.gle/E6fZro59yE6Qdz6dA"
 
 var local_timetable = mutableMapOf<String, String?>()
 

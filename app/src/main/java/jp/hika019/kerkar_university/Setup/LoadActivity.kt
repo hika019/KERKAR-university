@@ -19,7 +19,7 @@ class LoadActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "show LoadActivity")
-        setTheme(R.style.AppTheme_Splash)
+//        setTheme(R.style.AppThem)
         Thread.sleep(200)
         setContentView(R.layout.activity_load)
 

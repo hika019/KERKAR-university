@@ -17,7 +17,7 @@ import jp.hika019.kerkar_university.firedb_setup
 import jp.hika019.kerkar_university.url
 import kotlinx.android.synthetic.main.activity_setup.*
 
-class SetupActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class SetupActivity: AppCompatActivity(){
     private val TAG = "Setup_Activity" + TAG_hoge
 
     lateinit var toolbar: Toolbar
@@ -56,9 +56,6 @@ class SetupActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        TODO("Not yet implemented")
-    }
 
 }
 

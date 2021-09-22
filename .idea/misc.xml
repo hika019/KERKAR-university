@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable-hdpi/splash.xml" value="0.38796296296296295" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable-night/setup_button_bg_false-night.xml" value="0.5708333333333333" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable-v24/edittext_register_login.xml" value="0.39487179487179486" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.39487179487179486" />
@@ -10,16 +11,19 @@
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable-v24/register_login_button.xml" value="0.39487179487179486" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable-v24/timetable_item_backgraound_default.xml" value="0.39487179487179486" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable/edittext_register_login.xml" value="0.4114583333333333" />
+        <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable/hoge.xml" value="0.4088541666666667" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable/ic_launcher_background.xml" value="0.39487179487179486" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable/lecturer_background.xml" value="0.36944444444444446" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable/outline_arrow_back_24.xml" value="0.4296875" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable/outline_home_24.xml" value="0.43697916666666664" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable/outline_task_alt_24.xml" value="0.4296875" />
+        <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable/outline_watch_later_24.xml" value="0.4088541666666667" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable/setup_button_bg.xml" value="0.4114583333333333" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable/setup_button_bg_false-night.xml" value="0.5708333333333333" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable/setup_button_bg_false.xml" value="0.4234375" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable/splash_center.xml" value="0.3333333333333333" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable/splash_drawable.xml" value="0.4010416666666667" />
+        <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable/splash_kerkar_logo_right.xml" value="0.4171875" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable/timetable_course_background.xml" value="0.5708333333333333" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable/timetable_course_background_gray.xml" value="0.4296875" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/drawable/timetable_course_background_red.xml" value="0.3890625" />
@@ -80,6 +84,7 @@
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/menu/toolbar_menu.xml" value="0.4244791666666667" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.43697916666666664" />
         <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.440625" />
+        <entry key="..\:/Android_projects/KERKAR-university/app/src/main/res/mipmap-anydpi-v26/walk-through2.xml" value="0.43333333333333335" />
       </map>
     </option>
   </component>
