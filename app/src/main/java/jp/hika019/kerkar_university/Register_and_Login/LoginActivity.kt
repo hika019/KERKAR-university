@@ -15,9 +15,9 @@ class LoginActivity: AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         create_account_textview.setOnClickListener{
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
-            finish()
+//            val intent = Intent(this, RegisterActivity::class.java)
+//            startActivity(intent)
+//            finish()
         }
 
         login_button.setOnClickListener{

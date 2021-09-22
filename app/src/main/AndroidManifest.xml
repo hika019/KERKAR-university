@@ -46,6 +46,8 @@
 
         <activity android:name=".select_course.Select_course_Activity"/>
 
+        <activity android:name=".Register_and_Login.Register"/>
+
         <receiver android:name=".Uninstall">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />

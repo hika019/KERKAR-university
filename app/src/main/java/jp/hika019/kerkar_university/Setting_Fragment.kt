@@ -9,13 +9,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import jp.hika019.kerkar_university.Register_and_Login.Register
 import kotlinx.android.synthetic.main.fragment_setting.view.*
 
 class Setting_Fragment: Fragment() {
+    private val googleIdToken: String? = null
     private val TAG = "Setting_Fragment"
+    private val auth = Firebase.auth
+
+    private lateinit var googleSignInClient: GoogleSignInClient
+
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -30,7 +43,9 @@ class Setting_Fragment: Fragment() {
         get_university(view)
 
         view.setting_data_transfer_button.setOnClickListener {
-            enter_uid(view)
+            enter_uid()
+//            val i = Intent(context, Register::class.java)
+//            requireContext().startActivity(i)
         }
 
         view.button6.setOnClickListener {
@@ -40,6 +55,9 @@ class Setting_Fragment: Fragment() {
 
 //        view.setting_destroy_user.setOnClickListener {
 //            destroy_user()
+//        }
+//        view.googleSighin.setOnClickListener {
+//            google_sign()
 //        }
 
         return view
@@ -69,60 +87,100 @@ class Setting_Fragment: Fragment() {
                 }
     }
 
-    private fun destroy_user(){
-        Log.d(TAG, "destroy_user -> call")
-        /*
-        firedb.collection("user")
-            .document(uid!!)
-            .delete()
+
+    fun enter_uid(){
+        val dialog = AlertDialog.Builder(context)
+            .setTitle("未実装機能")
+            .setMessage("しばらくしたら実装されます")
+        dialog.create().show()
+    }
+
+    fun google_sign(){
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(context, gso)
+
+        val intent = googleSignInClient.signInIntent
+        startActivityForResult(intent, RC_SIGN_IN)
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.currentUser
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            val account = task.getResult(ApiException::class.java)!!
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+
+
+                Log.d(TAG, "asdadasda")
+//                auth.currentUser!!.linkWithCredential(credential)
+//                    .addOnCompleteListener(this) { task ->
+//                        if (task.isSuccessful) {
+//                            Log.d(TAG, "linkWithCredential:success")
+//                            val user = task.result?.user
+//                            updateUI(user)
+//                        } else {
+//                            Log.w(TAG, "linkWithCredential:failure", task.exception)
+//                            Toast.makeText(context, "Authentication failed.",
+//                                Toast.LENGTH_SHORT).show()
+//                            updateUI(null)
+//                        }
+//                    }
+
+                Log.d(TAG, "asdadasda")
+
+                Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
+                firebaseAuthWithGoogle(account.idToken!!)
+            } catch (e: ApiException) {
+                // Google Sign In failed, update UI appropriately
+                Log.w(TAG, "Google sign in failed", e)
+            }
+        }
+    }
+
+
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
             .addOnSuccessListener {
-                Log.d(TAG, "delete data -> success")
+                Log.d(TAG, "signInWithCredential:success")
+                val user = auth.currentUser
+
+                val credential = GoogleAuthProvider.getCredential(idToken, null)
+                auth.currentUser!!.linkWithCredential(credential)
+                    .addOnSuccessListener{
+                            Log.d(TAG, "linkWithCredential:success")
+                            val user = it.user
+                    }
+                    .addOnFailureListener {
+                        Log.w(TAG, "linkWithCredential:failure", it)
+                        Toast.makeText(context, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show()
+                    }
 
             }
             .addOnFailureListener {
-                Log.w(TAG, "delete data -> failure", it)
-                Toast.makeText(context, "データ消去に失敗しました", Toast.LENGTH_SHORT).show()
+                Log.w(TAG, "signInWithCredential:failure", it)
             }
-         */
-
-        Firebase.auth.signOut()
-        activity?.finish()
-
     }
 
-    fun enter_uid(view: View){
-        val layout = LayoutInflater.from(context).inflate(R.layout.dialog_enter_uid, null)
-
-        val dialog = AlertDialog.Builder(context)
-                .setTitle("未実装機能")
-                .setMessage("しばらくしたら実装されます")
-
-        /*
-        val dialog = AlertDialog.Builder(context)
-                .setTitle("データを引き継ぐ")
-                .setView(layout)
-                .setPositiveButton("引き継ぐ"){dialog, which ->
-                    val enter_uid0 = layout.dialog_enter_uid_edittxt0.text.toString()
-                    val enter_uid1 = layout.dialog_enter_uid_edittxt1.text.toString()
-                    val enter_uid2 = layout.dialog_enter_uid_edittxt2.text.toString()
-                    val enter_uid3 = layout.dialog_enter_uid_edittxt3.text.toString()
-                    val enter_uid4 = layout.dialog_enter_uid_edittxt4.text.toString()
-
-                    if(!(enter_uid0.isEmpty() || enter_uid1.isEmpty() || enter_uid2.isEmpty() ||
-                            enter_uid3.isEmpty() || enter_uid4.isEmpty())){
-                        if(cheack_uid(enter_uid0, enter_uid1, enter_uid2, enter_uid3, enter_uid4)){
-                            Log.d(TAG, "enter_uid -> success")
-
-//                            val dataStore = getSharedPreferences(UserData_SharedPreferences_name, Context.MODE_PRIVATE)
-//                            val editor: SharedPreferences.Editor = dataStore.edit()
-//                            editor.putString("uid", uid)
-//                            editor.commit()
-                        }
-                    }
 
 
-                }*/
-
-        dialog.create().show()
+    companion object {
+        private const val TAG = "GoogleActivity"
+        private const val RC_SIGN_IN = 9001
     }
+
 }
