@@ -641,6 +641,7 @@ class firedb_timetable_new(): firedb_col_doc(){
     }
 
     fun get_course_list(binding: ActivitySelectCourseBinding, context: Context, week_to_day: String){
+        binding.viewmodel?.search()
 
         uni_course_collerction(week_to_day)
             .get()
@@ -649,60 +650,60 @@ class firedb_timetable_new(): firedb_col_doc(){
                 var list = arrayListOf<Map<String, String>>()
 
                 if (it.size() == 0)
-                    binding.textView29.text = "検索結果0件"
+                    binding.viewmodel?.zero()
 
-                for (doc in it){
-                    val data = doc.data
-                    val course_name = data["course"] as? String
-                    var course_lecturer = ""
-                    val tmp_course_lecturer = data["lecturer"] as? List<String>
-                    val course_room = data["room"] as? String
-                    val courseId = data["course_id"]
+                else{
+                    for (doc in it){
+                        val data = doc.data
+                        val course_name = data["course"] as? String
+                        var course_lecturer = ""
+                        val tmp_course_lecturer = data["lecturer"] as? List<String>
+                        val course_room = data["room"] as? String
+                        val courseId = data["course_id"]
 
 
-                    if (tmp_course_lecturer?.size != 1){
-                        course_lecturer = tmp_course_lecturer!![0]+"..."
-                    }else{
-                        course_lecturer = tmp_course_lecturer!![0]
-                    }
-                    val map = mapOf(
-                        "course_name" to course_name,
-                        "course_lecturer" to course_lecturer,
-                        "course_room" to course_room,
-                        "course_id" to courseId
+                        if (tmp_course_lecturer?.size != 1){
+                            course_lecturer = tmp_course_lecturer!![0]+"..."
+                        }else{
+                            course_lecturer = tmp_course_lecturer!![0]
+                        }
+                        val map = mapOf(
+                            "course_name" to course_name,
+                            "course_lecturer" to course_lecturer,
+                            "course_room" to course_room,
+                            "course_id" to courseId
                         )
 
-                    list.add(map as Map<String, String>)
+                        list.add(map as Map<String, String>)
 
-                    if (it.size() == list.size){
-                        binding.textView29.text = ""
+                        if (it.size() == list.size){
+                            binding.viewmodel?.non()
+                            searchbar.observe(binding.lifecycleOwner!!, androidx.lifecycle.Observer {
+                                val keyword = searchbar.value
+                                var adapter: Select_course_CustomAdapter? =null
 
-                        searchbar.observe(binding.lifecycleOwner!!, androidx.lifecycle.Observer {
-                            val keyword = searchbar.value
-                            var adapter: Select_course_CustomAdapter? =null
-
-                            if (keyword != null){
-                                val tmp = list.filter{
-                                    it["course_name"]!!.contains(keyword) || it["course_lecturer"]!!.contains(keyword)
+                                if (keyword != null){
+                                    val tmp = list.filter{
+                                        it["course_name"]!!.contains(keyword) || it["course_lecturer"]!!.contains(keyword)
+                                    }
+                                    adapter = Select_course_CustomAdapter(
+                                        tmp as ArrayList<Map<String, String>>, context
+                                    )
+                                }else{
+                                    adapter = Select_course_CustomAdapter(
+                                        list, context)
                                 }
-                                adapter = Select_course_CustomAdapter(
-                                    tmp as ArrayList<Map<String, String>>, context
-                                )
-                            }else{
-                                adapter = Select_course_CustomAdapter(
-                                    list, context)
-                            }
 
-                            val layoutManager = LinearLayoutManager(context)
+                                val layoutManager = LinearLayoutManager(context)
 
-                            binding.recycleView.layoutManager = layoutManager
-                            binding.recycleView.adapter = adapter
-                            binding.recycleView.setHasFixedSize(true)
-                        })
-                    }else{
-                        binding.textView29.text = "検索中"
+                                binding.recycleView.layoutManager = layoutManager
+                                binding.recycleView.adapter = adapter
+                                binding.recycleView.setHasFixedSize(true)
+                            })
+                        }
                     }
                 }
+
             }
             .addOnFailureListener {
 

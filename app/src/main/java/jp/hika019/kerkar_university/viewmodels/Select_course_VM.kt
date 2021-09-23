@@ -17,12 +17,26 @@ class Select_course_VM: ViewModel() {
     val week_to_day = MutableLiveData("")
     val search_result = MutableLiveData("")
 
+    val searchresult = MutableLiveData("")
+
     init {
         search_str.asFlow()
             .onEach {
                 destroy()
             }
             .launchIn(viewModelScope)
+    }
+
+    fun search(){
+        searchresult.value = "検索中"
+    }
+
+    fun non(){
+        searchresult.value = ""
+    }
+
+    fun zero(){
+        searchresult.value = "検索結果0件"
     }
 
     fun destroy(){

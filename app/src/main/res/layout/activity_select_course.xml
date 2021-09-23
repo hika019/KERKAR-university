@@ -29,19 +29,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/outline_arrow_back_24">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@{viewmodel.week_to_day}"
-                android:textSize="24sp"
-                tools:layout_editor_absoluteX="56dp"
-                tools:layout_editor_absoluteY="5dp" />
-
-
-        </androidx.appcompat.widget.Toolbar>
+            app:navigationIcon="@drawable/outline_arrow_back_24"/>
 
         <EditText
             android:id="@+id/search"
@@ -66,22 +54,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
+            android:text="@{viewmodel.searchresult}"
             app:layout_constraintEnd_toEndOf="@+id/recycle_view"
             app:layout_constraintStart_toStartOf="@+id/recycle_view"
-            app:layout_constraintTop_toTopOf="@+id/recycle_view" />
+            app:layout_constraintTop_toBottomOf="@+id/search" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycle_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toTopOf="@+id/Create_course_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search" />
+            app:layout_constraintTop_toBottomOf="@+id/textView29" />
 
         <Button
             android:id="@+id/Create_course_button"
