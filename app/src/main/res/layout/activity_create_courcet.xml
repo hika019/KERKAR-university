@@ -15,7 +15,7 @@
         android:id="@+id/create_course_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
+        android:background="@color/white"
         android:focusableInTouchMode="true"
 
         tools:context=".MainActivity">
@@ -25,14 +25,14 @@
             android:id="@+id/toolbar2"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:background="@android:color/white"
+            android:background="@color/white"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
-            app:navigationIcon="@drawable/outline_arrow_back_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/outline_arrow_back_24" />
 
         <TextView
             android:id="@+id/textView3"

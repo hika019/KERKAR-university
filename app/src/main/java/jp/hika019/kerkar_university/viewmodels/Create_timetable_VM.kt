@@ -107,7 +107,7 @@ class Create_timetable_VM: ViewModel() {
                 val firedb = firedb_timetable_new()
                 firedb.create_timetable(context, tt_data)
             }
-            .setNegativeButton("直す"){_, _ ->
+            .setNegativeButton("キャンセル"){_, _ ->
                 false
             }
             .create().show()

@@ -1002,7 +1002,7 @@ class firedb_task(val context: Context): firedb_col_doc(){
 
                     var all_comp_task: Array<String> = arrayOf()
                     //履修中の授業取得
-                    var task_list: ArrayList<Map<String, Any>> = arrayListOf()
+
                     val user_data = value?.data
 
                     for (week in week_to_day_symbol_list) {
@@ -1034,6 +1034,7 @@ class firedb_task(val context: Context): firedb_col_doc(){
                                                         Log.w(TAG, "get_not_comp_task_list -> error", error)
                                                         return@addSnapshotListener
                                                     }
+                                                    var task_list: ArrayList<Map<String, Any>> = arrayListOf()
 
                                                     //課題取得
                                                     for (task_item in value!!) {
@@ -1090,7 +1091,7 @@ class firedb_task(val context: Context): firedb_col_doc(){
                 Log.d(TAG, "get_comp_task_list -> get user class_data -> success")
                 var all_comp_task: Array<String> = arrayOf()
                 //履修中の授業取得
-                var task_list: ArrayList<Map<String, Any>> = arrayListOf()
+
                 val user_data = value?.data
 
                 for (week in week_to_day_symbol_list) {
@@ -1118,6 +1119,8 @@ class firedb_task(val context: Context): firedb_col_doc(){
                                                     Log.w(TAG, "get_comp_task_list -> error", error)
                                                     return@addSnapshotListener
                                                 }
+
+                                                var task_list: ArrayList<Map<String, Any>> = arrayListOf()
                                                 for (task_item in value!!.documentChanges) {
                                                     val task_data = task_item.document.getData() as MutableMap<String, Any>
                                                     val task_id = task_data["task_id"] as String
@@ -1178,8 +1181,7 @@ class firedb_task(val context: Context): firedb_col_doc(){
                 Log.d(TAG, "get_tomorrow_not_comp_task_list -> get user class_data -> success")
 
                 var all_comp_task: Array<String> = arrayOf()
-                //履修中の授業取得
-                var task_list: ArrayList<Map<String, Any>> = arrayListOf()
+
                 val user_data = value?.data
 
                 for (week in week_to_day_symbol_list) {
@@ -1206,6 +1208,8 @@ class firedb_task(val context: Context): firedb_col_doc(){
                                                     Log.w(TAG, "get_tomorrow_not_comp_task_list -> error", error)
                                                     return@addSnapshotListener
                                                 }
+                                                //履修中の授業取得
+                                                var task_list: ArrayList<Map<String, Any>> = arrayListOf()
 
                                                 for (task_item in value!!.documentChanges) {
                                                     var task_data = task_item.document.getData() as MutableMap<String, Any>

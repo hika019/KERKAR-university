@@ -266,7 +266,7 @@ class task_dialog(val context: Context){
         var select_point: Int? = null
 
         val builder = AlertDialog.Builder(context)
-                .setTitle("追加する課題の授業を選択")
+                .setTitle("課題を追加する授業を選択してください")
                 .setSingleChoiceItems(class_name_list, -1){ dialog, which ->
                     select_point = which
                 }

@@ -53,10 +53,10 @@ class task_cmp_list_CustomAdapter(
         val timelimit_date = time_limit_timestamp.toDate()
         val cal = Calendar.getInstance()
         cal.time = timelimit_date
-        val df = SimpleDateFormat("MM/dd")
+        val df = SimpleDateFormat("MM/dd HH:MM")
 
 
-        holder.day.text = df.format(cal.time)
+        holder.day.text = df.format(cal.time)+"まで"
         holder.lecture_title.text = "${couse}"
         holder.assignment_details.text = "${task_data["task_name"]}"
         //タップ
