@@ -16,6 +16,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import jp.hika019.kerkar_university.R
+import jp.hika019.kerkar_university.TAG_hoge
 import jp.hika019.kerkar_university.uid
 import kotlinx.android.synthetic.main.activity_register.*
 
@@ -23,6 +24,7 @@ class Register: AppCompatActivity() {
 
     private val auth = Firebase.auth
     private lateinit var googleSignInClient: GoogleSignInClient
+    private val TAG = "Register" + TAG_hoge
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +33,6 @@ class Register: AppCompatActivity() {
 
         googleSighin.setOnClickListener {
             google_sign()
-//            hogeee()
         }
 
 
@@ -105,7 +106,7 @@ class Register: AppCompatActivity() {
             }
             .addOnFailureListener {
                 Log.w(TAG, "linkWithCredential:failure", it)
-                Toast.makeText(this, "Authentication failed.",
+                Toast.makeText(this, "引継ぎに失敗しました",
                     Toast.LENGTH_SHORT).show()
             }
     }
@@ -113,7 +114,6 @@ class Register: AppCompatActivity() {
 
 
     companion object {
-        private const val TAG = "GoogleActivity"
         private const val RC_SIGN_IN = 9001
     }
 }
