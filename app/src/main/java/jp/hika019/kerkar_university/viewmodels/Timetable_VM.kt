@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.onEach
 import android.util.*
 import android.view.Gravity
 import jp.hika019.kerkar_university.Course_detail.Course_detail_Activity
+import jp.hika019.kerkar_university.SelectTimetable.Select_timetableActivity
 import jp.hika019.kerkar_university.Timetable.Create_timetableActivity
 import jp.hika019.kerkar_university.select_course.Select_course_Activity
 
@@ -108,8 +109,8 @@ class Timetable_VM: ViewModel() {
         dialog.create().show()
     }
 
-    fun Create_timetable(context: Context){
-        val i = Intent(context, Create_timetableActivity::class.java)
+    fun setting_timetable(context: Context){
+        val i = Intent(context, Select_timetableActivity::class.java)
         context.startActivity(i)
     }
 

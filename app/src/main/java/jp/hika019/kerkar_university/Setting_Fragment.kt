@@ -92,7 +92,10 @@ class Setting_Fragment: Fragment() {
         val dialog = AlertDialog.Builder(context)
             .setTitle("未実装機能")
             .setMessage("しばらくしたら実装されます")
-        dialog.create().show()
+        //dialog.create().show()
+
+        val i = Intent(context, Register::class.java)
+        context?.startActivity(i)
     }
 
     fun google_sign(){

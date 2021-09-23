@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import jp.hika019.kerkar_university.R
+import jp.hika019.kerkar_university.Register_and_Login.Login
 import jp.hika019.kerkar_university.TAG_hoge
 import jp.hika019.kerkar_university.firedb_setup
 import jp.hika019.kerkar_university.url
@@ -44,9 +45,11 @@ class SetupActivity: AppCompatActivity(){
             finish()
         }
 
-//        load_acount.setOnClickListener {
+        load_acount.setOnClickListener {
+            val i = Intent(this, Login::class.java)
+            startActivity(i)
 //            Toast.makeText(this, "未実装機能です", Toast.LENGTH_SHORT).show()
-//        }
+        }
 
         button2.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))

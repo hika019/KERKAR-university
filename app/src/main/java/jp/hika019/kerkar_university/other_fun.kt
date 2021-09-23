@@ -125,89 +125,8 @@ fun set_timetable_id(context: Context, id: String) {
     timetable_id.value = id
 }
 
-fun set_timetable_semester(context: Context, timetableId: String){
-    Log.d("semester_timetable_setup", "get_semester -> call")
-
-    if (get_timetable_id(context) !=null){
-        firedb
-            .collection("user")
-            .document(uid!!)
-            .collection("timetable")
-            .document(timetableId)
-            .get()
-            .addOnSuccessListener {
-                val data = it.data
-                if(data != null){
-                    Log.d("hoge", "aa: ${data}")
-                    val year = data["year"]
-                    val term = data["term"]
-                    semester = "$year-$term"
-                    timetable_name = data["timetable_name"] as? String
-
-                    val firedb_tt_new = firedb_timetable_new()
-                    firedb_tt_new.get_all_course_id(context)
-                }
-            }
-    }
-}
-
-fun cheack_timetable(context: Context){
-    Log.d("timetable_cheak_setup", "cheack_timetable -> call")
-    val timetableId = get_timetable_id(context)
-    Log.d("timetable_cheak_setup", "tiemtableId: $timetableId")
-    if(timetableId != null){
-        set_timetable_semester(context, timetableId)
-    }
-    else{
-        firedb
-            .collection("user")
-            .document(uid!!)
-            .collection("timetable")
-            .get()
-            .addOnSuccessListener {
-                Log.d("cheack_timetable", "get user timetables -> success")
-                if(it.documents.size == 0){
-                    none_Timetable(context)
-                }else{
-                    var timetableId_ArrayList = arrayOf<String>()
-                    var timetableName_ArrayList = arrayOf<String>()
-                    var select_point: Int? = null
-
-                    for (i in it){
-                        val tmp_data = i.data
-                        timetableId_ArrayList.plus(tmp_data["course_id"] as String)
-                        timetableName_ArrayList.plus(tmp_data["timetable_name"] as String)
-                        if (timetableId_ArrayList.size == it.documents.size){
-
-                            val dialog = AlertDialog.Builder(context)
-                                .setTitle("時間割の選択")
-                                .setSingleChoiceItems(timetableName_ArrayList, -1){ dialog, which ->
-                                    select_point = which
-                                }
-                                .setPositiveButton("確定"){dialog, which ->
-                                    if (select_point != null){
-                                        set_timetable_id(context, timetableId_ArrayList[select_point!!])
-                                    }else{
-                                        cheack_timetable(context)
-                                    }
-                                }
-                            dialog.create().show()
-                        }
-
-                    }
 
 
-                    //時間割選択
-                    Toast.makeText(context, "時間割選択", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .addOnFailureListener {
-                Log.d("cheack_timetable", "get user timetables -> failure")
-                none_Timetable(context)
-            }
-
-    }
-}
 
 fun get_course_name(week_period: String): String {
     Log.d("timetable", "get_course_id -> call")

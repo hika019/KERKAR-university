@@ -11,6 +11,7 @@ import androidx.lifecycle.asFlow
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.tasks.Task
 import com.google.firebase.Timestamp
 import jp.hika019.kerkar_university.Home.Home_task_list_CustomAdapter
 import jp.hika019.kerkar_university.Task.task_cmp_list_CustomAdapter
@@ -180,6 +181,7 @@ open class firedb_setup(): firedb_col_doc(){
                     if(uid != null && university != null && university_id != null){
                         val timetableId = get_timetable_id(context)
 
+                        Log.d(TAG, "tt: $timetableId")
                         if(timetableId != null){
                             user_doc_tt(timetableId)
                                 .get()
@@ -189,8 +191,8 @@ open class firedb_setup(): firedb_col_doc(){
                                     val term = data?.get("term")
                                     semester = "$year-$term"
                                     timetable_id.value = timetableId
-                                    val tmp = data?.get("period") as Long
-                                    period_num = tmp.toInt()
+                                    val tmp = data?.get("period") as? Long
+                                    period_num = tmp?.toInt()!!
                                     Log.d(TAG, "semester: $semester")
                                     Log.d(TAG, "period_num: $period_num")
                                     Log.d(TAG, "timetableId: ${timetableId}")
@@ -253,6 +255,7 @@ open class firedb_col_doc(){
         return tmp.document(timetableId)
     }
 
+
     fun uni(): DocumentReference {
         val tmp = firedb.collection("university")
             .document(university_id!!)
@@ -300,104 +303,9 @@ open class firedb_col_doc(){
     }
 }
 
-class firedb_register_login(override val context: Context): register_dialog(context){
-    override val TAG = "MainActivity_firedb_register_login" + TAG_hoge
-
-    fun get_university_list_LoadActivity(){
-        var university_name_list: Array<String> = arrayOf()
-        var university_id_list: Array<String> = arrayOf()
-        Log.d(TAG, "get_university_list -> call")
-
-//        Log.d("hoge", "data: ${university_name_list}")
-        runBlocking {
-            firedb.collection("university")
-                .addSnapshotListener { documents, error ->
-                    if(error != null){
-                        Log.w(TAG, "get_university_list -> failure", error)
-                        return@addSnapshotListener
-                    }
-
-                    for(univer_doc in documents!!.documentChanges){
-                        val university_id = univer_doc.document.id
-                        val university_name = univer_doc.document.getString("university")!!
-
-                        university_id_list += university_id
-                        university_name_list += university_name
-                    }
-                    Log.d(TAG, university_name_list.toString())
-
-                    Log.d(TAG, "get univer list")
-                    select_univarsity(university_name_list, university_id_list)
-                }
-        }
-
-
-    }
-
-    fun create_university_collection(university_name: String){
-        Log.d(TAG, "create_university_collection -> call")
-        val doc_id = firedb.collection("university")
-                .document()
-
-        val data = hashMapOf(
-                "university" to university_name,
-                "university_id" to doc_id.id
-        )
-
-        doc_id.set(data)
-                .addOnCompleteListener {
-                    Log.d(TAG, "create university -> Complete")
-                    create_user_data(uid!!, university_name, doc_id.id)
-                }
-    }
-
-    fun create_user_data(uid: String, university: String, university_id: String){
-
-        Log.d(TAG, "create_user_data -> call")
-
-        val data = hashMapOf(
-            "uid" to uid,
-            "university" to university,
-            "create_at" to Timestamp(Date()),
-            "university_id" to university_id,
-        )
-
-//        firedb.collection("user")
-//            .document(uid)
-//            .set(data)
-//            .addOnSuccessListener {
-//                Log.d(TAG, "create_user_data: set -> success")
-//                val i = Intent(context, MainActivity::class.java)
-//                context.startActivity()
-//            }
-//            .addOnFailureListener {
-//                Log.w(TAG, "create_user_data: set -> failure", it)
-//            }
-
-    }
-
-
-}
-
 open class firedb_timetable(context: Context){
     private val TAG = "firedb_timetable"+ TAG_hoge
     open val context: Context = context
-
-    fun courses_is_none(){
-        Log.d(TAG, "courses_is_none -> call")
-
-        firedb.collection("user")
-            .document(uid!!)
-            .collection("semester")
-            .get()
-            .addOnSuccessListener {
-                Log.d(TAG, "courses_is_none -> success")
-
-                if(it.isEmpty){
-                    none_course(context)
-                }
-            }
-    }
 
     fun get_course_list(week: String, period: Int){
         Log.d(TAG, "get_course_list -> call")
@@ -568,7 +476,6 @@ open class firedb_timetable(context: Context){
                 }
     }
 
-
 }
 
 
@@ -576,9 +483,9 @@ open class firedb_timetable(context: Context){
 class firedb_timetable_new(): firedb_col_doc(){
     private val TAG = "firedb_timetable_new" + TAG_hoge
 
-    fun get_user_timetable_all_data(context: Context){
+    fun get_user_timetable_all_data(context: Context): ListenerRegistration {
         Log.d(TAG, "get_user_timetable_all_data -> call")
-        user_doc_tt(timetable_id.value!!)
+        val hoge =user_doc_tt(timetable_id.value!!)
             .addSnapshotListener { value, error ->
 
                 if (error != null){
@@ -591,12 +498,15 @@ class firedb_timetable_new(): firedb_col_doc(){
                         }.show()
                     return@addSnapshotListener
                 }
+
+                Log.d("hoge", "update")
                 user_timetable_data_live.value = value?.data
                 week_num = value?.getLong("wtd")!!.toInt()
                 period_num = value?.getLong("period")!!.toInt()
                 Log.d(TAG, "user_timetable_data_live ${user_timetable_data_live.value}")
 
             }
+        return hoge
     }
 
     fun get_user_course_data(
@@ -610,7 +520,7 @@ class firedb_timetable_new(): firedb_col_doc(){
         if (course_data != null){
             val course_id = course_data["course_id"] as String
             uni_course_doc(week_and_period, course_id)
-                    .get()
+                .get()
                 .addOnSuccessListener {
                     val online_data = it.data
                     Log.d(TAG, "get_user_course_data($week_and_period): $online_data")
@@ -644,45 +554,35 @@ class firedb_timetable_new(): firedb_col_doc(){
 
     fun check_user_timetable(context: Context){
         Log.d(TAG, "check_user_timetable -> call")
-        if (timetable_id.value != null){
-            get_user_timetable_all_data(context)
-        }else{
-            user_collection_tt()
-                .get()
-                .addOnSuccessListener {
-                    val user_timetable_nume = it.documents.size
+        user_collection_tt()
+            .get()
+            .addOnSuccessListener {
+                val user_timetable_nume = it.documents.size
 
-                    val dialog = AlertDialog.Builder(context)
-                        .setTitle("時間割の追加")
-                        .setMessage("時間割を作成してください")
+                val dialog = AlertDialog.Builder(context)
+                    .setTitle("時間割の追加")
+                    .setMessage("時間割を作成してください")
 
-                        .setPositiveButton("作成"){ _, _ ->
-                            val i = Intent(context, Create_timetableActivity::class.java)
-                            context.startActivity(i)
-                            false
-                        }
-                    dialog.create()
-                        .setCanceledOnTouchOutside(false)
-                    dialog.setCancelable(false)
-
-
-                    if (user_timetable_nume == 0){
-
-                        dialog.show()
-
-
-                    }else{
-                        dialog.setMessage("時間割選択画面がまだないので新たに作ってください")
-                            .show()
+                    .setPositiveButton("作成"){ _, _ ->
+                        val i = Intent(context, Create_timetableActivity::class.java)
+                        context.startActivity(i)
+                        false
                     }
+                dialog.create()
+                    .setCanceledOnTouchOutside(false)
+                dialog.setCancelable(false)
+
+                if (user_timetable_nume == 0){
+                    dialog.show()
+
+                }else{
+                    dialog.setMessage("時間割選択画面がまだないので新たに作ってください")
+                        .show()
                 }
-                .addOnFailureListener {
+            }
+            .addOnFailureListener {
 
-                }
-
-
-
-        }
+            }
     }
 
     fun create_timetable(context: Context, tt_data: Map<String, Any?>){
@@ -697,23 +597,7 @@ class firedb_timetable_new(): firedb_col_doc(){
             .set(tt_data)
             .addOnSuccessListener {
                 Log.d(TAG, "create_timetable -> success")
-
-                semester = "$year-$term"
-                week_num = week
-                period_num = period
-                timetable_id.value = doc_id
-                set_timetable_id(context, timetable_id.value!!)
-                Log.d(TAG, "semester: $semester")
-                Log.d(TAG, "timetable_id: ${timetable_id.value}")
-
-                user_timetable_data_live = MutableLiveData<Map<String, Any?>>()
-                course_data_live = MutableLiveData<MutableMap<String, Any?>>()
-                Log.d(TAG, "user_timetable_data_live: ${user_timetable_data_live.value}")
-                Log.d(TAG, "course_data_live: ${course_data_live.value}")
-
-                Log.d(TAG, "user_timetable_data_live & course_data_live -> clear")
-
-                createtimetable_finish.value = true
+                set_timetable(context, tt_data)
 
             }
             .addOnFailureListener {
@@ -722,81 +606,30 @@ class firedb_timetable_new(): firedb_col_doc(){
             }
     }
 
-    fun get_all_course_id(context: Context){
-        Log.d(TAG, "get_all_course_id -> call")
+    fun set_timetable(context: Context, tt_data: Map<String, Any?>){
+        Log.d(TAG, "set_timetable -> call")
+        val doc_id = tt_data["timetable_id"] as String
+        val year = tt_data["year"].toString().toInt()
+        val term = tt_data["term"].toString().toInt()
+        val week = tt_data["wtd"].toString().toInt()
+        val period = tt_data["period"].toString().toInt()
 
-        val tt_id = get_timetable_id(context)
+        semester = "$year-$term"
+        week_num = week
+        period_num = period
+        timetable_id.value = doc_id
+        set_timetable_id(context, timetable_id.value!!)
+        Log.d(TAG, "semester: $semester")
+        Log.d(TAG, "timetable_id: ${timetable_id.value}")
 
-        user_doc_tt(tt_id!!)
-            .addSnapshotListener{ value, error ->
-                if (error != null){
-                    return@addSnapshotListener
-                }
+        user_timetable_data_live = MutableLiveData<Map<String, Any?>>()
+        course_data_live = MutableLiveData<MutableMap<String, Any?>>()
+        Log.d(TAG, "user_timetable_data_live: ${user_timetable_data_live.value}")
+        Log.d(TAG, "course_data_live: ${course_data_live.value}")
 
-                val hoge = value?.data
-                //Log.d("hogee", "hoge: $hoge")
+        Log.d(TAG, "user_timetable_data_live & course_data_live -> clear")
 
-                if (hoge != null){
-
-                    val wtd = hoge["wtd"] as Long
-                    week_num = wtd.toInt()
-                    val period = hoge["period"] as Long
-                    period_num = period.toInt()
-
-
-
-                    test_course_data_map = mutableMapOf()
-                    for (week in week_to_day_symbol_list){
-                        for(period in period_list){
-                            val week_period = week+period.toString()
-                            val tmp = hoge.get(week_period) as? Map<String, String>
-                            //Log.d("hogee", "aaa$tmp")
-
-                            if (tmp != null){
-                                //test_course_id_map[week_period!!] = tmp["course_id"]
-                                get_course_data(week_period, tmp["course_id"]!!)
-
-                                //data[week_period] = tmp["course_id"]
-                                //test_course_id.value = data
-                                //Log.d("hogee", "data: ${test_course_id.value}")
-                                //Log.d("hogee", "data2: ${data}")
-
-                            }
-                        }
-                    }
-                }
-            }
-    }
-
-    fun get_course_data(week_period: String, course_id: String){
-        Log.d(TAG, "get_course_data -> call")
-        Log.d(TAG, "week_period: $week_period, id: $course_id")
-
-        uni_course_doc(week_period, course_id)
-            .get()
-            .addOnSuccessListener {
-                val data = it.data
-
-                if (data != null) {
-                    val course_name = data["course"] as String
-                    val lecturer = data["lecturer"] as ArrayList<String>
-
-                    val in_data = mapOf<String, Any?>(
-                        "course" to course_name,
-                        "lecturer" to lecturer,
-                        "course_id" to course_id
-                    )
-
-                    //Log.d(TAG, "wee: $week_period")
-                    //Log.d(TAG, "hoge: $hoge")
-
-                    test_course_data_map.put(week_period, in_data)
-                    Log.d(TAG, "course data map: ${test_course_data_map}")
-                }
-            }
-            .addOnFailureListener {
-                Log.w(TAG, "get_course_data -> failure: $week_period /$course_id: ", it)
-            }
+        createtimetable_finish.value = true
     }
 
     fun get_course_list(binding: ActivitySelectCourseBinding, context: Context, week_to_day: String){
@@ -867,6 +700,8 @@ class firedb_timetable_new(): firedb_col_doc(){
 
             }
     }
+
+
 }
 
 
@@ -989,140 +824,121 @@ class firedb_task(val context: Context): firedb_col_doc(){
     fun get_not_comp_task_list(view: View){
         Log.d(TAG, "get_not_comp_task_list -> call")
 
+        var all_comp_task: Array<String> = arrayOf()
+        //履修中の授業取得
+        var task_list: ArrayList<Map<String, Any>> = arrayListOf()
+        for (week in week_to_day_symbol_list) {
+            for (period in period_list) {
 
-        get_timetable_id(context)?.let {
-            user_doc_tt(it)
-                .addSnapshotListener { value, error ->
-                    if (error != null) {
-                        Log.w(TAG, "get_comp_task_list -> get user class_data -> failure", error)
-                        return@addSnapshotListener
-                    }
+                val user_class_data = user_timetable_data_live.value?.get(week + period) as? MutableMap<String, Any>
 
-                    Log.d(TAG, "get_not_comp_task_list -> get user class_data -> success")
-
-                    var all_comp_task: Array<String> = arrayOf()
-                    //履修中の授業取得
-
-                    val user_data = value?.data
-
-                    for (week in week_to_day_symbol_list) {
-                        for (period in period_list) {
-
-                            val user_class_data = user_data?.get(week + period) as? MutableMap<String, Any>
-
-                            if (user_class_data != null){
-                                val course_id = user_class_data["course_id"] as String
-                                val comp_task = user_class_data["comp_task"] as? ArrayList<String?>
-                                all_comp_task = add_array_to_array(all_comp_task, comp_task)
-                                Log.d(TAG, "user_class_data: $user_class_data")
+                if (user_class_data != null){
+                    val course_id = user_class_data["course_id"] as String
+                    val comp_task = user_class_data["comp_task"] as? ArrayList<String?>
+                    all_comp_task = add_array_to_array(all_comp_task, comp_task)
+                    Log.d(TAG, "user_class_data: $user_class_data")
 
 
-                                //授業の詳細の取得
-                                Log.d(TAG, "course_id: $course_id")
+                    //授業の詳細の取得
+                    Log.d(TAG, "course_id: $course_id")
 
-                                uni_course_doc(week, period, course_id)
-                                    .get()
-                                    .addOnSuccessListener {
-                                        Log.d(TAG, "get 授業のデータ -> success")
-                                        val class_data = it.data
-                                        Log.d(TAG, "class: $class_data")
-                                        if (class_data != null) {
-                                            uni_task_col(week, period, course_id)
-                                                .orderBy("time_limit")
-                                                .addSnapshotListener { value, error ->
-                                                    if(error != null){
-                                                        Log.w(TAG, "get_not_comp_task_list -> error", error)
-                                                        return@addSnapshotListener
+                    uni_course_doc(week, period, course_id)
+                        .get()
+                        .addOnSuccessListener {
+                            Log.d(TAG, "get 授業のデータ -> success")
+                            val class_data = it.data
+                            Log.d(TAG, "class: $class_data")
+                            if (class_data != null) {
+                                uni_task_col(week, period, course_id)
+                                    .orderBy("time_limit")
+                                    .addSnapshotListener { value, error ->
+                                        if(error != null){
+                                            Log.w(TAG, "get_not_comp_task_list -> error", error)
+                                            return@addSnapshotListener
+                                        }
+
+
+                                        //課題取得
+                                        for (task_item in value!!.documentChanges) {
+                                            when(task_item.type){
+                                                DocumentChange.Type.ADDED ->{
+
+                                                    val task_data = task_item.document.data
+                                                    val task_id = task_data["task_id"] as? String
+
+                                                    task_data["class_data"] = class_data
+
+                                                    if (!(all_comp_task.contains(task_id))) {
+                                                        task_list.add(task_data)
                                                     }
-                                                    var task_list: ArrayList<Map<String, Any>> = arrayListOf()
+                                                    Log.d(TAG, "datas: $task_data")
+                                                    //Log.d(TAG, "datas: $task_list")
 
-                                                    //課題取得
-                                                    for (task_item in value!!) {
-                                                        val task_data = task_item.data
-                                                        val task_id = task_data["task_id"] as? String
+                                                    task_list.sortBy { it.get("time_limit") as Timestamp }
 
-                                                        task_data["class_data"] = class_data
+                                                    //表示
+                                                    //Log.d(TAG, "tasks show to recyclerview")
+                                                    val adapter = task_notcmp_list_CustomAdapter(task_list, context)
+                                                    val layoutManager = LinearLayoutManager(context)
 
-                                                        if (!(all_comp_task.contains(task_id))) {
-                                                            task_list.add(task_data)
-                                                        }
-                                                        Log.d(TAG, "datas: $task_data")
-                                                        //Log.d(TAG, "datas: $task_list")
-
-                                                        task_list.sortBy { it.get("time_limit") as Timestamp }
-
-                                                        //表示
-                                                        //Log.d(TAG, "tasks show to recyclerview")
-                                                        val adapter = task_notcmp_list_CustomAdapter(task_list, context)
-                                                        val layoutManager = LinearLayoutManager(context)
-
-                                                        view.AssignmentActivity_assignment_recyclerView.layoutManager = layoutManager
-                                                        view.AssignmentActivity_assignment_recyclerView.adapter = adapter
-                                                        view.AssignmentActivity_assignment_recyclerView.setHasFixedSize(true)
-                                                    }
+                                                    view.AssignmentActivity_assignment_recyclerView.layoutManager = layoutManager
+                                                    view.AssignmentActivity_assignment_recyclerView.adapter = adapter
+                                                    view.AssignmentActivity_assignment_recyclerView.setHasFixedSize(true)
                                                 }
+                                            }
 
 
-                                        } else {
-                                            Log.d(TAG, "get_not_comp_task_list: class_data is null")
                                         }
                                     }
+
+
+                            } else {
+                                Log.d(TAG, "get_not_comp_task_list: class_data is null")
                             }
                         }
-                    }
                 }
+            }
         }
-
 
     }
 
     fun get_comp_task_list(view: View){
         Log.d(TAG, "get_comp_task_list -> call")
-        val user_doc = firedb.collection("user")
-                .document(uid!!)
 
-        user_doc_tt(get_timetable_id(context)!!)
-            .addSnapshotListener { value, error ->
-                if (error != null) {
-                    Log.w(TAG, "get_comp_task_list -> get user class_data -> failure", error)
-                    return@addSnapshotListener
-                }
+        var all_comp_task: Array<String> = arrayOf()
+        //履修中の授業取得
+        var task_list: ArrayList<Map<String, Any>> = arrayListOf()
+        for (week in week_to_day_symbol_list) {
+            for (period in period_list) {
+                val user_class_data = user_timetable_data_live.value?.get(week + period) as MutableMap<String, Any>?
 
-                Log.d(TAG, "get_comp_task_list -> get user class_data -> success")
-                var all_comp_task: Array<String> = arrayOf()
-                //履修中の授業取得
+                //授業のデータ
+                if (user_class_data != null){
+                    val comp_task = user_class_data["comp_task"] as? ArrayList<String?>
+                    val course_id = user_class_data["course_id"] as String
+                    all_comp_task = add_array_to_array(all_comp_task, comp_task)
 
-                val user_data = value?.data
+                    uni_course_doc(week, period, course_id)
+                        .get()
+                        .addOnSuccessListener {
+                            Log.d(TAG, "get 授業のデータ -> success")
+                            val class_data = it.data
+                            //履修中の授業取得
+                            if (class_data != null) {
 
-                for (week in week_to_day_symbol_list) {
-                    for (period in period_list) {
-                        val user_class_data = user_data?.get(week + period) as MutableMap<String, Any>?
+                                uni_task_col(week, period, course_id)
+                                    .orderBy("time_limit")
+                                    .addSnapshotListener { value, error ->
+                                        if (error != null){
+                                            Log.w(TAG, "get_comp_task_list -> error", error)
+                                            return@addSnapshotListener
+                                        }
 
-                        //授業のデータ
-                        if (user_class_data != null){
-                            val comp_task = user_class_data["comp_task"] as? ArrayList<String?>
-                            val course_id = user_class_data["course_id"] as String
-                            all_comp_task = add_array_to_array(all_comp_task, comp_task)
 
-                            uni_course_doc(week, period, course_id)
-                                .get()
-                                .addOnSuccessListener {
-                                    Log.d(TAG, "get 授業のデータ -> success")
-                                    val class_data = it.data
-                                    //履修中の授業取得
-                                    if (class_data != null) {
-
-                                        uni_task_col(week, period, course_id)
-                                            .orderBy("time_limit")
-                                            .addSnapshotListener { value, error ->
-                                                if (error != null){
-                                                    Log.w(TAG, "get_comp_task_list -> error", error)
-                                                    return@addSnapshotListener
-                                                }
-
-                                                var task_list: ArrayList<Map<String, Any>> = arrayListOf()
-                                                for (task_item in value!!.documentChanges) {
-                                                    val task_data = task_item.document.getData() as MutableMap<String, Any>
+                                        for (task_item in value!!.documentChanges) {
+                                            when(task_item.type){
+                                                DocumentChange.Type.ADDED ->{
+                                                    val task_data = task_item.document.data as MutableMap<String, Any>
                                                     val task_id = task_data["task_id"] as String
                                                     task_data["class_data"] = class_data
 
@@ -1141,24 +957,25 @@ class firedb_task(val context: Context): firedb_col_doc(){
                                                     view.AssignmentActivity_assignment_recyclerView.adapter = adapter
                                                     view.AssignmentActivity_assignment_recyclerView.setHasFixedSize(true)
                                                 }
-                                            }
-                                    } else {
-                                        Log.d(TAG, "get_comp_task_list: class_data is null")
-                                    }
-                                }
-                                .addOnFailureListener {
-                                    Log.w(TAG, "get 授業のデータ -> failure", it)
-                                }
 
+                                            }
+
+                                        }
+                                    }
+                            } else {
+                                Log.d(TAG, "get_comp_task_list: class_data is null")
+                            }
+                        }
+                        .addOnFailureListener {
+                            Log.w(TAG, "get 授業のデータ -> failure", it)
                         }
 
-
-                    }
                 }
+
+
             }
+        }
     }
-
-
 
     fun get_tomorrow_not_comp_task_list(view: FragmentHomeBinding){
         Log.d(TAG, "get_tomorrow_not_comp_task_list -> call")
@@ -1172,47 +989,39 @@ class firedb_task(val context: Context): firedb_col_doc(){
 //            Log.d("hoge", "to_int:${time_limit_int}")
         view.mainTaskInfoRecyclerview.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
 
-        user_doc_tt(get_timetable_id(context)!!)
-            .addSnapshotListener { value, error ->
-                if (error != null) {
-                    Log.w(TAG, "get_tomorrow_not_comp_task_list -> get user class_data -> failure", error)
-                    return@addSnapshotListener
-                }
-                Log.d(TAG, "get_tomorrow_not_comp_task_list -> get user class_data -> success")
+        var all_comp_task: Array<String> = arrayOf()
 
-                var all_comp_task: Array<String> = arrayOf()
+        for (week in week_to_day_symbol_list) {
+            for (period in period_list) {
+                val user_class_data = user_timetable_data_live.value?.get(week + period) as MutableMap<String, Any>?
 
-                val user_data = value?.data
+                if (user_class_data != null) {
+                    val course_id = user_class_data["course_id"] as String
+                    val comp_task = user_class_data["comp_task"] as ArrayList<String?>
+                    all_comp_task = add_array_to_array(all_comp_task, comp_task)
+                    //履修中の授業取得
+                    uni_course_doc(week, period, course_id)
+                        .get()
+                        .addOnSuccessListener {
+                            Log.d(TAG, "get 授業のデータ -> success")
+                            val class_data = it.data
 
-                for (week in week_to_day_symbol_list) {
-                    for (period in period_list) {
-                        val user_class_data = user_data?.get(week + period) as MutableMap<String, Any>?
+                            if (class_data != null){
+                                uni_task_col(week, period, course_id)
+                                    .orderBy("time_limit")
+                                    .addSnapshotListener { value, error ->
+                                        if (error != null){
+                                            Log.w(TAG, "get_tomorrow_not_comp_task_list -> error", error)
+                                            return@addSnapshotListener
+                                        }
+                                        //履修中の授業取得
+                                        var task_list: ArrayList<Map<String, Any>> = arrayListOf()
 
-                        if (user_class_data != null) {
-                            val course_id = user_class_data["course_id"] as String
-                            val comp_task = user_class_data["comp_task"] as? ArrayList<String?>
-                            all_comp_task = add_array_to_array(all_comp_task, comp_task)
+                                        for (task_item in value!!.documentChanges) {
 
-                            //履修中の授業取得
-                            uni_course_doc(week, period, course_id)
-                                .get()
-                                .addOnSuccessListener {
-                                    Log.d(TAG, "get 授業のデータ -> success")
-                                    val class_data = it.data
-
-                                    if (class_data != null){
-                                        uni_task_col(week, period, course_id)
-                                            .orderBy("time_limit")
-                                            .addSnapshotListener { value, error ->
-                                                if (error != null){
-                                                    Log.w(TAG, "get_tomorrow_not_comp_task_list -> error", error)
-                                                    return@addSnapshotListener
-                                                }
-                                                //履修中の授業取得
-                                                var task_list: ArrayList<Map<String, Any>> = arrayListOf()
-
-                                                for (task_item in value!!.documentChanges) {
-                                                    var task_data = task_item.document.getData() as MutableMap<String, Any>
+                                            when(task_item.type) {
+                                                DocumentChange.Type.ADDED -> {
+                                                    var task_data = task_item.document.data as MutableMap<String, Any>
                                                     val task_id = task_data["task_id"] as? String
                                                     task_data["class_data"] = class_data
 
@@ -1241,22 +1050,23 @@ class firedb_task(val context: Context): firedb_col_doc(){
                                                     view.mainTaskInfoRecyclerview.layoutManager = layoutManager
                                                     view.mainTaskInfoRecyclerview.adapter = adapter
                                                     view.mainTaskInfoRecyclerview.setHasFixedSize(true)
-
                                                 }
                                             }
+
+                                        }
                                     }
+                            }
 
-                                }
-                                .addOnFailureListener {
-                                    Log.w(TAG, "get 授業のデータ -> failure")
-                                }
-
-                        } else {
-                            Log.d(TAG, "get_tomorrow_not_comp_task_list: class_data is null")
                         }
-                    }
+                        .addOnFailureListener {
+                            Log.w(TAG, "get 授業のデータ -> failure")
+                        }
+
+                } else {
+                    Log.d(TAG, "get_tomorrow_not_comp_task_list: class_data is null")
                 }
             }
+        }
     }
 
     fun task_to_comp(class_and_task_data: Map<String, Any>){

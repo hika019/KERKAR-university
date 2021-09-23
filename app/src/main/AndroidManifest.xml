@@ -38,6 +38,8 @@
 
         <activity android:name=".Create_courceActivity"/>
 
+        <activity android:name=".SelectTimetable.Select_timetableActivity"/>
+
         <activity android:name=".Timetable.Create_timetableActivity"/>
 
         <activity android:name=".Course_detail.Course_detail_Activity"/>
@@ -47,6 +49,8 @@
         <activity android:name=".select_course.Select_course_Activity"/>
 
         <activity android:name=".Register_and_Login.Register"/>
+
+        <activity android:name=".Register_and_Login.Login"/>
 
         <receiver android:name=".Uninstall">
             <intent-filter>

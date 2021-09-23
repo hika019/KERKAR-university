@@ -3,6 +3,7 @@ package jp.hika019.kerkar_university
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -10,8 +11,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import jp.hika019.kerkar_university.Task.Task_list_Fragment
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.firestore.ListenerRegistration
 import jp.hika019.kerkar_university.Home.Home_fragment
 import jp.hika019.kerkar_university.Home.load_fragment
+import jp.hika019.kerkar_university.generated.callback.OnClickListener
 import jp.hika019.kerkar_university.test.Timetable_Fragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -24,6 +27,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var drawerLayout: DrawerLayout
     lateinit var navView: NavigationView
     private val flag = true
+
+    var hoge: ListenerRegistration? = null
 
     init {
 
@@ -38,9 +43,14 @@ class MainActivity : AppCompatActivity() {
 
         timetable_id.observe(this, Observer {
             Log.d(TAG, "change timetable_id")
-            //授業の取得
             val firedb_tt_class = firedb_timetable_new()
-            firedb_tt_class.check_user_timetable(this)
+            //授業の取得
+            hoge?.remove()
+            if (timetable_id.value != null){
+                hoge =firedb_tt_class.get_user_timetable_all_data(this)
+            }else{
+                firedb_tt_class.check_user_timetable(this)
+            }
         })
 
         setContentView(R.layout.activity_main)

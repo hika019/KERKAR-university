@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:onClick="@{() -> viewmodel.Create_timetable(context)}"
+            android:onClick="@{() -> viewmodel.setting_timetable(context)}"
             app:layout_constraintBottom_toBottomOf="@+id/semester_textView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/semester_textView"
