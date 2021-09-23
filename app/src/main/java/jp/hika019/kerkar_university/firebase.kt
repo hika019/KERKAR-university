@@ -20,6 +20,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
 import jp.hika019.kerkar_university.Course_detail.Course_detail_CustomAdapter
+import jp.hika019.kerkar_university.SelectTimetable.Select_timetableActivity
 import jp.hika019.kerkar_university.Setup.SetupActivity
 import jp.hika019.kerkar_university.Timetable.Create_timetableActivity
 import jp.hika019.kerkar_university.databinding.ActivitySelectCourseBinding
@@ -187,21 +188,28 @@ open class firedb_setup(): firedb_col_doc(){
                                 .get()
                                 .addOnSuccessListener {
                                     val data = it.data
-                                    val year = data?.get("year")
-                                    val term = data?.get("term")
-                                    semester = "$year-$term"
-                                    timetable_id.value = timetableId
-                                    val tmp = data?.get("period") as? Long
-                                    period_num = tmp?.toInt()!!
-                                    Log.d(TAG, "semester: $semester")
-                                    Log.d(TAG, "period_num: $period_num")
-                                    Log.d(TAG, "timetableId: ${timetableId}")
+                                    if (data != null){
+                                        Log.d(TAG, "data isnot null")
+                                        val year = data?.get("year")
+                                        val term = data?.get("term")
+                                        semester = "$year-$term"
+                                        timetable_id.value = timetableId
+                                        val tmp = data?.get("period") as? Long
+                                        period_num = tmp?.toInt()!!
+                                        Log.d(TAG, "semester: $semester")
+                                        Log.d(TAG, "period_num: $period_num")
+                                        Log.d(TAG, "timetableId: ${timetableId}")
 
-                                    Log.d(TAG, "画面遷移(to home)")
+                                        Log.d(TAG, "画面遷移(to home)")
 
-                                    val intent = Intent(context, MainActivity::class.java)
-                                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                                    context.startActivity(intent)
+                                        val intent = Intent(context, MainActivity::class.java)
+                                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                        context.startActivity(intent)
+                                    }else{
+
+                                        Toast.makeText(context, "データの取得に失敗しました", Toast.LENGTH_SHORT).show()
+                                    }
+
                                 }
                                 .addOnFailureListener {
                                     uid = Firebase.auth.uid
@@ -209,11 +217,10 @@ open class firedb_setup(): firedb_col_doc(){
                                         .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                                     context.startActivity(intent)
                                 }
+
                         }else{
-                            uid = Firebase.auth.uid
-                            val intent = Intent(context, SetupActivity::class.java)
-                                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                            context.startActivity(intent)
+                            val i = Intent(context, Select_timetableActivity::class.java)
+                            context.startActivity(i)
                         }
 
                     }else{
@@ -613,6 +620,7 @@ class firedb_timetable_new(): firedb_col_doc(){
         val term = tt_data["term"].toString().toInt()
         val week = tt_data["wtd"].toString().toInt()
         val period = tt_data["period"].toString().toInt()
+
 
         semester = "$year-$term"
         week_num = week

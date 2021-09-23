@@ -1,5 +1,6 @@
 package jp.hika019.kerkar_university.SelectTimetable
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -18,9 +19,11 @@ class Select_timetableActivity:AppCompatActivity() {
     private val TAG = "Select_timetableActivity"+ TAG_hoge
     private val viewmodel by viewModels<Select_timetableActivity_VM>()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_timetable)
+        Log.d(TAG, "Select_timetableActivity -> call")
 
         toolbar()
 
@@ -33,8 +36,16 @@ class Select_timetableActivity:AppCompatActivity() {
         createtimetable_finish.observe(this, Observer {
             if (createtimetable_finish.value == true){
                 createtimetable_finish.value = false
-                Toast.makeText(this, "画面を更新してください", Toast.LENGTH_SHORT).show()
-                finish()
+                if (login_flag){
+                    Log.d(TAG, "login flag -> true")
+                    val i = Intent(this, MainActivity::class.java)
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    startActivity(i)
+                }else{
+                    Log.d(TAG, "login flag -> false")
+                    Toast.makeText(this, "画面を更新してください", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
             }
         })
 
@@ -73,7 +84,9 @@ class Select_timetableActivity:AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        finish()
+        if (!login_flag){
+            finish()
+        }
         return super.onOptionsItemSelected(item)
     }
 }

@@ -14,6 +14,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import jp.hika019.kerkar_university.R
 import jp.hika019.kerkar_university.Setup.setup
+import jp.hika019.kerkar_university.login_flag
 import jp.hika019.kerkar_university.uid
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -71,6 +72,7 @@ class Login: AppCompatActivity() {
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
                     uid = user?.uid
+                    login_flag = true
 
                     val setup_class = setup()
                     setup_class.start(this)

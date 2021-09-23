@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        login_flag = false
 
         Log.d(TAG, "MainActivity")
         if (!flag)
