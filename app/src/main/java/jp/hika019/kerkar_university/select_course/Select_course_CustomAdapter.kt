@@ -49,7 +49,7 @@ class Select_course_CustomAdapter(
                     Thread.sleep(200)
 
                 }
-                .setNegativeButton("破棄"){_, _ ->
+                .setNegativeButton("キャンセル"){_, _ ->
                     false
                 }
                 .create()

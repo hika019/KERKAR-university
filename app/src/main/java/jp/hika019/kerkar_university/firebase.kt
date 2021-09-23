@@ -806,6 +806,10 @@ class firedb_timetable_new(): firedb_col_doc(){
             .addOnSuccessListener {
 
                 var list = arrayListOf<Map<String, String>>()
+
+                if (it.size() == 0)
+                    binding.textView29.text = "検索結果0件"
+
                 for (doc in it){
                     val data = doc.data
                     val course_name = data["course"] as? String
@@ -830,6 +834,7 @@ class firedb_timetable_new(): firedb_col_doc(){
                     list.add(map as Map<String, String>)
 
                     if (it.size() == list.size){
+                        binding.textView29.text = ""
 
                         searchbar.observe(binding.lifecycleOwner!!, androidx.lifecycle.Observer {
                             val keyword = searchbar.value
@@ -853,8 +858,8 @@ class firedb_timetable_new(): firedb_col_doc(){
                             binding.recycleView.adapter = adapter
                             binding.recycleView.setHasFixedSize(true)
                         })
-
-
+                    }else{
+                        binding.textView29.text = "検索中"
                     }
                 }
             }

@@ -53,7 +53,7 @@ class Home_VM: ViewModel() {
 
     fun course_data_live_to_course_data(){
         Log.d(TAG, "course_data_live_to_course_data -> call")
-        course_data.value = course_data_live.value as MutableMap<String, Map<String, Any>?>
+        course_data.value = course_data_live.value as? MutableMap<String, Map<String, Any>?>
         Log.d(TAG, "course_data: ${course_data.value}")
     }
 

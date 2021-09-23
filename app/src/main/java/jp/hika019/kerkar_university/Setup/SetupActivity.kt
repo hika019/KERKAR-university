@@ -44,9 +44,9 @@ class SetupActivity: AppCompatActivity(){
             finish()
         }
 
-        load_acount.setOnClickListener {
-            Toast.makeText(this, "未実装機能です", Toast.LENGTH_SHORT).show()
-        }
+//        load_acount.setOnClickListener {
+//            Toast.makeText(this, "未実装機能です", Toast.LENGTH_SHORT).show()
+//        }
 
         button2.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))

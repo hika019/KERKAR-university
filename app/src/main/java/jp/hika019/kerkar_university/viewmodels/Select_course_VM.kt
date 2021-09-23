@@ -15,6 +15,7 @@ class Select_course_VM: ViewModel() {
     private val TAG = "Select_course_VM" + TAG_hoge
 
     val week_to_day = MutableLiveData("")
+    val search_result = MutableLiveData("")
 
     init {
         search_str.asFlow()
