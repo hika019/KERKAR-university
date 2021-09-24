@@ -36,6 +36,7 @@ class Create_courceActivity: AppCompatActivity() {
 
         viewmodel.finish_event.observe(this, androidx.lifecycle.Observer {
             if (viewmodel.finish_event.value == true)
+                viewmodel.finish_event.value = false
                 finish()
         })
 

@@ -82,7 +82,6 @@ class Create_courceVM: ViewModel() {
 
     fun create_couce(context: Context){
         add_lecturer()
-        finish()
 
         val data = mapOf<String, Any>(
             "semester_id" to semester!!,
@@ -93,6 +92,7 @@ class Create_courceVM: ViewModel() {
         )
         val hoge = firedb_timetable(context)
         hoge.create_course_university_timetable(data)
+        finish()
     }
 
     fun finish(){
