@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.util.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -47,7 +48,7 @@ class Login: AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
+        Toast.makeText(this, "onActivityResult -> call", Toast.LENGTH_SHORT).show()
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
@@ -55,21 +56,27 @@ class Login: AppCompatActivity() {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)!!
                 Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
+                Toast.makeText(this, "firebaseAuthWithGoogle", Toast.LENGTH_SHORT).show()
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
+                Toast.makeText(this, "Google sign in failed", Toast.LENGTH_SHORT).show()
                 Log.w(TAG, "Google sign in failed", e)
             }
+        }else{
+            Toast.makeText(this, "requestCodeのエラーが発生しました", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
+        Toast.makeText(this, "GoogleSignInAccount -> call", Toast.LENGTH_SHORT).show()
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
+                    Toast.makeText(this, "signInWithCredential:success", Toast.LENGTH_SHORT).show()
                     val user = auth.currentUser
                     uid = user?.uid
                     login_flag = true
@@ -78,6 +85,7 @@ class Login: AppCompatActivity() {
                     setup_class.start(this)
                 } else {
                     // If sign in fails, display a message to the user.
+                    Toast.makeText(this, "signInWithCredential:failure", Toast.LENGTH_SHORT).show()
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
                 }
             }

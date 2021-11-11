@@ -8,6 +8,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.QuerySnapshot
 import jp.hika019.kerkar_university.*
 import jp.hika019.kerkar_university.databinding.ActivitySelectCourseBinding
 import jp.hika019.kerkar_university.viewmodels.Select_course_VM
@@ -16,6 +18,7 @@ class Select_course_Activity: AppCompatActivity() {
 
     private val viewmodel by viewModels<Select_course_VM>()
     private val TAG = "Select_course_Activity"+ TAG_hoge
+    private var get_course_list: Task<QuerySnapshot>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
