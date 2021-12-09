@@ -18,9 +18,9 @@ var check_position = -1
 
 
 //移動系
-var to_home_fragment = MutableLiveData<Boolean>(false)
-val createtimetable_finish = MutableLiveData(false)
-val createtask_finish = MutableLiveData(false)
+var toHomeFragment = MutableLiveData<Boolean>(false)
+val createTimetableFinish = MutableLiveData(false)
+val createTaskFinish = MutableLiveData(false)
 
 
 var semester: String? = null
@@ -47,11 +47,11 @@ var test_course_data_map = mutableMapOf<String, Any?>()
 
 
 //Create_course
-var createcource_period = -1
-var createcource_wtd = ""
+var createCourcePeriod = -1
+var createCourceWtd = ""
 
 //使ってる
 var user_timetable_data_live = MutableLiveData<Map<String, Any?>>()
 var course_data_live = MutableLiveData<MutableMap<String, Any?>>()
 
-val TAG_hoge = "Logs"
+const val tagHoge = "Logs"

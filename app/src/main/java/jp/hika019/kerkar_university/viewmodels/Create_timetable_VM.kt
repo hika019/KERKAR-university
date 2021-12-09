@@ -12,11 +12,10 @@ import androidx.lifecycle.viewModelScope
 import jp.hika019.kerkar_university.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlin.math.absoluteValue
 
 class Create_timetable_VM: ViewModel() {
 
-    private val TAG = "Create_timetable_VM" + TAG_hoge
+    private val TAG = "Create_timetable_VM" + tagHoge
 
     val timetable_name = MutableLiveData("")
     val select_year = MutableLiveData<String>("選択してください")
@@ -104,8 +103,8 @@ class Create_timetable_VM: ViewModel() {
             .setPositiveButton("作成する"){_, _ ->
                 Log.d(TAG, "data: ${tt_data}")
 
-                val firedb = firedb_timetable_new()
-                firedb.create_timetable(context, tt_data)
+                val firedb = FiredbTimetableNew()
+                firedb.createTimetable(context, tt_data)
             }
             .setNegativeButton("キャンセル"){_, _ ->
                 false

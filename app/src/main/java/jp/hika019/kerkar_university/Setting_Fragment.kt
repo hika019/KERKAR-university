@@ -9,13 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -37,13 +35,13 @@ class Setting_Fragment: Fragment() {
 
         view.setting_uid_textview.text = uid
         view.setting_uid_textview.setOnClickListener {
-            uid_dialog()
+            uidDialog()
         }
 
-        get_university(view)
+        getUniversity(view)
 
         view.setting_data_transfer_button.setOnClickListener {
-            enter_uid()
+            enterUid()
 //            val i = Intent(context, Register::class.java)
 //            requireContext().startActivity(i)
         }
@@ -53,28 +51,21 @@ class Setting_Fragment: Fragment() {
             context?.startActivity(intent)
         }
 
-//        view.setting_destroy_user.setOnClickListener {
-//            destroy_user()
-//        }
-//        view.googleSighin.setOnClickListener {
-//            google_sign()
-//        }
-
         return view
     }
 
-    fun uid_dialog(){
+    private fun uidDialog(){
         val dialog = AlertDialog.Builder(context)
                 .setTitle("ユーザID")
                 .setMessage(uid)
-                .setPositiveButton("ok"){ dialog, which ->
+                .setPositiveButton("ok"){ _, _ ->
 
                 }
         dialog.create().show()
 
     }
 
-    fun get_university(view: View){
+    private fun getUniversity(view: View){
         firedb.collection("user")
                 .document(uid!!)
                 .get()
@@ -88,7 +79,7 @@ class Setting_Fragment: Fragment() {
     }
 
 
-    fun enter_uid(){
+    private fun enterUid(){
         val dialog = AlertDialog.Builder(context)
             .setTitle("未実装機能")
             .setMessage("しばらくしたら実装されます")
@@ -97,19 +88,6 @@ class Setting_Fragment: Fragment() {
         val i = Intent(context, Register::class.java)
         context?.startActivity(i)
     }
-
-    fun google_sign(){
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-
-        googleSignInClient = GoogleSignIn.getClient(context, gso)
-
-        val intent = googleSignInClient.signInIntent
-        startActivityForResult(intent, RC_SIGN_IN)
-    }
-
 
     override fun onStart() {
         super.onStart()

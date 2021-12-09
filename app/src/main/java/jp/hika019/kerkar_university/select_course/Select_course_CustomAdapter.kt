@@ -15,7 +15,7 @@ class Select_course_CustomAdapter(
     private val context: Context?
 ) : RecyclerView.Adapter<Select_course_CustomAdapter.CustomViewHolder>() {
 
-    private val TAG = "Select_course_CustomAdapter" + TAG_hoge
+    private val TAG = "Select_course_CustomAdapter" + tagHoge
 
     class CustomViewHolder(val view: View): RecyclerView.ViewHolder(view) {
         val course_name = view.item_select_course_name
@@ -45,7 +45,7 @@ class Select_course_CustomAdapter(
                     val hoge = firedb_timetable(context!!)
 
 
-                    hoge.add_user_timetable(tmp_str, course_id!!)
+                    hoge.addUserTimetable(tmp_str, course_id!!)
                     Thread.sleep(200)
 
                 }

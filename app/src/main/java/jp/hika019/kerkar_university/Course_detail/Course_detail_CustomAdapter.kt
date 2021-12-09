@@ -8,7 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
 import jp.hika019.kerkar_university.R
-import jp.hika019.kerkar_university.TAG_hoge
+import jp.hika019.kerkar_university.tagHoge
 import kotlinx.android.synthetic.main.item_course_detail_activity.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -22,7 +22,7 @@ class Course_detail_CustomAdapter(
     ):RecyclerView.Adapter<Course_detail_CustomAdapter.CustomViewHolder>() {
 
 
-    private val TAG = "Course_detail_CustomAdapter" + TAG_hoge
+    private val TAG = "Course_detail_CustomAdapter" + tagHoge
 
     class CustomViewHolder(val view: View): RecyclerView.ViewHolder(view) {
         val day = view.item_course_detail_task_limit_day_textview

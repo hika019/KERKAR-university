@@ -1,10 +1,8 @@
 package jp.hika019.kerkar_university
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import android.widget.Toast
 import java.security.MessageDigest
 
 fun sha256(str: String): String {
@@ -17,17 +15,17 @@ fun sha256(str: String): String {
 }
 
 
-fun week_to_day_jp_chenger(week: String): String{
+fun weekToDayJpChenger(week: String): String{
     val index: Int = week_to_day_symbol_list.indexOf(week)
     return week_to_day_jp_list[index]
 }
 
-fun week_to_day_symbol_chenger(week: String): String{
+fun weekToDaySymbolChenger(week: String): String{
     val index: Int = week_to_day_jp_list.indexOf(week)
     return week_to_day_symbol_list[index]
 }
 
-fun str_num_normalization(str: String): String{
+fun strNumNormalization(str: String): String{
     val norm_str = str.replace("０", "0").replace("１", "1")
             .replace("２", "2").replace("３", "3")
             .replace("４", "4").replace("５", "5")
@@ -50,8 +48,8 @@ fun str_num_normalization(str: String): String{
     return norm_str
 }
 
-fun str_to_array(str: String): List<String> {
-    var str = str_num_normalization(str)
+fun strToArray(str: String): List<String> {
+    var str = strNumNormalization(str)
     var position: Int
     val list: List<String>
 
@@ -63,40 +61,39 @@ fun str_to_array(str: String): List<String> {
     return list
 }
 
-fun course_data_map_to_str(data: Map<String, Any>): String {
+fun courseDataMapToStr(data: Map<String, Any>): String {
     Log.d("other_fun", "course_data_map_to_str -> call")
 
-    val map_data = data
-    val teacher = map_data["lecturer"] as List<String>
-    var teacher_str = ""
+    val mapData = data
+    val teacher = mapData["lecturer"] as List<String>
+    var teacherStr = ""
 
-    if(teacher.size != 1){
-        teacher_str = "${teacher[0]} ...他"
-    }else{
-        teacher_str = "${teacher[0]}"
+    teacherStr = if (teacher.size != 1) {
+        "${teacher[0]} ...他"
+    } else {
+        teacher[0]
     }
 
-    val str = "教科: ${map_data["course"]}\n" +
-            "講師: $teacher_str\n" +
-            "教室: ${map_data["room"]}\n"
-    return str
+    return "教科: ${mapData["course"]}\n" +
+            "講師: $teacherStr\n" +
+            "教室: ${mapData["room"]}\n"
 }
 
-fun add_array_to_array(base: Array<String>?, add: ArrayList<String?>?): Array<String> {
+fun addArrayToArray(base: Array<String>?, add: ArrayList<String?>?): Array<String> {
 
-    var base_new = arrayOf<String>()
+    var baseNew = arrayOf<String>()
     if(base != null){
-        base_new = base
+        baseNew = base
     }
     if(add != null){
         for(item in add){
-            if (item != null) base_new += item
+            if (item != null) baseNew += item
         }
     }
-    return base_new
+    return baseNew
 }
 
-fun cheack_uid(uid0: String, uid1: String, uid2: String, uid3: String, uid4: String): Boolean {
+fun cheackUid(uid0: String, uid1: String, uid2: String, uid3: String, uid4: String): Boolean {
     val block0 = Integer.parseInt(uid0, 16)
     val block1 = Integer.parseInt(uid1, 16)
     val block2 = Integer.parseInt(uid2, 16)
@@ -112,12 +109,12 @@ fun cheack_uid(uid0: String, uid1: String, uid2: String, uid3: String, uid4: Str
 
 }
 
-fun get_timetable_id(context: Context): String? {
+fun getTimetableId(context: Context): String? {
     val datastore: SharedPreferences = context.getSharedPreferences("user_db", Context.MODE_PRIVATE)
     return datastore.getString("timetable_id", null)
 }
 
-fun set_timetable_id(context: Context, id: String) {
+fun setTimetableId(context: Context, id: String) {
     val datastore: SharedPreferences = context.getSharedPreferences("user_db", Context.MODE_PRIVATE)
     val editer = datastore.edit()
     editer.putString("timetable_id", id)
@@ -126,9 +123,7 @@ fun set_timetable_id(context: Context, id: String) {
 }
 
 
-
-
-fun get_course_name(week_period: String): String {
+fun getCourseName(week_period: String): String {
     Log.d("timetable", "get_course_id -> call")
     val tmp =  test_course_data_map?.get(week_period)
 
@@ -141,7 +136,7 @@ fun get_course_name(week_period: String): String {
     return course_name
 }
 
-fun get_lecturer(week_period: String): String {
+fun getLecturer(week_period: String): String {
     Log.d("timetable", "get_lecturer -> call")
     val tmp =  test_course_data_map?.get(week_period)
 

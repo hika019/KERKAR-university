@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import jp.hika019.kerkar_university.viewmodels.Create_courceVM
 import jp.hika019.kerkar_university.databinding.ActivityCreateCourcetBinding
 
-class Create_courceActivity: AppCompatActivity() {
+class CreateCourceActivity: AppCompatActivity() {
 
     private val TAG = "Create_courceActivity"
     private val viewmodel by viewModels<Create_courceVM>()

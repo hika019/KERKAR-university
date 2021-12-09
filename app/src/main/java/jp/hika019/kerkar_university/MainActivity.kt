@@ -3,7 +3,6 @@ package jp.hika019.kerkar_university
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -12,15 +11,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import jp.hika019.kerkar_university.Task.Task_list_Fragment
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.ListenerRegistration
-import jp.hika019.kerkar_university.Home.Home_fragment
+import jp.hika019.kerkar_university.Home.HomeFragment
 import jp.hika019.kerkar_university.Home.load_fragment
-import jp.hika019.kerkar_university.generated.callback.OnClickListener
 import jp.hika019.kerkar_university.test.Timetable_Fragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
-    private val TAG = "MainActivity"+ TAG_hoge
+    private val TAG = "MainActivity"+ tagHoge
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var toolbar: Toolbar
@@ -40,17 +38,17 @@ class MainActivity : AppCompatActivity() {
 
         Log.d(TAG, "MainActivity")
         if (!flag)
-            timetable_id.value = get_timetable_id(this)
+            timetable_id.value = getTimetableId(this)
 
         timetable_id.observe(this, Observer {
             Log.d(TAG, "change timetable_id")
-            val firedb_tt_class = firedb_timetable_new()
+            val firedb_tt_class = FiredbTimetableNew()
             //授業の取得
             hoge?.remove()
             if (timetable_id.value != null){
-                hoge =firedb_tt_class.get_user_timetable_all_data(this)
+                hoge =firedb_tt_class.getUserTimetableAllData(this)
             }else{
-                firedb_tt_class.check_user_timetable(this)
+                firedb_tt_class.checkUserTimetable(this)
             }
         })
 
@@ -63,11 +61,11 @@ class MainActivity : AppCompatActivity() {
         ft.replace(R.id.main_host_fragment, load_fragment())
         ft.commit()
 
-        to_home_fragment.observe(this, Observer {
-            if (to_home_fragment.value == true){
+        toHomeFragment.observe(this, Observer {
+            if (toHomeFragment.value == true){
                 val ft = supportFragmentManager.beginTransaction()
                 //ft.replace(R.id.main_host_fragment, test())
-                ft.replace(R.id.main_host_fragment, Home_fragment())
+                ft.replace(R.id.main_host_fragment, HomeFragment())
                 ft.commit()
             }
         })
@@ -98,7 +96,7 @@ class MainActivity : AppCompatActivity() {
 
         when (item.itemId) {
             R.id.nav_home -> {
-                ft.replace(R.id.main_host_fragment, Home_fragment())
+                ft.replace(R.id.main_host_fragment, HomeFragment())
                 ft.commit()
                 return@OnNavigationItemSelectedListener true
             }

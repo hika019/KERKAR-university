@@ -11,20 +11,18 @@ import jp.hika019.kerkar_university.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import android.util.*
-import android.view.Gravity
 import jp.hika019.kerkar_university.Course_detail.Course_detail_Activity
 import jp.hika019.kerkar_university.SelectTimetable.Select_timetableActivity
-import jp.hika019.kerkar_university.Timetable.Create_timetableActivity
 import jp.hika019.kerkar_university.select_course.Select_course_Activity
 
 class Timetable_VM: ViewModel() {
-    private val TAG = "Timetable_VM"+ TAG_hoge
+    private val TAG = "Timetable_VM"+ tagHoge
     val timetable = MutableLiveData<Map<String, Any>>()
 
     val timetable_name = MutableLiveData("")
     var context: Context? =null
 
-    private val firedb_tt_class = firedb_timetable_new()
+    private val firedb_tt_class = FiredbTimetableNew()
 
     init {
         Log.d(TAG, "Timetable_VM / init -> call")
@@ -64,7 +62,7 @@ class Timetable_VM: ViewModel() {
         Log.d(TAG, "data: ${data}")
 
         if (data != null) {
-            message = course_data_map_to_str(data as Map<String, Any>)
+            message = courseDataMapToStr(data as Map<String, Any>)
         }
 
         Log.d(TAG, "mess: $message")
@@ -86,14 +84,14 @@ class Timetable_VM: ViewModel() {
     fun show_course_info(week: String, period: Int, message: String){
         Log.d(TAG, "show_course_info -> call")
 
-        val week_jp = week_to_day_jp_chenger(week)
+        val week_jp = weekToDayJpChenger(week)
 
         val dialog = AlertDialog.Builder(context!!)
             .setTitle("${week_jp}曜日 ${period}限の授業")
             .setMessage(message)
             .setPositiveButton("授業登録") { dialog, which ->
                 val firedb_tt_old_class = firedb_timetable(context!!)
-                firedb_tt_old_class.get_course_list(week, period)
+                firedb_tt_old_class.getCourseList(week, period)
             }
             .setNegativeButton("戻る"){ dialog, which ->
 

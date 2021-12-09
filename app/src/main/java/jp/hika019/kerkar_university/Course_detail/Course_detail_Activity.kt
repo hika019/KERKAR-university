@@ -8,8 +8,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import jp.hika019.kerkar_university.*
 import jp.hika019.kerkar_university.viewmodels.Course_ditail_VM
 import jp.hika019.kerkar_university.databinding.ActivityCourseDetailBinding
@@ -17,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_course_detail.*
 
 class Course_detail_Activity: AppCompatActivity() {
 
-    private val TAG = "Course_detail_Activity" + TAG_hoge
+    private val TAG = "Course_detail_Activity" + tagHoge
     private val viewmodel by viewModels<Course_ditail_VM>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,9 +28,9 @@ class Course_detail_Activity: AppCompatActivity() {
         binding.lifecycleOwner = this
         set_toolbar()
 
-        createtimetable_finish.observe(this, Observer {
-            if (createtimetable_finish.value == true){
-                createtimetable_finish.value =false
+        createTimetableFinish.observe(this, Observer {
+            if (createTimetableFinish.value == true){
+                createTimetableFinish.value =false
                 finish()
             }
         })
@@ -81,8 +79,8 @@ class Course_detail_Activity: AppCompatActivity() {
 
 
 
-        val hoge = firedb_task_new()
-        hoge.get_course_task(task_recycleview, viewmodel.week_period.value!!, viewmodel.course_id!!, this)
+        val hoge = FiredbTaskNew()
+        hoge.getCourseTask(task_recycleview, viewmodel.week_period.value!!, viewmodel.course_id!!, this)
 
         binding.courseLecturerLinearLayout
 

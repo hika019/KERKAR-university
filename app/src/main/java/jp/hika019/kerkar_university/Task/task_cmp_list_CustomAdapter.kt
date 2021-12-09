@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
 import jp.hika019.kerkar_university.R
 import jp.hika019.kerkar_university.firedb_task
-import jp.hika019.kerkar_university.task_dialog_new
+import jp.hika019.kerkar_university.TaskDialogNew
 import kotlinx.android.synthetic.main.item_task_fragment.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -96,12 +96,12 @@ class task_cmp_list_CustomAdapter(
 
     fun task_comp_ditail_dialog(context: Context, task_data: Map<String, Any>, position: Int){
 
-        val hoge = task_dialog_new()
-        hoge.task_detail_dialog(context, task_data)
+        val hoge = TaskDialogNew()
+        hoge.taskDetailDialog(context, task_data)
             .setNeutralButton("未提出にする") {dialog, which ->
 
                 val class_data = list[position]
-                firedb_task(context).task_to_notcomp(class_data)
+                firedb_task(context).taskToNotcomp(class_data)
                 removeItem(position)
             }
             .create().show()

@@ -51,7 +51,7 @@ class Task_list_Fragment(): Fragment() {
 
         view.add_task_fab.setOnClickListener{
             Log.d(TAG, "add_task_fab -> push")
-            context?.let { it -> firedb_task(it).get_course_list() }
+            context?.let { it -> firedb_task(it).getCourseList() }
 
         }
         return view
@@ -59,10 +59,10 @@ class Task_list_Fragment(): Fragment() {
 
 
     fun get_comp_task(view: View){
-        context?.let { firedb_task(it) }?.get_comp_task_list(view)
+        context?.let { firedb_task(it) }?.getCompTaskList(view)
     }
 
     fun get_notcomp_task(view: View){
-        context?.let { firedb_task(it) }?.get_not_comp_task_list(view)
+        context?.let { firedb_task(it) }?.getNotCompTaskList(view)
     }
 }

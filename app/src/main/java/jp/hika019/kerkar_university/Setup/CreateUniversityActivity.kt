@@ -43,7 +43,7 @@ class CreateUniversityActivity: AppCompatActivity() {
             }else{
                 val university_name = university_name_edittext.text
                 val instance = setup()
-                instance.create_university(this, university_name.toString(), radio_index+2)
+                instance.createUniversity(this, university_name.toString(), radio_index+2)
             }
         }
 

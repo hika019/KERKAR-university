@@ -41,7 +41,7 @@ class Load_VM: ViewModel() {
 
     fun update_home_fragment(){
         if (period.value != -1)
-            to_home_fragment.value = true
+            toHomeFragment.value = true
     }
 
 }

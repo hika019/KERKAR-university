@@ -5,12 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
 import jp.hika019.kerkar_university.R
 import jp.hika019.kerkar_university.firedb_task
-import jp.hika019.kerkar_university.task_dialog_new
+import jp.hika019.kerkar_university.TaskDialogNew
 import kotlinx.android.synthetic.main.item_home_assignment_info.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -106,8 +105,8 @@ class Home_task_list_CustomAdapter(private val task_List: ArrayList<Map<String, 
 
     private fun home_task_ditail_dialog(context: Context, task_data:Map<String, Any>, position: Int){
 
-        val hoge = task_dialog_new()
-        hoge.task_detail_dialog(context, task_data)
+        val hoge = TaskDialogNew()
+        hoge.taskDetailDialog(context, task_data)
             .setPositiveButton("OK") { dialog, which ->
 
             }
@@ -117,7 +116,7 @@ class Home_task_list_CustomAdapter(private val task_List: ArrayList<Map<String, 
 
                 val class_data = task_List[position] as Map<String, Any>
                 Log.d(TAG, "data:${class_data}")
-                firedb_task(context).task_to_comp(class_data)
+                firedb_task(context).taskToComp(class_data)
                 removeItem(position)
             }
             .show()

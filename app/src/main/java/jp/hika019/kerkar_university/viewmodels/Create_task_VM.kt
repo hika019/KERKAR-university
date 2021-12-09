@@ -17,7 +17,7 @@ import java.util.*
 
 class Create_task_VM: ViewModel() {
 
-    private val TAG = "Create_task_VM" + TAG_hoge
+    private val TAG = "Create_task_VM" + tagHoge
 
     val course_name = MutableLiveData("")
     val task_title = MutableLiveData("")
@@ -85,8 +85,8 @@ class Create_task_VM: ViewModel() {
         )
         Log.d(TAG, "create task data: $data")
         Log.d(TAG, "id :$course_id")
-        val hoge = firedb_task_new()
-        hoge.create_task(context, week_period!!, course_id.toString(), data as MutableMap<String, Any?>)
+        val hoge = FiredbTaskNew()
+        hoge.createTask(context, week_period!!, course_id.toString(), data as MutableMap<String, Any?>)
     }
 
     fun check(){

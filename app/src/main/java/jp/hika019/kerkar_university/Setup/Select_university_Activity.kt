@@ -41,7 +41,7 @@ class Select_university_Activity(): AppCompatActivity() {
             if (check_position != -1 && check_position <= university_name_list.size && university_name_list.size == university_id_list.size){
                 university_id = university_id_list[check_position]
                 val instance = setup()
-                instance.create_user_data(this, university_name_list[check_position], university_id_list[check_position])
+                instance.createUserData(this, university_name_list[check_position], university_id_list[check_position])
             }else{
                 Toast.makeText(this, "大学の選択が不正です", Toast.LENGTH_SHORT).show()
             }

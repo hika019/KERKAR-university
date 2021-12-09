@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_select_timetable.*
 
 class Select_timetableActivity:AppCompatActivity() {
 
-    private val TAG = "Select_timetableActivity"+ TAG_hoge
+    private val TAG = "Select_timetableActivity"+ tagHoge
     private val viewmodel by viewModels<Select_timetableActivity_VM>()
 
 
@@ -33,9 +33,9 @@ class Select_timetableActivity:AppCompatActivity() {
             viewmodel.create_tt(this)
         }
 
-        createtimetable_finish.observe(this, Observer {
-            if (createtimetable_finish.value == true){
-                createtimetable_finish.value = false
+        createTimetableFinish.observe(this, Observer {
+            if (createTimetableFinish.value == true){
+                createTimetableFinish.value = false
                 if (login_flag){
                     Log.d(TAG, "login flag -> true")
                     val i = Intent(this, MainActivity::class.java)

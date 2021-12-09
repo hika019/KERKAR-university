@@ -11,7 +11,7 @@ import android.util.*
 import jp.hika019.kerkar_university.*
 
 class Create_courceVM: ViewModel() {
-    private val TAG = "Create_courceVM" + TAG_hoge
+    private val TAG = "Create_courceVM" + tagHoge
 
     var week_and_period = MutableLiveData("")
     val course_name = MutableLiveData<String>("")
@@ -25,10 +25,10 @@ class Create_courceVM: ViewModel() {
     val finish_event = MutableLiveData(false)
 
     init {
-        val week_jp = week_to_day_jp_chenger(createcource_wtd)
+        val week_jp = weekToDayJpChenger(createCourceWtd)
 
 
-        week_and_period.value = "${week_jp}曜日 ${createcource_period}限"
+        week_and_period.value = "${week_jp}曜日 ${createCourcePeriod}限"
 
         listOf(course_name, course_room, course_lecture_list, course_lecture).forEach {
             it.asFlow()
@@ -85,13 +85,13 @@ class Create_courceVM: ViewModel() {
 
         val data = mapOf<String, Any>(
             "semester_id" to semester!!,
-            "week_to_day" to (createcource_wtd + createcource_period),
+            "week_to_day" to (createCourceWtd + createCourcePeriod),
             "course" to course_name.value!!,
             "lecturer" to _course_lecture_list,
             "room" to course_room.value!!
         )
         val hoge = firedb_timetable(context)
-        hoge.create_course_university_timetable(data)
+        hoge.createCourseUniversityTimetable(data)
         finish()
     }
 

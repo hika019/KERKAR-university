@@ -22,7 +22,7 @@ class Course_ditail_VM: ViewModel() {
 
     private var context: Context? = null
 
-    private val TAG = "Course_ditail_VM" + TAG_hoge
+    private val TAG = "Course_ditail_VM" + tagHoge
 
     init {
         week_period.asFlow()
@@ -52,7 +52,7 @@ class Course_ditail_VM: ViewModel() {
         context = _context
         Log.d(TAG, "delete_course(${week_period.value}) -> call")
         val hoge = firedb_timetable(context!!)
-        hoge.delete_user_timetable(week_period.value!!)
+        hoge.deleteUserTimetable(week_period.value!!)
 
     }
 

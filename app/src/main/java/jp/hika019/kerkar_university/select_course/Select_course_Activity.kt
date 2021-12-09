@@ -17,7 +17,7 @@ import jp.hika019.kerkar_university.viewmodels.Select_course_VM
 class Select_course_Activity: AppCompatActivity() {
 
     private val viewmodel by viewModels<Select_course_VM>()
-    private val TAG = "Select_course_Activity"+ TAG_hoge
+    private val TAG = "Select_course_Activity"+ tagHoge
     private var get_course_list: Task<QuerySnapshot>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +33,7 @@ class Select_course_Activity: AppCompatActivity() {
         val week = intent_data!![0]
         val period = intent_data!![1].toInt()
 
-        val week_jp = week_to_day_jp_chenger(week)
+        val week_jp = weekToDayJpChenger(week)
         viewmodel.week_to_day.value = "${week_jp}曜日 ${period}限 での検索結果"
 
         binding.viewmodel = viewmodel
@@ -48,20 +48,20 @@ class Select_course_Activity: AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        val hoge = firedb_timetable_new()
-        hoge.get_course_list(binding, this, "$week$period")
+        val hoge = FiredbTimetableNew()
+        hoge.getCourseList(binding, this, "$week$period")
 
         binding.CreateCourseButton.setOnClickListener {
-            val i = Intent(this, Create_courceActivity::class.java)
-            createcource_wtd = week
-            createcource_period = period
+            val i = Intent(this, CreateCourceActivity::class.java)
+            createCourceWtd = week
+            createCourcePeriod = period
             startActivity(i)
             finish()
         }
 
-        createtask_finish.observe(this, Observer {
-            if (createtask_finish.value == true){
-                createtask_finish.value = false
+        createTaskFinish.observe(this, Observer {
+            if (createTaskFinish.value == true){
+                createTaskFinish.value = false
                 finish()
             }
         })

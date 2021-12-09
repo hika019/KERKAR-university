@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
-import android.util.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -16,7 +15,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import jp.hika019.kerkar_university.R
-import jp.hika019.kerkar_university.TAG_hoge
+import jp.hika019.kerkar_university.tagHoge
 import jp.hika019.kerkar_university.uid
 import kotlinx.android.synthetic.main.activity_register.*
 
@@ -24,7 +23,7 @@ class Register: AppCompatActivity() {
 
     private val auth = Firebase.auth
     private lateinit var googleSignInClient: GoogleSignInClient
-    private val TAG = "Register" + TAG_hoge
+    private val TAG = "Register" + tagHoge
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

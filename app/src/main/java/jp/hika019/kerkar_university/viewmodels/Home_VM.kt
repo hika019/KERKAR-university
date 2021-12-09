@@ -15,14 +15,14 @@ import jp.hika019.kerkar_university.Course_detail.Course_detail_Activity
 import jp.hika019.kerkar_university.select_course.Select_course_Activity
 
 class Home_VM: ViewModel() {
-    private val TAG = "Home_VM" + TAG_hoge
+    private val TAG = "Home_VM" + tagHoge
     var course_data = MutableLiveData<MutableMap<String, Map<String, Any>?>>()
 
     var period = MutableLiveData<Int>(6)
 
     var context: Context? = null
 
-    private val firedb_tt_class = firedb_timetable_new()
+    private val firedb_tt_class = FiredbTimetableNew()
 
     init{
         Log.d(TAG, "Home_VM / init -> call")
@@ -64,7 +64,7 @@ class Home_VM: ViewModel() {
         val data = course_data.value?.get("$week$period")
         Log.d(TAG, "data: ${data}")
         if (data != null) {
-            message = course_data_map_to_str(data as Map<String, Any>)
+            message = courseDataMapToStr(data as Map<String, Any>)
 
         }
         if (message.isNullOrEmpty()){
@@ -85,14 +85,14 @@ class Home_VM: ViewModel() {
     fun show_course_info(week: String, period: Int, message: String){
 
 
-        val week_jp = week_to_day_jp_chenger(week)
+        val week_jp = weekToDayJpChenger(week)
 
         val dialog = AlertDialog.Builder(context!!)
             .setTitle("${week_jp}曜日 ${period}限の授業")
             .setMessage(message)
             .setPositiveButton("授業登録") { dialog, which ->
                 val firedb_tt_old_class = firedb_timetable(context!!)
-                firedb_tt_old_class.get_course_list(week, period)
+                firedb_tt_old_class.getCourseList(week, period)
             }
             .setNegativeButton("戻る"){ dialog, which ->
 

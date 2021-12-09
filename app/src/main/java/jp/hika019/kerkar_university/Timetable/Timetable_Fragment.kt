@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.onEach
 
 class Timetable_Fragment: Fragment() {
 
-    private val TAG = "Timetable_Fragment" + TAG_hoge
+    private val TAG = "Timetable_Fragment" + tagHoge
 
     private val viewmodel by viewModels<Timetable_VM>()
 

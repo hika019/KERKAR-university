@@ -14,11 +14,9 @@ import jp.hika019.kerkar_university.R
 import jp.hika019.kerkar_university.databinding.ActivityCreateTimetableBinding
 import jp.hika019.kerkar_university.viewmodels.Create_timetable_VM
 import kotlinx.android.synthetic.main.activity_create_timetable.*
-import java.text.SimpleDateFormat
-import java.util.*
 
 class Create_timetableActivity : AppCompatActivity() {
-    private val TAG = "Create_timetable" +TAG_hoge
+    private val TAG = "Create_timetable" +tagHoge
 
     private val viewmodel by viewModels<Create_timetable_VM>()
 
@@ -51,9 +49,9 @@ class Create_timetableActivity : AppCompatActivity() {
             }
         })
 
-        createtimetable_finish.observe(this, Observer {
-            if (createtimetable_finish.value == true){
-                createtimetable_finish.value = false
+        createTimetableFinish.observe(this, Observer {
+            if (createTimetableFinish.value == true){
+                createTimetableFinish.value = false
                 finish()
             }
         })

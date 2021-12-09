@@ -2,7 +2,7 @@ package jp.hika019.kerkar_university.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import jp.hika019.kerkar_university.TAG_hoge
+import jp.hika019.kerkar_university.tagHoge
 import jp.hika019.kerkar_university.searchbar
 import android.util.*
 import androidx.lifecycle.asFlow
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.onEach
 
 class Select_course_VM: ViewModel() {
     val search_str = MutableLiveData<String?>("")
-    private val TAG = "Select_course_VM" + TAG_hoge
+    private val TAG = "Select_course_VM" + tagHoge
 
     val week_to_day = MutableLiveData("")
     val search_result = MutableLiveData("")

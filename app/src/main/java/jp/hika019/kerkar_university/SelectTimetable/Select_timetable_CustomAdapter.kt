@@ -7,9 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import jp.hika019.kerkar_university.R
-import jp.hika019.kerkar_university.TAG_hoge
-import jp.hika019.kerkar_university.firedb_timetable_new
-import kotlinx.android.synthetic.main.activity_course_detail.view.*
+import jp.hika019.kerkar_university.tagHoge
+import jp.hika019.kerkar_university.FiredbTimetableNew
 import kotlinx.android.synthetic.main.item_select_timetable.view.*
 
 class Select_timetable_CustomAdapter(
@@ -17,7 +16,7 @@ class Select_timetable_CustomAdapter(
     private val context: Context?
 ) : RecyclerView.Adapter<Select_timetable_CustomAdapter.CustomViewHolder>() {
 
-    private val TAG = "Select_timetable_CustomAdapter" + TAG_hoge
+    private val TAG = "Select_timetable_CustomAdapter" + tagHoge
 
     class CustomViewHolder(val view: View): RecyclerView.ViewHolder(view) {
         val tt_name = view.item_select_tt_title
@@ -42,8 +41,8 @@ class Select_timetable_CustomAdapter(
 
         holder.view.tt_semester_touch.setOnClickListener {
             Log.d(TAG, "click event: $position")
-            val hoge_class = firedb_timetable_new()
-            hoge_class.set_timetable(context!!, tt_data)
+            val hoge_class = FiredbTimetableNew()
+            hoge_class.setTimetable(context!!, tt_data)
         }
 
     }

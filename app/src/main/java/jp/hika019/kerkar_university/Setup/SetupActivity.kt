@@ -1,25 +1,21 @@
 package jp.hika019.kerkar_university.Setup
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import android.view.MenuItem
-import android.widget.Toast
 import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import jp.hika019.kerkar_university.R
 import jp.hika019.kerkar_university.Register_and_Login.Login
-import jp.hika019.kerkar_university.TAG_hoge
-import jp.hika019.kerkar_university.firedb_setup
+import jp.hika019.kerkar_university.tagHoge
+import jp.hika019.kerkar_university.FiredbSetup
 import jp.hika019.kerkar_university.url
 import kotlinx.android.synthetic.main.activity_setup.*
 
 class SetupActivity: AppCompatActivity(){
-    private val TAG = "Setup_Activity" + TAG_hoge
+    private val TAG = "Setup_Activity" + tagHoge
 
     lateinit var toolbar: Toolbar
     lateinit var drawerLayout: DrawerLayout
@@ -62,5 +58,5 @@ class SetupActivity: AppCompatActivity(){
 
 }
 
-class setup(): firedb_setup(){
+class setup(): FiredbSetup(){
 }
