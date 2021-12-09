@@ -8,12 +8,12 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.navigation.ui.AppBarConfiguration
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import jp.hika019.kerkar_university.Task.Task_list_Fragment
+import jp.hika019.kerkar_university.task.TaskListFragment
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.ListenerRegistration
-import jp.hika019.kerkar_university.Home.HomeFragment
-import jp.hika019.kerkar_university.Home.load_fragment
-import jp.hika019.kerkar_university.test.Timetable_Fragment
+import jp.hika019.kerkar_university.home.HomeFragment
+import jp.hika019.kerkar_university.home.LoadFragment
+import jp.hika019.kerkar_university.test.TimetableFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         this.bottom_navi_view.setOnNavigationItemSelectedListener(bottomNav)
 
         val ft = supportFragmentManager.beginTransaction()
-        ft.replace(R.id.main_host_fragment, load_fragment())
+        ft.replace(R.id.main_host_fragment, LoadFragment())
         ft.commit()
 
         toHomeFragment.observe(this, Observer {
@@ -102,18 +102,18 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.nav_timetable -> {
 
-                ft.replace(R.id.main_host_fragment, Timetable_Fragment())
+                ft.replace(R.id.main_host_fragment, TimetableFragment())
                 ft.commit()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.nav_task -> {
 
-                ft.replace(R.id.main_host_fragment, Task_list_Fragment())
+                ft.replace(R.id.main_host_fragment, TaskListFragment())
                 ft.commit()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.nav_setting -> {
-                ft.replace(R.id.main_host_fragment, Setting_Fragment())
+                ft.replace(R.id.main_host_fragment, SettingFragment())
                 ft.commit()
                 return@OnNavigationItemSelectedListener true
             }

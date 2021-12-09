@@ -14,7 +14,7 @@
             android:value="true" />
 
 
-        <activity android:name=".Setup.LoadActivity"
+        <activity android:name=".setup.LoadActivity"
             android:theme="@style/AppTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,13 +23,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Setup.SetupActivity">
+        <activity android:name=".setup.SetupActivity">
         </activity>
 
-        <activity android:name=".Setup.Select_university_Activity">
+        <activity android:name=".setup.SelectUniversityActivity">
         </activity>
 
-        <activity android:name=".Setup.CreateUniversityActivity"
+        <activity android:name=".setup.CreateUniversityActivity"
             android:windowSoftInputMode="adjustResize"
             />
 
@@ -38,19 +38,19 @@
 
         <activity android:name=".CreateCourceActivity"/>
 
-        <activity android:name=".SelectTimetable.Select_timetableActivity"/>
+        <activity android:name=".selectTimetable.SelectTimetableActivity"/>
 
-        <activity android:name=".Timetable.Create_timetableActivity"/>
+        <activity android:name=".timetable.CreateTimetableActivity"/>
 
-        <activity android:name=".Course_detail.Course_detail_Activity"/>
+        <activity android:name=".courseDetail.CourseDetailActivity"/>
 
-        <activity android:name=".Create_task_Activity"/>
+        <activity android:name=".CreateTaskActivity"/>
 
-        <activity android:name=".select_course.Select_course_Activity"/>
+        <activity android:name=".selectCourse.SelectCourseActivity"/>
 
-        <activity android:name=".Register_and_Login.Register"/>
+        <activity android:name=".registerAndLogin.Register"/>
 
-        <activity android:name=".Register_and_Login.Login"/>
+        <activity android:name=".registerAndLogin.Login"/>
 
         <receiver android:name=".Uninstall">
             <intent-filter>

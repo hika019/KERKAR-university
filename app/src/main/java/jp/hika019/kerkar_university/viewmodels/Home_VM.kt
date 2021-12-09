@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import android.util.*
 import androidx.appcompat.app.AlertDialog
-import jp.hika019.kerkar_university.Course_detail.Course_detail_Activity
-import jp.hika019.kerkar_university.select_course.Select_course_Activity
+import jp.hika019.kerkar_university.courseDetail.CourseDetailActivity
+import jp.hika019.kerkar_university.selectCourse.SelectCourseActivity
 
 class Home_VM: ViewModel() {
     private val TAG = "Home_VM" + tagHoge
@@ -68,14 +68,14 @@ class Home_VM: ViewModel() {
 
         }
         if (message.isNullOrEmpty()){
-            val i = Intent(context, Select_course_Activity::class.java)
+            val i = Intent(context, SelectCourseActivity::class.java)
             i.putExtra("week_period", arrayOf<String>(week, period.toString()))
             context!!.startActivity(i)
 
 
         }else{
             //授業の詳細
-            val i = Intent(context, Course_detail_Activity::class.java)
+            val i = Intent(context, CourseDetailActivity::class.java)
             i.putExtra("week_period", arrayOf<String>(week, period.toString()))
             context!!.startActivity(i)
 

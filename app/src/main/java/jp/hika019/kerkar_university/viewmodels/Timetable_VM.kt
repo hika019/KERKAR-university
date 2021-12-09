@@ -11,9 +11,9 @@ import jp.hika019.kerkar_university.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import android.util.*
-import jp.hika019.kerkar_university.Course_detail.Course_detail_Activity
-import jp.hika019.kerkar_university.SelectTimetable.Select_timetableActivity
-import jp.hika019.kerkar_university.select_course.Select_course_Activity
+import jp.hika019.kerkar_university.courseDetail.CourseDetailActivity
+import jp.hika019.kerkar_university.selectTimetable.SelectTimetableActivity
+import jp.hika019.kerkar_university.selectCourse.SelectCourseActivity
 
 class Timetable_VM: ViewModel() {
     private val TAG = "Timetable_VM"+ tagHoge
@@ -67,13 +67,13 @@ class Timetable_VM: ViewModel() {
 
         Log.d(TAG, "mess: $message")
         if (message.isNullOrEmpty()){
-            val i = Intent(context, Select_course_Activity::class.java)
+            val i = Intent(context, SelectCourseActivity::class.java)
             i.putExtra("week_period", arrayOf<String>(week, period.toString()))
             context!!.startActivity(i)
 
         }else{
             //授業の詳細
-            val i = Intent(context, Course_detail_Activity::class.java)
+            val i = Intent(context, CourseDetailActivity::class.java)
             i.putExtra("week_period", arrayOf<String>(week, period.toString()))
             context!!.startActivity(i)
 
@@ -108,7 +108,7 @@ class Timetable_VM: ViewModel() {
     }
 
     fun setting_timetable(context: Context){
-        val i = Intent(context, Select_timetableActivity::class.java)
+        val i = Intent(context, SelectTimetableActivity::class.java)
         context.startActivity(i)
     }
 

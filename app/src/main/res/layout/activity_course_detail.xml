@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-        tools:context=".Course_detail.Course_detail_Activity">
+        tools:context=".courseDetail.CourseDetailActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/course_detail_toolbar"

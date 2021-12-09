@@ -5,7 +5,7 @@ import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import jp.hika019.kerkar_university.tagHoge
-import jp.hika019.kerkar_university.Timetable.Create_timetableActivity
+import jp.hika019.kerkar_university.timetable.CreateTimetableActivity
 
 class Select_timetableActivity_VM: ViewModel() {
 
@@ -13,7 +13,7 @@ class Select_timetableActivity_VM: ViewModel() {
 
     fun create_tt(context: Context){
         Log.d("hoge", "create_tt -> call")
-        val i = Intent(context, Create_timetableActivity::class.java)
+        val i = Intent(context, CreateTimetableActivity::class.java)
         context.startActivity(i)
     }
 }

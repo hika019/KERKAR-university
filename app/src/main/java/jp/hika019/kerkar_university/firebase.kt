@@ -11,23 +11,23 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
-import jp.hika019.kerkar_university.Home.Home_task_list_CustomAdapter
-import jp.hika019.kerkar_university.Task.task_cmp_list_CustomAdapter
-import jp.hika019.kerkar_university.Task.task_notcmp_list_CustomAdapter
+import jp.hika019.kerkar_university.home.HomeTaskListCustomAdapter
+import jp.hika019.kerkar_university.task.TaskCompListCustomAdapter
+import jp.hika019.kerkar_university.task.TaskNotCompListCustomAdapter
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
-import jp.hika019.kerkar_university.Course_detail.Course_detail_CustomAdapter
-import jp.hika019.kerkar_university.SelectTimetable.Select_timetableActivity
-import jp.hika019.kerkar_university.Setup.SetupActivity
-import jp.hika019.kerkar_university.Timetable.Create_timetableActivity
+import jp.hika019.kerkar_university.courseDetail.CourseDetailCustomAdapter
+import jp.hika019.kerkar_university.selectTimetable.SelectTimetableActivity
+import jp.hika019.kerkar_university.setup.SetupActivity
+import jp.hika019.kerkar_university.timetable.CreateTimetableActivity
 import jp.hika019.kerkar_university.databinding.ActivitySelectCourseBinding
 import kotlinx.coroutines.runBlocking
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 import jp.hika019.kerkar_university.databinding.FragmentHomeBinding
-import jp.hika019.kerkar_university.select_course.Select_course_CustomAdapter
+import jp.hika019.kerkar_university.selectCourse.SelectCourseCustomAdapter
 import kotlinx.android.synthetic.main.fragment_task.view.*
 
 
@@ -203,13 +203,13 @@ open class FiredbSetup(): firedbColDoc(){
                                 }
                                 .addOnFailureListener {
                                     uid = Firebase.auth.uid
-                                    val intent = Intent(context, Create_timetableActivity::class.java)
+                                    val intent = Intent(context, CreateTimetableActivity::class.java)
                                         .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                                     context.startActivity(intent)
                                 }
 
                         }else{
-                            val i = Intent(context, Select_timetableActivity::class.java)
+                            val i = Intent(context, SelectTimetableActivity::class.java)
                             context.startActivity(i)
                         }
 
@@ -501,7 +501,7 @@ class FiredbTimetableNew(): firedbColDoc(){
                     .setMessage("時間割を作成してください")
 
                     .setPositiveButton("作成"){ _, _ ->
-                        val i = Intent(context, Create_timetableActivity::class.java)
+                        val i = Intent(context, CreateTimetableActivity::class.java)
                         context.startActivity(i)
                         false
                     }
@@ -610,17 +610,17 @@ class FiredbTimetableNew(): firedbColDoc(){
                             binding.viewmodel?.non()
                             searchbar.observe(binding.lifecycleOwner!!, androidx.lifecycle.Observer {
                                 val keyword = searchbar.value
-                                var adapter: Select_course_CustomAdapter? =null
+                                var adapter: SelectCourseCustomAdapter? =null
 
                                 if (keyword != null){
                                     val tmp = list.filter{
                                         it["course_name"]!!.contains(keyword) || it["course_lecturer"]!!.contains(keyword)
                                     }
-                                    adapter = Select_course_CustomAdapter(
+                                    adapter = SelectCourseCustomAdapter(
                                         tmp as ArrayList<Map<String, String>>, context
                                     )
                                 }else{
-                                    adapter = Select_course_CustomAdapter(
+                                    adapter = SelectCourseCustomAdapter(
                                         list, context)
                                 }
 
@@ -811,7 +811,7 @@ class firedb_task(val context: Context): firedbColDoc(){
 
                                                     //表示
                                                     //Log.d(TAG, "tasks show to recyclerview")
-                                                    val adapter = task_notcmp_list_CustomAdapter(taskList, context)
+                                                    val adapter = TaskNotCompListCustomAdapter(taskList, context)
                                                     val layoutManager = LinearLayoutManager(context)
 
                                                     view.AssignmentActivity_assignment_recyclerView.layoutManager = layoutManager
@@ -879,7 +879,7 @@ class firedb_task(val context: Context): firedbColDoc(){
 
                                                     //表示
                                                     Log.d(tag, "tasks show to recyclerview")
-                                                    val adapter = task_cmp_list_CustomAdapter(taskList, context, semester!!)
+                                                    val adapter = TaskCompListCustomAdapter(taskList, context, semester!!)
                                                     val layoutManager = LinearLayoutManager(context)
 
                                                     view.AssignmentActivity_assignment_recyclerView.layoutManager = layoutManager
@@ -972,7 +972,7 @@ class firedb_task(val context: Context): firedbColDoc(){
 
                                                     //表示
                                                     Log.d(tag, "tasks show to recyclerview")
-                                                    val adapter = Home_task_list_CustomAdapter(taskList, context, semester!!)
+                                                    val adapter = HomeTaskListCustomAdapter(taskList, context, semester!!)
                                                     val layoutManager = LinearLayoutManager(context)
 
 
@@ -1100,7 +1100,7 @@ class FiredbTaskNew(): firedbColDoc(){
                         if (taskData != null) {
                             taskList.add(taskData)
                         }
-                        val adapter = Course_detail_CustomAdapter(taskList, compTask, context)
+                        val adapter = CourseDetailCustomAdapter(taskList, compTask, context)
                         val layoutManager = LinearLayoutManager(context)
 
                         recycle_view.layoutManager = layoutManager

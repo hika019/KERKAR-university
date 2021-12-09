@@ -12,7 +12,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        tools:context=".Timetable.Create_timetableActivity"
+        tools:context=".timetable.CreateTimetableActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:focusableInTouchMode="true">

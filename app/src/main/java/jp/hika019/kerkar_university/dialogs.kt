@@ -6,7 +6,7 @@ import android.content.Intent
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import com.google.firebase.Timestamp
-import jp.hika019.kerkar_university.Timetable.Create_timetableActivity
+import jp.hika019.kerkar_university.timetable.CreateTimetableActivity
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -19,7 +19,7 @@ fun none_Timetable(context: Context){
         .setTitle(message)
         .setMessage("時間割を追加してください")
         .setPositiveButton("OK"){ dialog, which ->
-            val i = Intent(context, Create_timetableActivity::class.java)
+            val i = Intent(context, CreateTimetableActivity::class.java)
             context?.startActivity(i)
         }
 
@@ -133,7 +133,7 @@ class TaskDialog(val context: Context){
                                 "class_id" to classIdList[select_point!!],
                                 "week_to_day" to classWeekToDayList[select_point!!]
                         )
-                        val i = Intent(context, Create_task_Activity::class.java)
+                        val i = Intent(context, CreateTaskActivity::class.java)
                         i.putExtra(
                             "week_period",
                             "${classWeekToDayList[select_point!!].take(3)}${classWeekToDayList[select_point!!][3]}")
