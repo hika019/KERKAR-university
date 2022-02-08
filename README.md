@@ -5,5 +5,8 @@
 
 ※UIは現在のものと異なります。
 
-## その他
+## 環境構築
+clone後、./app/配下にFirebase に紐づくgoogle-service.json を設置する必要があります。
+
+### その他
 Google Play Store: https://play.google.com/store/apps/details?id=jp.hika019.kerkar_university
